@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="bootstrap.min.css">
+    <link rel="stylesheet" href="styles_main.css">
+</head>
+
+<body>
+    <div id="app" class="container">
+        <section>
+            <ul class="d-flex justify-content-between" id="menu_top">
+                <li><a href="/">Home</a></li>
+                <li><a href="/categories">Categorias</a></li>
+                <li><a href="/courses">Cursos</a></li>
+                <li><a href="/lessons">Aulas</a></li>
+                <li><a href="/contact">Contato</a></li>
+                <li><a href="/signup">Cadastro</a></li>
+                {{#if is_authenticated}}
+                <li> <img src="{{ avatar }}" alt="" class="rounded-circle" width="30" height="30"> Olá, {{ username }}
+                    {{ last_name }}| <a href="/logout">Logout</a>
+                </li>
+                {{else}}
+                <li>Olá, visitante | <a href="/login">Login</a></li>
+                {{/if}}
+            </ul>
+        </section>
+        <section>
+            {{{ body }}}
+        </section>
+        <section class="text-center">
+            {{ logged_in }}
+            EAD - Todos direitos reservados {{ date }}
+        </section>
+    </div>
+    <script src="main.js"></script>
+</body>
+
+</html>
