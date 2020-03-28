@@ -21,6 +21,7 @@ const logout = (request, response) => {
   request.app.locals.avatar = null;
   request.app.locals.is_admin = null;
   request.app.locals.is_authenticated = null;
+  request.app.locals.credits = null;
   request.session.destroy(function(err) {
     response.redirect("/");
   });
