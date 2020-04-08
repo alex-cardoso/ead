@@ -1,1 +1,19 @@
-<h2>Lesson</h2>
+{{#with lesson}}
+<h2>Lesson: {{title}}</h2>
+
+{{#if buyed_lesson}}
+<div class="d-flex justify-content-between">
+  <div class="w-75">
+    <video-player-lesson :embed="{{embed}}"></video-player-lesson>
+  </div>
+
+  <div class="w-25 ml-2">
+    <lessons-category :category="{{category}}" :lesson_id="{{id}}"></lessons-category>
+  </div>
+
+</div>
+{{else}}
+Você não tem permissão para ver essa aula.
+{{/if}}
+
+{{/with}}

@@ -8,9 +8,7 @@
                 <div class="mt-2 mb-2 pt-2 pb-2" style="background-color:#efefef;">
                     {{ lesson['value'] | moeda }}
                     <br />
-                    <button class="btn btn-outline-info btn-sm mt-2" v-if="is_authenticated">
-                        <i class="fas fa-money-check-alt"></i> Comprar
-                    </button>
+
                     <template v-if="lesson['lessonBuyed'].length">
                         <a
                             :href="`/lesson/${lesson['slug']}`"
@@ -20,6 +18,9 @@
                         </a>
                     </template>
                     <template v-else>
+                        <button class="btn btn-outline-info btn-sm mt-2" v-if="is_authenticated">
+                            <i class="fas fa-money-check-alt"></i> Comprar
+                        </button>
                         <a
                             :href="`/lesson/${lesson['slug']}`"
                             class="btn btn-outline-danger btn-sm mt-2"
@@ -29,9 +30,9 @@
                     </template>
                 </div>
                 <div>
-                    <span class="font-italic">
-                        Postado:
-                        {{ moment(lesson['updatedAt']).fromNow() }}
+                    <span class="font-italic" style="font-size:14px;">
+                        Postado
+                        {{ moment(lesson['updatedAt']).fromNow() }} por {{ lesson['user']['name'] }} {{ lesson['user']['last_name'] }}
                     </span>
                 </div>
             </li>
@@ -67,7 +68,6 @@ export default {
             try {
                 const response = await http.get('/lessons/latest');
                 this.lessons = response.data;
-                console.log(response.data);
             } catch (error) {
                 console.log(error);
             }

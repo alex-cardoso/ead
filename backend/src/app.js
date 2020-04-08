@@ -31,12 +31,6 @@ const handlebars = express_handlebars.create({
 app.use(express.static(path.join(__dirname, '../../', 'dist/')));
 app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
-app.set('views', path.join(__dirname, '../', 'views'));
-
-serialize_passport(passport);
-
-passport_main(passport);
-passport_admin(passport);
 
 app.use(
     session({
@@ -59,6 +53,12 @@ app.use(function(req, res, next) {
     );
     next();
 });
+
+
+serialize_passport(passport);
+
+passport_main(passport);
+passport_admin(passport);
 
 app.use(passport.initialize());
 app.use(passport.session());

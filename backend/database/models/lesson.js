@@ -7,6 +7,7 @@ module.exports = (sequelize, DataTypes) => {
             slug: DataTypes.STRING,
             duration: DataTypes.STRING,
             value: DataTypes.DECIMAL,
+            embed: DataTypes.STRING,
             description: DataTypes.STRING,
         },
         {}
@@ -15,6 +16,11 @@ module.exports = (sequelize, DataTypes) => {
         Lesson.belongsTo(models.User, {
             foreignKey: 'userId',
             as: 'user',
+        });
+
+        Lesson.belongsTo(models.Category, {
+            foreignKey: 'categoryId',
+            as: 'category',
         });
 
         Lesson.hasMany(models.LessonBuyed, {
