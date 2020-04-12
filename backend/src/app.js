@@ -7,8 +7,8 @@ const cors = require('cors');
 const express_handlebars = require('express-handlebars');
 const session = require('express-session');
 const passport = require('passport');
-const passport_main = require('./passport-main');
-const passport_admin = require('./passport-admin');
+const passport_main = require('./passport_main.js');
+const passport_admin = require('./passport_admin');
 const serialize_passport = require('./serialize-passport');
 const path = require('path');
 const variables_to_template = require('../middlewares/variables_to_template');
@@ -16,7 +16,11 @@ const variables_to_template = require('../middlewares/variables_to_template');
 const app = express();
 
 app.use(helmet());
-app.use(cors());
+app.use(
+    cors({
+        origin: process.env.CORS_ORIGIN,
+    })
+);
 app.use(express.json());
 
 const handlebars = express_handlebars.create({
@@ -24,6 +28,14 @@ const handlebars = express_handlebars.create({
     helpers: {
         date: function() {
             return new Date().getFullYear();
+        },
+        currency: function(value) {
+            const formatter = new Intl.NumberFormat('pt-BR', {
+                style: 'currency',
+                currency: 'BRL',
+                minimumFractionDigits: 2,
+            });
+            return formatter.format(value);
         },
     },
 });
@@ -45,6 +57,14 @@ app.use(
     })
 );
 
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport_main(passport);
+passport_admin(passport);
+
+serialize_passport(passport);
+
 // quando faz logout e clica em back no navegador
 app.use(function(req, res, next) {
     res.set(
@@ -54,16 +74,9 @@ app.use(function(req, res, next) {
     next();
 });
 
-
-serialize_passport(passport);
-
-passport_main(passport);
-passport_admin(passport);
-
-app.use(passport.initialize());
-app.use(passport.session());
-
+// carregar variaveis para o template
 app.use(variables_to_template);
+
 app.use('/', require('../routes/main')(passport, app));
 app.use('/admin', require('../routes/admin')(passport, app));
 app.use('/dashboard', require('../routes/dashboard')(app));

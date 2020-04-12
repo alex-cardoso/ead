@@ -2,18 +2,36 @@
 <h2>Lesson: {{title}}</h2>
 
 {{#if buyed_lesson}}
-<div class="d-flex justify-content-between">
+<div class="d-flex justify-content-between" style="height:500px;">
   <div class="w-75">
-    <video-player-lesson :embed="{{embed}}"></video-player-lesson>
+    <video-player-lesson :embed="{{embed}}" :category="{{category}}" :lesson_id="{{id}}"></video-player-lesson>
   </div>
 
-  <div class="w-25 ml-2">
+  <div class="w-25 ml-3">
     <lessons-category :category="{{category}}" :lesson_id="{{id}}"></lessons-category>
   </div>
 
 </div>
+
+
+<hr>
+
+<h2>Descrição da aula</h2>
+
+<div>
+  {{ description }}
+</div>
+
+<hr>
+
+
+<forum-lesson :lesson_id="{{id}}"></forum-lesson>
+
 {{else}}
-Você não tem permissão para ver essa aula.
+<p>Você não tem permissão para ver essa aula.</p>
+<button-buy-lesson class="btn btn-outline-info btn-xs" :slug="{{slug}}">
+  Adquirir por {{ currency value }}
+</button-buy-lesson>
 {{/if}}
 
 {{/with}}

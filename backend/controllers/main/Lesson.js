@@ -14,6 +14,8 @@ const show = async (request, response) => {
         lesson: {
             id: JSON.stringify(lesson['id']),
             title: lesson.title,
+            value: lesson.value,
+            slug: JSON.stringify(lesson.slug),
             description: lesson.description,
             embed: JSON.stringify(lesson.embed),
             category: lesson['category']

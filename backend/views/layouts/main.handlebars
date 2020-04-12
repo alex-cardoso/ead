@@ -13,28 +13,12 @@
 <body>
     <div id="app" class="container">
         <section>
-            <ul class="d-flex justify-content-between" id="menu_top">
-                <li><a href="/">Home</a></li>
-                <li><a href="/categories">Categorias</a></li>
-                <li><a href="/courses">Cursos</a></li>
-                <li><a href="/lessons">Aulas</a></li>
-                <li><a href="/contact">Contato</a></li>
-                <li><a href="/signup">Cadastro</a></li>
-                {{#if is_authenticated}}
-                <li> <img src="{{ avatar }}" alt="" class="rounded-circle" width="30" height="30"> Olá, {{ username }}
-                    {{ last_name }} | R$ {{ credits }} | <a href="/logout">Logout</a> |
-                    <a href="/profile">Meus dados</a>
-                </li>
-                {{else}}
-                <li>Olá, visitante | <a href="/login">Login</a></li>
-                {{/if}}
-            </ul>
+            {{> header_main}}
         </section>
         <section>
             {{{ body }}}
         </section>
         <section class="text-center">
-            {{ logged_in }}
             EAD - Todos direitos reservados {{ date }}
         </section>
     </div>

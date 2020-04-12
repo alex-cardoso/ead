@@ -3,7 +3,13 @@
         <h2>Últimas aulas adicionadas</h2>
         <ul class="list-last-lessons">
             <li v-for="lesson in lessons['rows']" :key="lesson.id">
-                <div class="mb-2">{{ lesson['title'] }}</div>
+                <div class="mb-2">
+                    {{ lesson['title'] }}
+                    <br />Category:
+                    <a
+                        :href="`/category/${lesson['category']['slug']}`"
+                    >{{ lesson['category']['name'] }}</a>
+                </div>
                 <div>{{ truncate(lesson['description'], 50) }}</div>
                 <div class="mt-2 mb-2 pt-2 pb-2" style="background-color:#efefef;">
                     {{ lesson['value'] | moeda }}

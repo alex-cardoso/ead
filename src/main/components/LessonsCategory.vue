@@ -5,7 +5,10 @@
             <li
                 v-for="lesson in lessons['rows']"
                 :key="lesson.id"
-                :class="{'playing': lesson.id === lesson_id}"
+                :class="{
+                    playing: lesson.id === lesson_id,
+                    buyed: lesson['lessonBuyed'].length,
+                }"
             >
                 <a :href="`/lesson/${lesson.slug}`">{{ lesson.title }} - {{ lesson.duration }}</a>
             </li>
@@ -37,7 +40,6 @@ export default {
                 });
 
                 this.lessons = response.data;
-                console.log(response.data);
             } catch (error) {
                 console.log(error);
             }
@@ -45,31 +47,3 @@ export default {
     },
 };
 </script>
-
-<style scoped>
-ul#sidebar_list_lessons_category .playing {
-    background-color: aquamarine;
-}
-
-#sidebar {
-    height: 100%;
-    position: relative;
-    overflow-y: scroll;
-}
-
-ul#sidebar_list_lessons_category {
-    list-style: none;
-    padding: 0;
-}
-
-ul#sidebar_list_lessons_category li {
-    background-color: beige;
-    padding: 2px;
-    margin-bottom: 5px;
-}
-
-ul#sidebar_list_lessons_category li:hover {
-    background-color: #efefef;
-    cursor: pointer;
-}
-</style>

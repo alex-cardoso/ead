@@ -53,6 +53,11 @@ const latest = async (page = 1, user) => {
                         userId: user,
                     },
                 },
+                {
+                    attributes: ['id', 'name', 'slug'],
+                    model: Category,
+                    as: 'category',
+                },
             ],
             order: [['id', 'DESC']],
         };
@@ -108,7 +113,15 @@ const category = async (page = 1, user, categoryId) => {
 const find_lesson = async (slug, user) => {
     try {
         return await Lesson.findOne({
-            attributes: ['id', 'title', 'duration', 'embed'],
+            attributes: [
+                'id',
+                'title',
+                'slug',
+                'duration',
+                'embed',
+                'value',
+                'description',
+            ],
             where: {
                 slug,
             },
@@ -123,6 +136,7 @@ const find_lesson = async (slug, user) => {
                     },
                 },
                 {
+                    attributes: ['id', 'name', 'slug'],
                     model: Category,
                     as: 'category',
                 },
