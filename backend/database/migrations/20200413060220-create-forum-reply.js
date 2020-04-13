@@ -1,27 +1,12 @@
+'use strict';
 module.exports = {
     up: (queryInterface, Sequelize) => {
-        return queryInterface.createTable('forumPosts', {
+        return queryInterface.createTable('forumReplies', {
             id: {
                 allowNull: false,
                 autoIncrement: true,
                 primaryKey: true,
                 type: Sequelize.INTEGER,
-            },
-            forumId: {
-                type: Sequelize.INTEGER,
-                references: {
-                    model: 'forumLessons',
-                    key: 'id',
-                    onDelete: 'CASCADE',
-                },
-            },
-            lessonId: {
-                type: Sequelize.INTEGER,
-                references: {
-                    model: 'lessons',
-                    key: 'id',
-                },
-                onDelete: 'CASCADE',
             },
             userId: {
                 type: Sequelize.INTEGER,
@@ -31,10 +16,23 @@ module.exports = {
                 },
                 onDelete: 'CASCADE',
             },
-            title: {
-                type: Sequelize.STRING,
+            lessonId: {
+                references: {
+                    model: 'lessons',
+                    key: 'id',
+                },
+                onDelete: 'CASCADE',
+                type: Sequelize.INTEGER,
             },
-            message: {
+            forumPostId: {
+                type: Sequelize.INTEGER,
+                references: {
+                    model: 'forumPosts',
+                    key: 'id',
+                },
+                onDelete: 'CASCADE',
+            },
+            reply: {
                 type: Sequelize.TEXT,
             },
             createdAt: {
@@ -52,6 +50,6 @@ module.exports = {
         });
     },
     down: (queryInterface, Sequelize) => {
-        return queryInterface.dropTable('forumPosts');
+        return queryInterface.dropTable('forumReplies');
     },
 };

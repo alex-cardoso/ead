@@ -26,6 +26,7 @@ module.exports = (sequelize, DataTypes) => {
         Lesson.hasMany(models.LessonBuyed, {
             foreignKey: 'lessonId',
             as: 'lessonBuyed',
+            onDelete: 'CASCADE',
         });
     };
     return Lesson;

@@ -15,6 +15,19 @@ module.exports = (sequelize, DataTypes) => {
         User.hasOne(models.Credit, {
             foreignKey: 'userId',
             as: 'credits',
+            onDelete: 'CASCADE',
+        });
+
+        User.hasMany(models.ForumPost, {
+            foreignKey: 'userId',
+            as: 'posts',
+            onDelete: 'CASCADE',
+        });
+
+        User.hasMany(models.ForumReply, {
+            foreignKey: 'userId',
+            as: 'replies',
+            onDelete: 'CASCADE',
         });
     };
     return User;

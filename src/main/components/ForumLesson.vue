@@ -19,6 +19,9 @@ export default {
 
     mounted() {
         this.forum();
+        if (this.loaded_forum) {
+            this.posts_forum();
+        }
     },
 
     methods: {
@@ -39,7 +42,12 @@ export default {
             }
         },
 
-        posts_forum() {},
+        posts_forum() {
+            try {
+            } catch (error) {
+                console.log(error);
+            }
+        },
     },
 };
 </script>

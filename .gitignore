@@ -6,6 +6,8 @@ yarn-error.log
 .env
 package-lock.json
 .editorconfig
+.vscode
+jsconfig.json
 
 # Editor directories and files
 .idea
@@ -13,3 +15,4 @@ package-lock.json
 *.ntvs*
 *.njsproj
 *.sln
+/nbproject/private/

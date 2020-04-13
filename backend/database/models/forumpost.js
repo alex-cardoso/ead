@@ -11,7 +11,16 @@ module.exports = (sequelize, DataTypes) => {
         {}
     );
     ForumPost.associate = function(models) {
-        // associations can be defined here
+        ForumPost.hasMany(models.ForumReply, {
+            foreignKey: 'forumPostId',
+            as: 'replies',
+            onDelete: 'CASCADE',
+        });
+
+        ForumPost.belongsTo(models.User, {
+            foreignKey: 'userId',
+            as: 'user',
+        });
     };
     return ForumPost;
 };

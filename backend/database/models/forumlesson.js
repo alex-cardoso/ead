@@ -7,7 +7,11 @@ module.exports = (sequelize, DataTypes) => {
         {}
     );
     ForumLesson.associate = function(models) {
-        // associations can be defined here
+        ForumLesson.hasMany(models.ForumPost, {
+            foreignKey: 'forumId',
+            as: 'posts',
+            onDelete: 'CASACADE',
+        });
     };
     return ForumLesson;
 };

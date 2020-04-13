@@ -11,7 +11,6 @@ module.exports = (sequelize, DataTypes) => {
         Credit.belongsTo(models.User, {
             foreignKey: 'userId',
             as: 'credits',
-            onDelete: 'CASCADE',
         });
     };
     return Credit;
