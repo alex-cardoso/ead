@@ -16,6 +16,19 @@ const moeda = vue => {
     });
 };
 
+const date = vue => {
+    vue.filter('date', date => {
+        var formatter = new Intl.DateTimeFormat('pt-BR', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+        });
+        return formatter.format(date);
+    });
+};
+
 module.exports = {
     moeda,
+    date,
 };

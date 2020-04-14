@@ -13,20 +13,29 @@ const posts = async forumId => {
             },
             include: [
                 {
+                    attributes: ['id', 'title', 'message', 'createdAt'],
                     model: ForumPost,
                     as: 'posts',
                     include: [
                         {
+                            attributes: ['id', 'reply', 'createdAt'],
                             model: ForumReply,
                             as: 'replies',
                             include: [
                                 {
+                                    attributes: [
+                                        'id',
+                                        'name',
+                                        'last_name',
+                                        'avatar',
+                                    ],
                                     model: User,
                                     as: 'user',
                                 },
                             ],
                         },
                         {
+                            attributes: ['id', 'name', 'last_name', 'avatar'],
                             model: User,
                             as: 'user',
                         },

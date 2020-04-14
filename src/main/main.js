@@ -11,6 +11,7 @@ import ButtonBuyLesson from './components/ButtonBuyLesson';
 import filters from '../filters';
 
 filters.moeda(Vue);
+filters.date(Vue);
 
 new Vue({
     el: '#app',
