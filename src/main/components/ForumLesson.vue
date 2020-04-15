@@ -1,18 +1,32 @@
 <template>
     <div class="mt-3">
         <p>
-            Somente perguntas a respeito da aula serão respondidas, perguntas de outras aulas coloque em suas pespectivas.
+            Somente perguntas a respeito da aula serão respondidas, perguntas de
+            outras aulas coloque em suas pespectivas.
             <br />Para adicionar um código, use os
             <a
                 href="https://guides.github.com/features/mastering-markdown/"
                 target="__blank"
                 style="text-decoration:underline;color:blue;"
-            >markdowns</a> para formatar corretamente.
+                >markdowns</a
+            >
+            para formatar corretamente.
         </p>
         <div id="question">
             <form @submit.prevent="send_question">
                 <textarea rows="8" class="w-100"></textarea>
-                <button type="submit" class="btn btn-outline-success float-right">Enviar</button>
+                <button
+                    type="submit"
+                    class="btn btn-outline-success float-right"
+                >
+                    Enviar
+                </button>
+                <input
+                    type="hidden"
+                    ref="recaptcha"
+                    name="recaptcha_response"
+                    id="g-recaptcha-response"
+                />
             </form>
             <div class="clearfix"></div>
         </div>
@@ -21,11 +35,25 @@
                 <li v-for="post in posts['posts']" :key="post.id">
                     <div class="d-flex justify-content-between">
                         <section class="w-25">
-                            <img :src="post['user'].avatar" width="60" height="55" />
+                            <img
+                                :src="post['user'].avatar"
+                                width="60"
+                                height="55"
+                            />
                         </section>
                         <section class="w-auto ml-3">
                             <h3>{{ post.title }}</h3>
-                            <span>{{post['user']['name']}} {{post['user']['last_name']}} em {{new Date(post['createdAt']) | date}}</span>
+                            <span
+                                >Postado por
+                                <b
+                                    >{{ post['user']['name'] }}
+                                    {{ post['user']['last_name'] }}</b
+                                >
+                                em
+                                <b>{{
+                                    new Date(post['createdAt']) | date
+                                }}</b></span
+                            >
                             <p class="pre-formatted" v-html="post.message"></p>
                         </section>
                     </div>
@@ -37,11 +65,31 @@
                                 class="d-flex justify-content-between replies mb-1"
                             >
                                 <section class="w-25">
-                                    <img :src="reply['user'].avatar" width="60" height="55" />
+                                    <img
+                                        :src="reply['user'].avatar"
+                                        width="60"
+                                        height="55"
+                                    />
                                 </section>
                                 <section class="w-100">
-                                    <span>{{reply['user']['name']}} {{reply['user']['last_name']}} em {{new Date(reply['createdAt']) | date}}</span>
-                                    <p class="pre-formatted" v-html="reply.reply"></p>
+                                    <span
+                                        >Respondido por
+                                        <b
+                                            >{{ reply['user']['name'] }}
+                                            {{ reply['user']['last_name'] }}</b
+                                        >
+                                        em
+                                        <b>
+                                            {{
+                                                new Date(reply['createdAt'])
+                                                    | date
+                                            }}</b
+                                        ></span
+                                    >
+                                    <p
+                                        class="pre-formatted"
+                                        v-html="reply.reply"
+                                    ></p>
                                 </section>
                             </li>
                         </ul>
@@ -49,25 +97,38 @@
                 </li>
             </ul>
         </div>
+
+        <scroll-bottom @inBottom="showMore"></scroll-bottom>
     </div>
 </template>
 
 <script>
 import http from '../../http';
+import ScrollBottom from './ScrollBottom';
+import recaptcha from '../mixins/recaptcha';
 
 export default {
     props: ['lesson_id'],
+
+    components: {
+        'scroll-bottom': ScrollBottom,
+    },
+
+    mixins: [recaptcha],
 
     data() {
         return {
             forumId: null,
             loaded_forum: false,
             posts: [],
+            in_bottom: false,
+            lastPosts: false,
         };
     },
 
     mounted() {
         this.forum();
+        this.recaptcha();
     },
 
     methods: {
@@ -104,8 +165,39 @@ export default {
             }
         },
 
-        send_question() {
-            console.log('send');
+        async send_question() {
+            try {
+                const response = await http.post('/forum/post', {
+                    token: this.$refs.recaptcha.value,
+                });
+                console.log(response.data);
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+        async showMore() {
+            if (!this.lastPosts && this.posts['posts'] !== undefined) {
+                let lastPost = this.posts['posts'][
+                    this.posts['posts'].length - 1
+                ];
+                if (lastPost) {
+                    const response = await http.get('/forum/posts/more', {
+                        params: {
+                            lastPostId: lastPost['id'],
+                            forumId: this.forumId,
+                        },
+                    });
+
+                    if (response.data.length) {
+                        setTimeout(() => {
+                            this.posts['posts'].push(...response.data);
+                        }, 1000);
+                        return false;
+                    }
+                    this.lastPosts = true;
+                }
+            }
         },
     },
 };

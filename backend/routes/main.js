@@ -10,6 +10,7 @@ const Lesson = require('../controllers/main/Lesson');
 const LessonBuy = require('../controllers/main/LessonBuy');
 const Forum = require('../controllers/main/Forum');
 const ForumPosts = require('../controllers/main/ForumPosts');
+const ForumPost = require('../controllers/main/ForumPost');
 
 // pegar dados se estiver logado, esses dados podem ser usados nos templates
 module.exports = (passport, app) => {
@@ -25,6 +26,8 @@ module.exports = (passport, app) => {
     router.put('/lesson/buy', LessonBuy.update);
     router.get('/forum', Forum.data);
     router.get('/forum/posts', ForumPosts.data);
+    router.get('/forum/posts/more', ForumPosts.more);
+    router.post('/forum/post', ForumPost.store);
 
     return router;
 };

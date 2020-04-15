@@ -1,4 +1,4 @@
-const { posts } = require('../../database/services/forum_post');
+const { posts, more_posts } = require('../../database/services/forum_post');
 
 const data = async (request, response) => {
     try {
@@ -20,6 +20,13 @@ const data = async (request, response) => {
     }
 };
 
+const more = async (request, response) => {
+    const { lastPostId, forumId } = request.query;
+    const posts = await more_posts(lastPostId, forumId);
+    return response.status(200).json(posts);
+};
+
 module.exports = {
     data,
+    more,
 };
