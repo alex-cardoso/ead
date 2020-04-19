@@ -15,9 +15,10 @@ const posts = async forumId => {
             },
             include: [
                 {
-                    attributes: ['id', 'title', 'message', 'createdAt'],
+                    attributes: ['id', 'message', 'createdAt'],
                     model: ForumPost,
                     as: 'posts',
+                    subQuery: false,
                     include: [
                         {
                             attributes: ['id', 'reply', 'createdAt'],
@@ -28,8 +29,10 @@ const posts = async forumId => {
                                     attributes: [
                                         'id',
                                         'name',
+                                        'email',
                                         'last_name',
                                         'avatar',
+                                        'receive_email_reply_forum',
                                     ],
                                     model: User,
                                     as: 'user',
@@ -37,12 +40,20 @@ const posts = async forumId => {
                             ],
                         },
                         {
-                            attributes: ['id', 'name', 'last_name', 'avatar'],
+                            attributes: [
+                                'id',
+                                'name',
+                                'last_name',
+                                'email',
+                                'avatar',
+                                'receive_email_reply_forum',
+                            ],
                             model: User,
                             as: 'user',
                         },
                     ],
-                    limit: 20,
+                    limit: 50,
+                    order: [['id', 'ASC']],
                 },
             ],
         });
@@ -56,13 +67,15 @@ const posts = async forumId => {
 const more_posts = async (lastPostId, forumId) => {
     try {
         const posts = await ForumPost.findAll({
-            attributes: ['id', 'title', 'message', 'createdAt'],
+            attributes: ['id', 'message', 'createdAt'],
             where: {
                 forumId,
                 id: {
                     [Op.gt]: lastPostId,
                 },
             },
+            subQuery: false,
+            order: [['id', 'ASC']],
             include: [
                 {
                     attributes: ['id', 'reply', 'createdAt'],
@@ -70,14 +83,28 @@ const more_posts = async (lastPostId, forumId) => {
                     as: 'replies',
                     include: [
                         {
-                            attributes: ['id', 'name', 'last_name', 'avatar'],
+                            attributes: [
+                                'id',
+                                'name',
+                                'last_name',
+                                'email',
+                                'avatar',
+                                'receive_email_reply_forum',
+                            ],
                             model: User,
                             as: 'user',
                         },
                     ],
                 },
                 {
-                    attributes: ['id', 'name', 'last_name', 'avatar'],
+                    attributes: [
+                        'id',
+                        'name',
+                        'last_name',
+                        'email',
+                        'avatar',
+                        'receive_email_reply_forum',
+                    ],
                     model: User,
                     as: 'user',
                 },
@@ -91,7 +118,59 @@ const more_posts = async (lastPostId, forumId) => {
     }
 };
 
+const update = async (id, message) => {
+    try {
+        const update = await ForumPost.update(
+            {
+                message,
+            },
+            {
+                where: {
+                    id,
+                },
+            }
+        );
+
+        return update;
+    } catch (error) {
+        throw error;
+    }
+};
+
+const create = async (userId, lessonId, forumId, message) => {
+    try {
+        const created = await ForumPost.create({
+            userId,
+            lessonId,
+            forumId,
+            message,
+        });
+
+        return created;
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+};
+
+const destroy = async id => {
+    try {
+        const deleted = await ForumPost.destroy({
+            where: {
+                id,
+            },
+        });
+
+        return deleted;
+    } catch (error) {
+        throw error;
+    }
+};
+
 module.exports = {
     posts,
     more_posts,
+    create,
+    update,
+    destroy,
 };

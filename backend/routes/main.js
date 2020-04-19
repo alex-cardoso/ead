@@ -11,6 +11,8 @@ const LessonBuy = require('../controllers/main/LessonBuy');
 const Forum = require('../controllers/main/Forum');
 const ForumPosts = require('../controllers/main/ForumPosts');
 const ForumPost = require('../controllers/main/ForumPost');
+const ForumReply = require('../controllers/main/ForumReply');
+const User = require('../controllers/main/User');
 
 // pegar dados se estiver logado, esses dados podem ser usados nos templates
 module.exports = (passport, app) => {
@@ -28,6 +30,12 @@ module.exports = (passport, app) => {
     router.get('/forum/posts', ForumPosts.data);
     router.get('/forum/posts/more', ForumPosts.more);
     router.post('/forum/post', ForumPost.store);
+    router.put('/forum/post/update', ForumPost.update);
+    router.delete('/forum/post/destroy', ForumPost.destroy);
+    router.delete('/forum/reply/destroy', ForumReply.destroy);
+    router.put('/forum/reply/update', ForumReply.update);
+    router.post('/forum/reply', ForumReply.store);
+    router.get('/user/:id', User.data);
 
     return router;
 };

@@ -8,6 +8,7 @@ module.exports = (sequelize, DataTypes) => {
             password: DataTypes.STRING,
             avatar: DataTypes.STRING,
             is_admin: DataTypes.INTEGER,
+            receive_email_reply_forum: DataTypes.INTEGER,
         },
         {}
     );

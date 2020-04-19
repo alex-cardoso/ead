@@ -1,11 +1,10 @@
-import Vue from "vue";
-import babelPolyfill from "babel-polyfill";
+import Vue from 'vue';
 
-import Login from "./components/Login";
+import Login from './components/Login';
 
 new Vue({
-  el: "#app",
-  components: {
-    Login
-  }
+    el: '#app',
+    components: {
+        Login,
+    },
 });

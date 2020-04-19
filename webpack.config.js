@@ -4,7 +4,6 @@ const { VueLoaderPlugin } = require('vue-loader');
 
 module.exports = {
     mode: process.env.NODE_ENV,
-    entry: './src/main.js',
     entry: {
         main: './src/main/main.js',
         admin: './src/admin/admin.js',
@@ -48,7 +47,7 @@ module.exports = {
     },
     plugins: [
         new VueLoaderPlugin(),
-        new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /pt-br/),
+        new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /pt-br/),
     ],
     resolve: {
         alias: {

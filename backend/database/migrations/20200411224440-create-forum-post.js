@@ -31,9 +31,6 @@ module.exports = {
                 },
                 onDelete: 'CASCADE',
             },
-            title: {
-                type: Sequelize.STRING,
-            },
             message: {
                 type: Sequelize.TEXT,
             },

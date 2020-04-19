@@ -24,7 +24,7 @@ import http from '../../http';
 export default {
     data() {
         return {
-            email: 'Stone34@gmail.com',
+            email: 'Alden.Grimes@yahoo.com',
             password: '123',
         };
     },

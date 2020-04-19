@@ -4,12 +4,13 @@ module.exports = {
         es6: true,
         node: true,
     },
-    extends: ['eslint:recommended', 'plugin:vue/essential'],
+    // extends: ['eslint:recommended', 'plugin:vue/essential'],
+    // extends: ['eslint:recommended'],
     parserOptions: {
         ecmaVersion: 2018,
         sourceType: 'module',
     },
-    plugins: ['vue'],
+    // plugins: ['jest'],
     rules: {
         semi: ['error', 'always'],
         quotes: ['error', 'single'],

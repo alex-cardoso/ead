@@ -1,3 +1,4 @@
+<!-- 'Put a comment' -->
 <template>
     <div>
         <div>
@@ -9,21 +10,31 @@
                 allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
                 allowfullscreen
             ></iframe>
+
             <div
                 class="d-flex justify-content-between"
                 v-if="lessons_after_and_before !== undefined"
             >
                 <a
-                    :href="`/lesson/${lessons_after_and_before['before']['slug']}`"
+                    :href="
+                        `/lesson/${lessons_after_and_before['before']['slug']}`
+                    "
                     v-if="lessons_after_and_before['before'] !== null"
                     class="btn btn-outline-success"
-                >Anterior</a>
+                    >Anterior</a
+                >
+
                 <span v-else></span>
+
                 <a
-                    :href="`/lesson/${lessons_after_and_before['after']['slug']}`"
+                    :href="
+                        `/lesson/${lessons_after_and_before['after']['slug']}`
+                    "
                     v-if="lessons_after_and_before['after'] !== null"
                     class="btn btn-outline-success"
-                >Próxima</a>
+                    >Próxima</a
+                >
+
                 <span v-else></span>
             </div>
         </div>

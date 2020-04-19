@@ -1,5 +1,4 @@
 import Vue from 'vue';
-import babelPolyfill from 'babel-polyfill';
 
 import Login from './components/Login';
 import LessonsLatest from './components/LessonsLatest';

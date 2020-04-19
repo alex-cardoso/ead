@@ -27,6 +27,10 @@ module.exports = {
                 type: Sequelize.INTEGER,
                 defaultValue: 2,
             },
+            receive_email_reply_forum: {
+                type: Sequelize.INTEGER,
+                defaultValue: 2,
+            },
             createdAt: {
                 allowNull: false,
                 defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),

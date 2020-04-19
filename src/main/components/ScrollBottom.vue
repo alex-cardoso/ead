@@ -12,14 +12,11 @@ export default {
 
     methods: {
         scrolled() {
+            let documentHeight;
+            let scrollHeight;
             window.onscroll = _.debounce(async () => {
-                let documentHeight;
-                let scrollHeight;
-
-                if (!this.inBottom) {
-                    documentHeight = document.body.offsetHeight;
-                    scrollHeight = window.innerHeight + window.scrollY;
-                }
+                documentHeight = document.body.offsetHeight;
+                scrollHeight = window.innerHeight + window.scrollY;
 
                 scrollHeight >= documentHeight
                     ? this.$emit('inBottom', true)
@@ -29,5 +26,3 @@ export default {
     },
 };
 </script>
-
-<style lang="scss" scoped></style>

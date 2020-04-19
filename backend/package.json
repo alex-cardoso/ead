@@ -5,8 +5,7 @@
     "main": "src/server.js",
     "scripts": {
         "nodemon": "nodemon src/server.js",
-        "test": "jest --detectOpenHandles --forceExit  -t",
-        "tests": "jest --detectOpenHandles --forceExit"
+        "test": "jest --colors --detectOpenHandles --forceExit"
     },
     "keywords": [],
     "author": "",
@@ -22,11 +21,15 @@
         "express-validator": "^6.4.0",
         "helmet": "^3.21.3",
         "mysql2": "^2.1.0",
+        "nodemailer": "^6.4.6",
+        "nodemailer-express-handlebars": "^4.0.0",
         "passport": "^0.4.1",
         "passport-local": "^1.0.0",
-        "sequelize": "^5.21.5"
+        "sequelize": "^5.21.5",
+        "striptags": "^3.1.1"
     },
     "devDependencies": {
+        "@types/jest": "^25.2.1",
         "faker": "^4.1.0",
         "jest": "^25.3.0",
         "sequelize-cli": "^5.5.1",
