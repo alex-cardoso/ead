@@ -3,6 +3,7 @@
         <!-- Modal -->
         <modal-response-post class="modal" ref="modal" :title="title_response" @close="close_modal">
             <template v-slot:content>
+                {{ message_reply }}
                 <textarea
                     rows="8"
                     class="w-100"
@@ -500,9 +501,22 @@ export default {
         async send_response() {
             try {
                 const response = await http.post('/forum/reply', this.response);
+                if (response.data['id'] !== undefined) {
+                    this.message_reply =
+                        '<span class="alert alert-success">Respondido com sucesso</span>';
+                } else {
+                    this.message_reply =
+                        '<span class="alert alert-success">Ocorreu um erro ao responder esse post, atualize a página e tente novamente</span>';
+                }
+
+                setTimeout(() => {
+                    this.message_reply = null;
+                }, 2000);
                 console.log(response.data);
             } catch (error) {
                 console.log(error);
+                this.message_reply =
+                    '<span class="alert alert-success">Ocorreu um erro ao responder esse post, atualize a página e tente novamente</span>';
             }
         },
 

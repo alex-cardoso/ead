@@ -38,6 +38,10 @@ const store = async (request, response) => {
 
         const reply_stripped = striptags(message, ['p', 'a', 'pre', 'b', 'i']);
 
+        const name = request.user['name'];
+        const last_name = request.user['last_name'];
+        const slug = lesson['slug'].replace(/\"/g, '');
+
         const created = await create_reply(
             request.user['id'],
             forumPostId,
@@ -47,10 +51,9 @@ const store = async (request, response) => {
 
         if (postUser['receive_email_reply_forum'] === 1) {
             const post_name = `${postUser['name']} ${postUser['last_name']}`;
-            const reply_name = `${request.user['name']} ${request.user['last_name']}`;
-            const link = `http://${process.env.HOST}/lesson/${JSON.parse(
-                lesson['slug']
-            )}`;
+            const reply_name = `${name} ${last_name}`;
+            const link = `http://${process.env.HOST}/lesson/${slug}`;
+
             await send_new_reply(
                 postUser['email'],
                 post_name,

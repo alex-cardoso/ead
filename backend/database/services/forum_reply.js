@@ -1,6 +1,4 @@
 const { ForumReply } = require('../../database/models');
-const Sequelize = require('sequelize');
-const Op = Sequelize.Op;
 
 const destroy = async id => {
     try {
