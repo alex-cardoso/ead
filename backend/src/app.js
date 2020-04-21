@@ -26,10 +26,10 @@ app.use(express.json());
 const handlebars = express_handlebars.create({
     partialsDir: path.join(__dirname, '../', 'views/partials'),
     helpers: {
-        date: function() {
+        date: function () {
             return new Date().getFullYear();
         },
-        currency: function(value) {
+        currency: function (value) {
             const formatter = new Intl.NumberFormat('pt-BR', {
                 style: 'currency',
                 currency: 'BRL',
@@ -40,7 +40,7 @@ const handlebars = express_handlebars.create({
     },
 });
 
-app.use(express.static(path.join(__dirname, '../../', 'dist/')));
+app.use(express.static(path.join(__dirname, '../../frontend/', 'dist/')));
 app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
 
@@ -66,7 +66,7 @@ passport_admin(passport);
 serialize_passport(passport);
 
 // quando faz logout e clica em back no navegador
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
     res.set(
         'Cache-Control',
         'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0'
@@ -80,9 +80,5 @@ app.use(variables_to_template);
 app.use('/', require('../routes/main')(passport, app));
 app.use('/admin', require('../routes/admin')(passport, app));
 app.use('/dashboard', require('../routes/dashboard')(app));
-
-app.get('*', function(req, res) {
-    res.send('what???', 404);
-});
 
 module.exports = app;

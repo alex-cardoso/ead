@@ -13,6 +13,7 @@ const ForumPosts = require('../controllers/main/ForumPosts');
 const ForumPost = require('../controllers/main/ForumPost');
 const ForumReply = require('../controllers/main/ForumReply');
 const User = require('../controllers/main/User');
+const Favorite = require('../controllers/main/Favorite');
 
 // pegar dados se estiver logado, esses dados podem ser usados nos templates
 module.exports = (passport, app) => {
@@ -36,6 +37,13 @@ module.exports = (passport, app) => {
     router.put('/forum/reply/update', ForumReply.update);
     router.post('/forum/reply', ForumReply.store);
     router.get('/user/:id', User.data);
+    router.get('/favorites', Favorite.data);
+    router.post('/favorites', Favorite.store);
+    router.delete('/favorites', Favorite.destroy);
+
+    router.get('*', function (req, res) {
+        res.send('what???', 404);
+    });
 
     return router;
 };

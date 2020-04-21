@@ -30,6 +30,12 @@ module.exports = (sequelize, DataTypes) => {
             as: 'replies',
             onDelete: 'CASCADE',
         });
+
+        User.hasMany(models.LessonsFavorite, {
+            foreignKey: 'lessonId',
+            as: 'favoriteLessons',
+            onDelete: 'CASCADE',
+        });
     };
     return User;
 };

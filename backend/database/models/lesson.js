@@ -28,6 +28,12 @@ module.exports = (sequelize, DataTypes) => {
             as: 'lessonBuyed',
             onDelete: 'CASCADE',
         });
+
+        Lesson.hasMany(models.LessonsFavorite, {
+            foreignKey: 'lessonId',
+            as: 'favorites',
+            onDelete: 'CASCADE',
+        });
     };
     return Lesson;
 };

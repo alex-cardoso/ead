@@ -9,5 +9,9 @@ module.exports = (passport, app) => {
     router.get('/', Admin.index);
     router.post('/login', passport.authenticate('admin'), Admin.login);
 
+    router.get('*', function (req, res) {
+        res.send('what???', 404);
+    });
+
     return router;
 };

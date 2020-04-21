@@ -1,4 +1,10 @@
-const { Lesson, User, LessonBuyed, Category } = require('../models');
+const {
+    Lesson,
+    User,
+    LessonBuyed,
+    Category,
+    LessonsFavorite,
+} = require('../models');
 const paginate = require('./paginate');
 
 const lessons = async (page = 1) => {
@@ -139,6 +145,11 @@ const find_lesson = async (slug, user) => {
                     attributes: ['id', 'name', 'slug'],
                     model: Category,
                     as: 'category',
+                },
+                {
+                    attributes: ['id', 'userId'],
+                    model: LessonsFavorite,
+                    as: 'favorites',
                 },
             ],
         });

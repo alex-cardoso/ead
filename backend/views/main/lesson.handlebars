@@ -4,7 +4,9 @@
 {{#if buyed_lesson}}
 <div class="d-flex justify-content-between" style="height:500px;">
   <div class="w-75">
-    <video-player-lesson :embed="{{embed}}" :category="{{category}}" :lesson_id="{{id}}"></video-player-lesson>
+
+    <video-player-lesson :embed="{{embed}}" :category="{{category}}" :lesson_id="{{id}}">
+    </video-player-lesson>
   </div>
 
   <div class="w-25 ml-3">
@@ -12,7 +14,6 @@
   </div>
 
 </div>
-
 
 <hr>
 

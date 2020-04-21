@@ -8,6 +8,7 @@ package-lock.json
 .editorconfig
 .vscode
 jsconfig.json
+*.todo
 
 # Editor directories and files
 .idea

@@ -1,4 +1,3 @@
-<!-- 'Put a comment' -->
 <template>
     <div>
         <div>
@@ -21,10 +20,26 @@
                     "
                     v-if="lessons_after_and_before['before'] !== null"
                     class="btn btn-outline-success"
-                    >Anterior</a
                 >
+                    <i class="fas fa-arrow-circle-left"></i> Anterior
+                </a>
 
                 <span v-else></span>
+
+                <template v-if="favorited !== undefined && favorited.length">
+                    <button class="btn btn-danger" @click="remove_favorited(favorited[0]['id'])">
+                        ({{ favorites.length }})
+                        <i class="far fa-heart"></i>
+                        Remover dos favoritos
+                    </button>
+                </template>
+                <template v-else>
+                    <button class="btn btn-outline-danger" @click="add_favorited">
+                        ({{ favorites.length }})
+                        <i class="far fa-heart"></i>
+                        Colocar como favorito
+                    </button>
+                </template>
 
                 <a
                     :href="
@@ -32,8 +47,10 @@
                     "
                     v-if="lessons_after_and_before['after'] !== null"
                     class="btn btn-outline-success"
-                    >Próxima</a
                 >
+                    Próxima
+                    <i class="fas fa-arrow-circle-right"></i>
+                </a>
 
                 <span v-else></span>
             </div>
@@ -50,13 +67,16 @@ export default {
     data() {
         return {
             lessons: [],
+            favorites: [],
             lesson_before: null,
             lesson_after: null,
+            user: null,
         };
     },
 
     mounted() {
         this.lessons_category();
+        this.get_favorites();
     },
 
     computed: {
@@ -79,6 +99,17 @@ export default {
                 };
             }
         },
+
+        favorited() {
+            let favorited = false;
+            if (this.favorites.length) {
+                favorited = this.favorites.filter(
+                    favorite => favorite.userId === this.user.id
+                );
+            }
+
+            return favorited;
+        },
     },
 
     methods: {
@@ -92,6 +123,52 @@ export default {
                 this.lessons = response.data;
             } catch (error) {
                 console.log(error);
+            }
+        },
+
+        async get_favorites() {
+            try {
+                const response = await http.get('/favorites', {
+                    params: {
+                        lessonId: this.lesson_id,
+                    },
+                });
+
+                this.favorites = response.data['favorites'];
+                this.user = response.data['user'];
+                console.log(response.data);
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+        async add_favorited() {
+            try {
+                const response = await http.post('/favorites', {
+                    lessonId: this.lesson_id,
+                });
+
+                if (response.data[0] !== undefined) {
+                    this.favorites.push({ ...response.data[0] });
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+        async remove_favorited(id) {
+            const response = await http.delete('/favorites', {
+                params: {
+                    id,
+                },
+            });
+
+            if (response.data === 1) {
+                this.favorites.find((favorite, index) => {
+                    if (favorite.userId === this.user['id']) {
+                        this.favorites.splice(index, 1);
+                    }
+                });
             }
         },
     },

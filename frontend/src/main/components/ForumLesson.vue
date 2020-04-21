@@ -3,7 +3,8 @@
         <!-- Modal -->
         <modal-response-post class="modal" ref="modal" :title="title_response" @close="close_modal">
             <template v-slot:content>
-                {{ message_reply }}
+                <template v-if="loading_reply">Aguarde, salvando sua resposta...</template>
+                <div v-if="message_reply" v-html="message_reply" class="mb-3 w-100"></div>
                 <textarea
                     rows="8"
                     class="w-100"
@@ -25,15 +26,26 @@
                 target="__blank"
                 style="text-decoration:underline;color:blue;"
             >markdowns</a>
-            para formatar corretamente.
+            para formatar corretamente, ou clique em adicionar código.
         </p>
 
         <div id="question">
             <form @submit.prevent="send_question">
                 <div v-if="message" v-html="message" class="mb-3"></div>
+                <button
+                    @click.prevent="
+                        add_code_markdown_to_create_post_textarea(
+                            'create_post_textarea'
+                        )
+                    "
+                    class="btn btn-outline-info float-right mb-2"
+                >
+                    <i class="fas fa-code"></i>
+                </button>
                 <textarea
                     rows="8"
                     class="w-100"
+                    ref="create_post_textarea"
                     v-model="post"
                     placeholder="Digite sua pergunta..."
                 ></textarea>
@@ -72,7 +84,11 @@
                                         {{ post['user']['last_name'] }}
                                     </b>
                                     em
-                                    <b>{{ new Date(post['createdAt']) | date }}</b>
+                                    <b>
+                                        {{
+                                        new Date(post['createdAt']) | date
+                                        }}
+                                    </b>
                                 </span>
                                 <div v-if="userId === post['user']['id']">
                                     <template v-if="post_to_edit.includes(post['id'])">
@@ -80,6 +96,17 @@
                                             class="btn btn-outline-success btn-sm"
                                             @click="edit_post_save(post)"
                                         >Salvar</button>
+                                        <button
+                                            class="btn btn-outline-info btn-sm"
+                                            @click="
+                                                add_code_markdown_to_create_post_textarea(
+                                                    `post_to_edit${post['id']}`,
+                                                    false
+                                                )
+                                            "
+                                        >
+                                            <i class="fas fa-code"></i>
+                                        </button>
                                         <button
                                             class="btn btn-outline-danger btn-sm"
                                             @click="edit_back_post(post)"
@@ -131,8 +158,10 @@
                                 </section>
                                 <section class="w-100">
                                     <div
-                                        v-if="message_reply[reply['id']]"
-                                        v-html="message_reply[reply['id']]"
+                                        v-if="message_reply_update[reply['id']]"
+                                        v-html="
+                                            message_reply_update[reply['id']]
+                                        "
                                         class="mb-3"
                                     ></div>
                                     <div
@@ -147,37 +176,74 @@
                                             em
                                             <b>
                                                 {{
-                                                new Date(reply['createdAt'])
-                                                | date
+                                                new Date(
+                                                reply['createdAt']
+                                                ) | date
                                                 }}
                                             </b>
                                         </span>
 
-                                        <div v-if="userId === reply['user']['id']">
-                                            <template v-if="reply_to_edit.includes(reply['id'])">
+                                        <div
+                                            v-if="
+                                                userId === reply['user']['id']
+                                            "
+                                        >
+                                            <template
+                                                v-if="
+                                                    reply_to_edit.includes(
+                                                        reply['id']
+                                                    )
+                                                "
+                                            >
                                                 <button
                                                     class="btn btn-outline-success btn-sm"
-                                                    @click="edit_reply_save(reply)"
+                                                    @click="
+                                                        edit_reply_save(reply)
+                                                    "
                                                 >Salvar</button>
                                                 <button
+                                                    class="btn btn-outline-info btn-sm"
+                                                    @click="
+                                                        add_code_markdown_to_create_post_textarea(
+                                                            `reply_to_edit${reply['id']}`,
+                                                            false
+                                                        )
+                                                    "
+                                                >
+                                                    <i class="fas fa-code"></i>
+                                                </button>
+                                                <button
                                                     class="btn btn-outline-danger btn-sm"
-                                                    @click="edit_back_reply(reply)"
+                                                    @click="
+                                                        edit_back_reply(reply)
+                                                    "
                                                 >Cancelar</button>
                                             </template>
                                             <template v-else>
                                                 <button
                                                     class="btn btn-outline-success btn-sm"
-                                                    @click="edit_reply(reply['id'])"
+                                                    @click="
+                                                        edit_reply(reply['id'])
+                                                    "
                                                 >Editar</button>
                                                 <button
                                                     class="btn btn-outline-danger btn-sm"
-                                                    @click="remove_reply(post,reply)"
+                                                    @click="
+                                                        remove_reply(
+                                                            post,
+                                                            reply
+                                                        )
+                                                    "
                                                 >Excluir</button>
                                             </template>
                                         </div>
                                     </div>
 
-                                    <template v-if="reply_to_edit.includes(reply['id'])">
+                                    <template
+                                        v-if="
+                                            reply_to_edit.includes(reply['id'])
+                                        "
+                                    >
                                         <textarea
                                             rows="8"
                                             class="w-100"
@@ -206,6 +272,7 @@ import ScrollBottom from './ScrollBottom';
 import Modal from '../../helpers/Modal';
 import recaptcha from '../mixins/recaptcha';
 import marked from 'marked';
+import insertTextAtCursor from 'insert-text-at-cursor';
 
 export default {
     props: ['lesson_id', 'lesson_slug'],
@@ -231,7 +298,9 @@ export default {
             post_to_edit: [],
             reply_to_edit: [],
             reply: null,
-            message_reply: [],
+            loading_reply: false,
+            message_reply: null,
+            message_reply_update: [],
             title_response: '',
             response: {},
             marked,
@@ -284,6 +353,12 @@ export default {
 
         async send_question() {
             try {
+                if (!this.post) {
+                    this.message =
+                        '<span class="alert alert-danger p-2">Digite uma dúvida !</span>';
+                    return false;
+                }
+
                 const response = await http.post('/forum/post', {
                     token: this.$refs.recaptcha.value,
                     post: this.post,
@@ -300,11 +375,7 @@ export default {
                 setTimeout(() => {
                     this.message = null;
                 }, 5000);
-
-                console.log(response.data);
             } catch (error) {
-                console.log(error);
-
                 if (error.response.data === 'error_recaptcha') {
                     this.message =
                         '<span class="alert alert-danger p-2">Ocorreu um erro ao enviar seu dúvida, atualize a página e tente novamente</span>';
@@ -381,6 +452,17 @@ export default {
                 const ref_post = `post_to_edit${post['id']}`;
                 const message = this.$refs[ref_post][0]['value'].trim();
 
+                if (!message || message === '') {
+                    this.message_post = [];
+                    this.message_post[
+                        post['id']
+                    ] = `<span class="alert alert-danger">Digite sua mensagem</span>`;
+                    setTimeout(() => {
+                        this.message_post = [];
+                    }, 2000);
+                    return false;
+                }
+
                 const response = await http.put('/forum/post/update', {
                     data: {
                         id: post['id'],
@@ -409,6 +491,17 @@ export default {
                 const ref_reply = `reply_to_edit${reply['id']}`;
                 const message = this.$refs[ref_reply][0]['value'].trim();
 
+                if (!message || message === '') {
+                    this.message_reply_update = [];
+                    this.message_reply_update[
+                        reply['id']
+                    ] = `<span class="alert alert-danger">Digite sua mensagem</span>`;
+                    setTimeout(() => {
+                        this.message_reply_update = [];
+                    }, 2000);
+                    return false;
+                }
+
                 const response = await http.put('/forum/reply/update', {
                     data: {
                         id: reply['id'],
@@ -419,11 +512,11 @@ export default {
                 if (response.data[0] !== undefined) {
                     reply['reply'] = message;
                     this.reply_to_edit = [];
-                    this.message_reply[
+                    this.message_reply_update[
                         reply['id']
                     ] = `<span class="alert alert-success">Atualizado</span>`;
                     setTimeout(() => {
-                        this.message_reply = [];
+                        this.message_reply_update = [];
                         this.restart_highlight();
                     }, 500);
                 }
@@ -500,6 +593,7 @@ export default {
 
         async send_response() {
             try {
+                this.loading_reply = true;
                 const response = await http.post('/forum/reply', this.response);
                 if (response.data['id'] !== undefined) {
                     this.message_reply =
@@ -509,10 +603,11 @@ export default {
                         '<span class="alert alert-success">Ocorreu um erro ao responder esse post, atualize a página e tente novamente</span>';
                 }
 
+                this.loading_reply = false;
                 setTimeout(() => {
                     this.message_reply = null;
+                    this.response = {};
                 }, 2000);
-                console.log(response.data);
             } catch (error) {
                 console.log(error);
                 this.message_reply =
@@ -522,6 +617,18 @@ export default {
 
         close_modal() {
             this.$refs['modal'].$el.classList.toggle('is-active');
+        },
+
+        add_code_markdown_to_create_post_textarea(ref, is_unique = true) {
+            let el = is_unique ? this.$refs[ref] : this.$refs[ref][0];
+            insertTextAtCursor(
+                el,
+                `
+\`\`\`
+código aqui
+\`\`\`
+`
+            );
         },
     },
 };

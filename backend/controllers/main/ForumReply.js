@@ -36,8 +36,6 @@ const store = async (request, response) => {
     try {
         const { postUser, forumPostId, lesson, message } = request.body;
 
-        const reply_stripped = striptags(message, ['p', 'a', 'pre', 'b', 'i']);
-
         const name = request.user['name'];
         const last_name = request.user['last_name'];
         const slug = lesson['slug'].replace(/\"/g, '');
@@ -46,7 +44,7 @@ const store = async (request, response) => {
             request.user['id'],
             forumPostId,
             lesson['id'],
-            reply_stripped
+            message
         );
 
         if (postUser['receive_email_reply_forum'] === 1) {
