@@ -1,7 +1,7 @@
 <template>
     <div>
         <h2>Últimas aulas adicionadas</h2>
-        <ul class="list-last-lessons">
+        <ul class="list-lessons">
             <li v-for="lesson in lessons['rows']" :key="lesson.id">
                 <div class="mb-2">
                     {{ lesson['title'] }}
@@ -81,24 +81,3 @@ export default {
     },
 };
 </script>
-
-<style scoped>
-ul.list-last-lessons {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    width: 100%;
-    padding-left: 0;
-}
-
-ul.list-last-lessons li {
-    text-align: left !important;
-    padding: 5px;
-    list-style: none;
-    border: solid 1px blue;
-    width: 22%;
-    margin-right: 5px;
-    text-align: center;
-    margin-bottom: 5px;
-}
-</style>

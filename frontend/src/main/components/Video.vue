@@ -136,7 +136,6 @@ export default {
 
                 this.favorites = response.data['favorites'];
                 this.user = response.data['user'];
-                console.log(response.data);
             } catch (error) {
                 console.log(error);
             }

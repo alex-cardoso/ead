@@ -19,7 +19,7 @@ const lessons = async (page = 1) => {
                 'description',
                 'updatedAt',
             ],
-            per_page: 10,
+            per_page: 20,
             page,
             order: [['id', 'DESC']],
         };
@@ -42,7 +42,7 @@ const latest = async (page = 1, user) => {
                 'description',
                 'updatedAt',
             ],
-            per_page: 12,
+            per_page: 20,
             page,
             include: [
                 {
@@ -74,6 +74,44 @@ const latest = async (page = 1, user) => {
     }
 };
 
+const category_for_list_in_video = async (user, categoryId) => {
+    try {
+        return await Lesson.findAll({
+            attributes: [
+                'id',
+                'title',
+                'slug',
+                'duration',
+                'value',
+                'description',
+                'updatedAt',
+            ],
+            where: {
+                categoryId,
+            },
+            include: [
+                {
+                    attributes: ['name', 'last_name', 'avatar'],
+                    model: User,
+                    as: 'user',
+                },
+                {
+                    attributes: ['userId', 'lessonId'],
+                    model: LessonBuyed,
+                    as: 'lessonBuyed',
+                    required: false,
+                    where: {
+                        userId: user,
+                    },
+                },
+            ],
+            order: [['id', 'DESC']],
+        });
+    } catch (error) {
+        console.log(error);
+    }
+};
+
 const category = async (page = 1, user, categoryId) => {
     try {
         const options = {
@@ -86,7 +124,7 @@ const category = async (page = 1, user, categoryId) => {
                 'description',
                 'updatedAt',
             ],
-            per_page: 12,
+            per_page: 20,
             page,
             where: {
                 categoryId,
@@ -161,6 +199,7 @@ const find_lesson = async (slug, user) => {
 module.exports = {
     lessons,
     latest,
-    category,
+    category_for_list_in_video,
     find_lesson,
+    category,
 };

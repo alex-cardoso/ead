@@ -14,6 +14,7 @@ const ForumPost = require('../controllers/main/ForumPost');
 const ForumReply = require('../controllers/main/ForumReply');
 const User = require('../controllers/main/User');
 const Favorite = require('../controllers/main/Favorite');
+const Category = require('../controllers/main/Category');
 
 // pegar dados se estiver logado, esses dados podem ser usados nos templates
 module.exports = (passport, app) => {
@@ -40,9 +41,12 @@ module.exports = (passport, app) => {
     router.get('/favorites', Favorite.data);
     router.post('/favorites', Favorite.store);
     router.delete('/favorites', Favorite.destroy);
+    router.get('/category/lessons', Category.data);
+    router.get('/category/:slug', Category.index);
+    router.get('/categories/data', Categories.data);
 
     router.get('*', function (req, res) {
-        res.send('what???', 404);
+        res.status(200).send('what???');
     });
 
     return router;

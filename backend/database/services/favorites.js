@@ -1,4 +1,4 @@
-const { LessonsFavorite } = require('../../database/models');
+const { LessonsFavorite } = require('../models');
 
 const favorites = async (lessonId) => {
     try {

@@ -1,9 +1,7 @@
 import Vue from 'vue';
 import filters from '../filters';
 import VModal from 'vue-js-modal';
-import * as uiv from 'uiv';
 
-Vue.use(uiv);
 Vue.use(VModal);
 
 filters.moeda(Vue);
