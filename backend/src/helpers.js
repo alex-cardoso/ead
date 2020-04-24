@@ -1,4 +1,4 @@
-const transformar_em_slug = str => {
+const transformar_em_slug = (str) => {
     str = str.replace(/^\s+|\s+$/g, ''); // trim
     str = str.toLowerCase();
 
@@ -17,7 +17,7 @@ const transformar_em_slug = str => {
     return str;
 };
 
-const currency = valor => {
+const currency = (valor) => {
     if (valor !== null && valor !== undefined) {
         if (valor > 0 && toString(valor).includes('R$')) {
             return valor.trim();
@@ -33,11 +33,11 @@ const currency = valor => {
     }
 };
 
-const scroll = selector => {
+const scroll = (selector) => {
     document.querySelector(selector).scrollIntoView({ behavior: 'smooth' });
 };
 
-const months = month => {
+const months = (month) => {
     const months = {
         1: 'Janeiro',
         2: 'Fevereiro',
@@ -56,9 +56,27 @@ const months = month => {
     return months[month];
 };
 
+const strip_tags_except_markdown = (string) => {
+    return string.replace(
+        /(<([^>].*)>)(?=([^```\\]*(\\.|```([^```\\]*\\.)*[^```\\]*```))*[^```]*$)/gi,
+        ''
+    );
+};
+
+const errors_formatted = (errors) => {
+    let errors_array = {};
+    for (let error of errors['errors']) {
+        errors_array[error['param']] = error['msg'];
+    }
+
+    return errors_array;
+};
+
 module.exports = {
     transformar_em_slug,
     currency,
     scroll,
     months,
+    strip_tags_except_markdown,
+    errors_formatted,
 };

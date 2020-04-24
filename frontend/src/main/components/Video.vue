@@ -81,16 +81,15 @@ export default {
 
     computed: {
         lessons_after_and_before() {
-            if (this.lessons['rows'] !== undefined) {
-                const index = this.lessons['rows'].findIndex(lesson => {
+            if (this.lessons !== undefined) {
+                const index = this.lessons.findIndex(lesson => {
                     return this.lesson_id === lesson.id;
                 });
 
-                this.lesson_before =
-                    index > 0 ? this.lessons['rows'][index - 1] : null;
+                this.lesson_before = index > 0 ? this.lessons[index - 1] : null;
                 this.lesson_after =
-                    index < this.lessons['rows'].length - 1
-                        ? this.lessons['rows'][index + 1]
+                    index < this.lessons.length - 1
+                        ? this.lessons[index + 1]
                         : null;
 
                 return {

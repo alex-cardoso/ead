@@ -9,6 +9,7 @@ import LessonsCategory from './components/LessonsCategory';
 import ForumLesson from './components/ForumLesson';
 import ButtonBuyLesson from './components/ButtonBuyLesson';
 import Search from './components/Search';
+import Signup from './components/Signup';
 import { BPagination } from 'bootstrap-vue/esm/components/pagination/pagination';
 
 Vue.component('b-pagination', BPagination);
@@ -29,6 +30,7 @@ new Vue({
         'forum-lesson': ForumLesson,
         'button-buy-lesson': ButtonBuyLesson,
         'categories-list': CategoriesList,
-        'search': Search
+        search: Search,
+        signup: Signup,
     },
 });

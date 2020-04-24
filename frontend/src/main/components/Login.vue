@@ -1,5 +1,6 @@
 <template>
     <div>
+        <div v-html="message"></div>
         <form @submit.prevent="login">
             <div class="row justify-content-md-center mt-3">
                 <div class="col">
@@ -26,6 +27,7 @@ export default {
         return {
             email: 'Alden.Grimes@yahoo.com',
             password: '123',
+            message: null,
         };
     },
     methods: {
@@ -41,8 +43,12 @@ export default {
                     return false;
                 }
             } catch (error) {
-                console.log(error);
                 if (error.response.data === 'Unauthorized') {
+                    this.message =
+                        '<span class="alert alert-danger p-2">Ocorreu um erro ao logar, tente novamente.</span>';
+                    setTimeout(() => {
+                        this.message = null;
+                    }, 3000);
                 }
             }
         },

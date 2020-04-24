@@ -1,5 +1,4 @@
 const axios = require('axios');
-const striptags = require('striptags');
 const {
     create,
     update: update_post,
@@ -26,13 +25,11 @@ const store = async (request, response) => {
             throw 'error_recaptcha';
         }
 
-        const post_stripped = striptags(post, ['p', 'a', 'pre', 'b', 'i']);
-
         const created = await create(
             request.user['id'],
             lessonId,
             forumId,
-            post_stripped
+            post
         );
 
         response.status(200).json(created);

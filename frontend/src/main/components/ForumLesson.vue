@@ -5,9 +5,17 @@
             <template v-slot:content>
                 <template v-if="loading_reply">Aguarde, salvando sua resposta...</template>
                 <div v-if="message_reply" v-html="message_reply" class="mb-3 w-100"></div>
+                <button
+                    class="btn btn-outline-info btn-sm mb-2"
+                    style="float:right;"
+                    @click="add_code_markdown_to_create_post_textarea('add_reply')"
+                >
+                    <i class="fas fa-code"></i>
+                </button>
                 <textarea
                     rows="8"
                     class="w-100"
+                    ref="add_reply"
                     v-model="response.message"
                     placeholder="Digite sua resposta..."
                 ></textarea>
@@ -16,7 +24,7 @@
                 <button class="btn btn-outline-success btn-sm" @click="send_response">Salvar</button>
             </template>
         </modal-response-post>
-        <!-- Posts -->
+
         <p>
             Somente perguntas a respeito da aula serão respondidas, perguntas de
             outras aulas coloque em suas pespectivas.
@@ -29,6 +37,7 @@
             para formatar corretamente, ou clique em adicionar código.
         </p>
 
+        <!-- Posts -->
         <div id="question">
             <form @submit.prevent="send_question">
                 <div v-if="message" v-html="message" class="mb-3"></div>
@@ -59,6 +68,7 @@
             </form>
             <div class="clearfix"></div>
         </div>
+
         <div v-if="loaded_forum" class="mt-5">
             <ul class="list-forum-posts">
                 <li v-for="post in posts['posts']" :key="post.id" class="mb-3">
@@ -262,6 +272,7 @@
                 </li>
             </ul>
         </div>
+
         <scroll-bottom @inBottom="showMore"></scroll-bottom>
     </div>
 </template>
@@ -273,6 +284,7 @@ import Modal from '../../helpers/Modal';
 import recaptcha from '../mixins/recaptcha';
 import marked from 'marked';
 import insertTextAtCursor from 'insert-text-at-cursor';
+import { strip_tags_except_markdown } from '../../helpers';
 
 export default {
     props: ['lesson_id', 'lesson_slug'],
@@ -361,7 +373,7 @@ export default {
 
                 const response = await http.post('/forum/post', {
                     token: this.$refs.recaptcha.value,
-                    post: this.post,
+                    post: strip_tags_except_markdown(this.post),
                     forumId: this.forumId,
                     lessonId: this.lesson_id,
                 });
@@ -450,7 +462,9 @@ export default {
         async edit_post_save(post) {
             try {
                 const ref_post = `post_to_edit${post['id']}`;
-                const message = this.$refs[ref_post][0]['value'].trim();
+                const message = strip_tags_except_markdown(
+                    this.$refs[ref_post][0]['value'].trim()
+                );
 
                 if (!message || message === '') {
                     this.message_post = [];
@@ -489,7 +503,10 @@ export default {
         async edit_reply_save(reply) {
             try {
                 const ref_reply = `reply_to_edit${reply['id']}`;
-                const message = this.$refs[ref_reply][0]['value'].trim();
+
+                const message = strip_tags_except_markdown(
+                    this.$refs[ref_reply][0]['value'].trim()
+                );
 
                 if (!message || message === '') {
                     this.message_reply_update = [];
@@ -594,6 +611,9 @@ export default {
         async send_response() {
             try {
                 this.loading_reply = true;
+                this.response.message = strip_tags_except_markdown(
+                    this.response.message
+                );
                 const response = await http.post('/forum/reply', this.response);
                 if (response.data['id'] !== undefined) {
                     this.message_reply =

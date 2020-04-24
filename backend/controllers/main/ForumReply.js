@@ -1,4 +1,3 @@
-const striptags = require('striptags');
 const {
     update: update_reply,
     destroy: destroy_reply,

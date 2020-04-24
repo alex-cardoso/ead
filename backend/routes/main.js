@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
 
+// validations
+const { store: user_store_validation } = require('../validations/user');
+
 // controllers
 const Home = require('../controllers/main/Home');
 const Login = require('../controllers/main/Login');
@@ -15,6 +18,7 @@ const ForumReply = require('../controllers/main/ForumReply');
 const User = require('../controllers/main/User');
 const Favorite = require('../controllers/main/Favorite');
 const Category = require('../controllers/main/Category');
+const Search = require('../controllers/main/Search');
 
 // pegar dados se estiver logado, esses dados podem ser usados nos templates
 module.exports = (passport, app) => {
@@ -44,9 +48,12 @@ module.exports = (passport, app) => {
     router.get('/category/lessons', Category.data);
     router.get('/category/:slug', Category.index);
     router.get('/categories/data', Categories.data);
+    router.get('/lessons/search', Search.data);
+    router.get('/signup', User.create);
+    router.post('/signup', user_store_validation, User.store);
 
     router.get('*', function (req, res) {
-        res.status(200).send('what???');
+        res.status(400).send('what???');
     });
 
     return router;

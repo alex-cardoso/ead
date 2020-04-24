@@ -8,11 +8,12 @@ module.exports = (sequelize, DataTypes) => {
             password: DataTypes.STRING,
             avatar: DataTypes.STRING,
             is_admin: DataTypes.INTEGER,
+            is_verified: DataTypes.INTEGER,
             receive_email_reply_forum: DataTypes.INTEGER,
         },
         {}
     );
-    User.associate = function(models) {
+    User.associate = function (models) {
         User.hasOne(models.Credit, {
             foreignKey: 'userId',
             as: 'credits',

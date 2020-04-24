@@ -1,7 +1,6 @@
 const {
     latest: latest_lessons,
     category_for_list_in_video: category_lessons,
-    find_lesson,
 } = require('../../database/services/lessons');
 
 const latest = async (request, response) => {

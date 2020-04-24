@@ -39,8 +39,6 @@ export default {
                     },
                 });
 
-                console.log(response.data);
-
                 this.lessons = response.data;
             } catch (error) {
                 console.log(error);

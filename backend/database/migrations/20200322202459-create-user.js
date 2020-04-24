@@ -23,6 +23,10 @@ module.exports = {
             avatar: {
                 type: Sequelize.STRING,
             },
+            is_verified: {
+                type: Sequelize.INTEGER,
+                defaultValue: 2,
+            },
             is_admin: {
                 type: Sequelize.INTEGER,
                 defaultValue: 2,
