@@ -72,6 +72,10 @@ const errors_formatted = (errors) => {
     return errors_array;
 };
 
+const create_token = () => {
+    return Math.random().toString(5).substr(2) + new Date().getTime();
+};
+
 module.exports = {
     transformar_em_slug,
     currency,
@@ -79,4 +83,5 @@ module.exports = {
     months,
     strip_tags_except_markdown,
     errors_formatted,
+    create_token,
 };

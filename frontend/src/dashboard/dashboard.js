@@ -1,13 +1,14 @@
 import Vue from 'vue';
-import filters from '../filters';
 import VModal from 'vue-js-modal';
+import { filters } from '../filters';
+// components
+import Lessons from './components/Lessons';
 
 Vue.use(VModal);
 
-filters.moeda(Vue);
-
-// components
-import Lessons from './components/Lessons';
+filters.vueInstance(Vue);
+filters.moeda();
+filters.date();
 
 new Vue({
     el: '#app',

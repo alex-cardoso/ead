@@ -1,15 +1,13 @@
 <ul class="d-flex justify-content-between" id="menu_top">
     <li><a href="/">Home</a></li>
     <li><a href="/categories">Categorias</a></li>
-    <li><a href="/courses">Cursos</a></li>
-    <li><a href="/lessons">Aulas</a></li>
     <li><a href="/contact">Contato</a></li>
     <li><a href="/signup">Cadastro</a></li>
     {{#if is_authenticated}}
     <li class="d-flex align-items-center"> <img src="{{ avatar }}" alt="" class="rounded-circle mr-1" width="30"
             height="30"> Olá,
         {{ username }} {{ last_name }} |
-        R$ {{ credits }} |
+        <a href="/buy/credits" style="color:blue;text-decoration:underline;"> R$ {{ credits }}</a> |
         <a href="/profile">Meus dados</a> | <a href="/logout">Logout</a>
     </li>
     {{else}}

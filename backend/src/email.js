@@ -31,20 +31,10 @@ const transporter = () => {
     });
 };
 
-const send = async (from, to, subject, template) => {
-    const config = configTemplate();
-    return await config.sendMail({
-        from,
-        to,
-        subject,
-        template,
-    });
-};
-
 const send_new_reply = async (to, username, response_from, link) => {
     const config = configTemplate();
     return await config.sendMail({
-        from: 'contato@happycoding.com.br',
+        from: `${process.env.EMAIL_FROM_NAME} <${process.env.EMAIL_FROM_EMAIL}>`,
         to,
         subject: 'Mensagem respondida',
         template: 'new_reply',
@@ -56,6 +46,37 @@ const send_new_reply = async (to, username, response_from, link) => {
     });
 };
 
+const send_new_user = async (user, token) => {
+    const config = configTemplate();
+    const link = `${process.env.HOST}/user/activate/${token}`;
+    return await config.sendMail({
+        from: `${process.env.EMAIL_FROM_NAME} <${process.env.EMAIL_FROM_EMAIL}>`,
+        to: user.email,
+        subject: 'Ative sua conta',
+        template: 'verify_account',
+        context: {
+            user,
+            link,
+        },
+    });
+};
+
+const send_new_contact = async (user, message) => {
+    const config = configTemplate();
+    return await config.sendMail({
+        from: `${user.name} <${user.email}>`,
+        to: `${process.env.EMAIL_FROM_NAME} <${process.env.EMAIL_FROM_EMAIL}>`,
+        subject: 'Contato pelo site',
+        template: 'contact',
+        context: {
+            name: `${user.name} ${user.last_name}`,
+            message,
+        },
+    });
+};
+
 module.exports = {
     send_new_reply,
+    send_new_user,
+    send_new_contact,
 };

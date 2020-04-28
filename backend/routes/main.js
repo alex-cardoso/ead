@@ -19,6 +19,8 @@ const User = require('../controllers/main/User');
 const Favorite = require('../controllers/main/Favorite');
 const Category = require('../controllers/main/Category');
 const Search = require('../controllers/main/Search');
+const Contact = require('../controllers/main/Contact');
+const Credits = require('../controllers/main/Credits');
 
 // pegar dados se estiver logado, esses dados podem ser usados nos templates
 module.exports = (passport, app) => {
@@ -51,9 +53,13 @@ module.exports = (passport, app) => {
     router.get('/lessons/search', Search.data);
     router.get('/signup', User.create);
     router.post('/signup', user_store_validation, User.store);
+    router.get('/user/activate/:token', User.activate);
+    router.get('/contact', Contact.index);
+    router.post('/contact', Contact.store);
+    router.get('/buy/credits', Credits.index);
 
-    router.get('*', function (req, res) {
-        res.status(400).send('what???');
+    router.get('*', function (request, response) {
+        response.status(400).send('what???');
     });
 
     return router;

@@ -69,12 +69,12 @@ export default {
             this.show_autocomplete = false;
         });
 
-        this.searched = localStorage.getItem('searched')
-            ? JSON.parse(localStorage.getItem('searched'))
+        this.searched = sessionStorage.getItem('searched')
+            ? JSON.parse(sessionStorage.getItem('searched'))
             : [];
 
-        this.items = localStorage.getItem('lessons_search')
-            ? JSON.parse(localStorage.getItem('lessons_search'))
+        this.items = sessionStorage.getItem('lessons_search')
+            ? JSON.parse(sessionStorage.getItem('lessons_search'))
             : [];
     },
 
@@ -82,8 +82,8 @@ export default {
         search: _.debounce(async function() {
             try {
                 this.items = [];
-                localStorage.removeItem('lessons_search');
-                localStorage.removeItem('searched');
+                sessionStorage.removeItem('lessons_search');
+                sessionStorage.removeItem('searched');
 
                 if (!this.searched.length) {
                     this.show_autocomplete = false;
@@ -98,11 +98,11 @@ export default {
 
                 if (response.data[0] !== undefined) {
                     this.items = response.data;
-                    localStorage.setItem(
+                    sessionStorage.setItem(
                         'lessons_search',
                         JSON.stringify(response.data)
                     );
-                    localStorage.setItem(
+                    sessionStorage.setItem(
                         'searched',
                         JSON.stringify(this.searched)
                     );
