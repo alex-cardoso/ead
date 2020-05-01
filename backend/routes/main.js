@@ -1,4 +1,5 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const router = express.Router();
 
 // validations
@@ -21,9 +22,10 @@ const Category = require('../controllers/main/Category');
 const Search = require('../controllers/main/Search');
 const Contact = require('../controllers/main/Contact');
 const Credits = require('../controllers/main/Credits');
+const Pagseguro = require('../controllers/main/Pagseguro');
 
 // pegar dados se estiver logado, esses dados podem ser usados nos templates
-module.exports = (passport, app) => {
+module.exports = (passport) => {
     router.get('/', Home.index);
     router.get('/login', Login.index);
     router.post('/login', passport.authenticate('main'), Login.store);
@@ -57,6 +59,14 @@ module.exports = (passport, app) => {
     router.get('/contact', Contact.index);
     router.post('/contact', Contact.store);
     router.get('/buy/credits', Credits.index);
+    router.get('/pagseguro/checkout', Pagseguro.checkout);
+    router.post(
+        '/pagseguro/webhook',
+        bodyParser.urlencoded({
+            extended: true,
+        }),
+        Pagseguro.webhook
+    );
 
     router.get('*', function (request, response) {
         response.status(400).send('what???');

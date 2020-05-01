@@ -5,9 +5,6 @@ const router = express.Router();
 const Home = require('../controllers/dashboard/Home');
 const Lesson = require('../controllers/dashboard/Lesson');
 
-// middlewares
-const is_admin = require('../middlewares/is_admin');
-
 // pegar dados se estiver logado, esses dados podem ser usados nos templates
 module.exports = (app) => {
     router.get('/', Home.index);

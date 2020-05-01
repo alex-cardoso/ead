@@ -62,7 +62,6 @@ app.use(passport.session());
 
 passport_main(passport);
 passport_admin(passport);
-
 serialize_passport(passport);
 
 // quando faz logout e clica em back no navegador
@@ -77,8 +76,8 @@ app.use(function (req, res, next) {
 // carregar variaveis para o template
 app.use(variables_to_template);
 
-app.use('/', require('../routes/main')(passport, app));
-app.use('/admin', require('../routes/admin')(passport, app));
+app.use('/', require('../routes/main')(passport));
+app.use('/admin', require('../routes/admin')(passport));
 app.use('/dashboard', require('../routes/dashboard')(app));
 
 module.exports = app;

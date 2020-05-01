@@ -75,8 +75,56 @@ const send_new_contact = async (user, message) => {
     });
 };
 
+const send_new_approved_payment = async (name, email, credits) => {
+    const config = configTemplate();
+    return await config.sendMail({
+        from: `${process.env.EMAIL_FROM_NAME} <${process.env.EMAIL_FROM_EMAIL}>`,
+        to: `${email}`,
+        subject: 'Pagamento Aprovado',
+        template: 'payment_approved',
+        context: {
+            name,
+            credits,
+            link: process.env.HOST,
+        },
+    });
+};
+
+const send_new_reproved_payment = async (name, email, credits) => {
+    const config = configTemplate();
+    return await config.sendMail({
+        from: `${process.env.EMAIL_FROM_NAME} <${process.env.EMAIL_FROM_EMAIL}>`,
+        to: `${email}`,
+        subject: 'Pagamento Reprovado',
+        template: 'payment_reproved',
+        context: {
+            name,
+            credits,
+            link: process.env.HOST,
+        },
+    });
+};
+
+const send_new_in_analysis_payment = async (name, email, credits) => {
+    const config = configTemplate();
+    return await config.sendMail({
+        from: `${process.env.EMAIL_FROM_NAME} <${process.env.EMAIL_FROM_EMAIL}>`,
+        to: `${email}`,
+        subject: 'Pagamento em análise',
+        template: 'payment_in_analysis',
+        context: {
+            name,
+            credits,
+            link: process.env.HOST,
+        },
+    });
+};
+
 module.exports = {
     send_new_reply,
     send_new_user,
     send_new_contact,
+    send_new_approved_payment,
+    send_new_reproved_payment,
+    send_new_in_analysis_payment,
 };

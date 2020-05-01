@@ -14,6 +14,7 @@ import Search from './components/Search';
 import Signup from './components/Signup';
 import Video from './components/Video';
 import Contact from './components/Contact';
+import BuyCredits from './components/BuyCredits';
 
 filters.vueInstance(Vue);
 filters.moeda();
@@ -35,5 +36,6 @@ new Vue({
         search: Search,
         signup: Signup,
         contact: Contact,
+        'buy-credits': BuyCredits,
     },
 });

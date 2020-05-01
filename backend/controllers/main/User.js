@@ -7,6 +7,7 @@ const {
     store: create_token,
     validate_token,
 } = require('../../database/services/token');
+const { store: create_credits } = require('../../database/services/credits');
 const { validationResult } = require('express-validator');
 const {
     errors_formatted,
@@ -72,6 +73,7 @@ const activate = async (request, response) => {
 
         if (token_data['userId'] !== undefined) {
             await update_verified(token_data['userId']);
+            await create_credits(token_data['userId'], 0.0);
             updated = true;
         }
 

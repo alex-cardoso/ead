@@ -5,7 +5,7 @@ const router = express.Router();
 const Admin = require('../controllers/admin/Admin');
 
 // pegar dados se estiver logado, esses dados podem ser usados nos templates
-module.exports = (passport, app) => {
+module.exports = (passport) => {
     router.get('/', Admin.index);
     router.post('/login', passport.authenticate('admin'), Admin.login);
 

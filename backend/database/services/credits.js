@@ -2,7 +2,7 @@ const { Credit } = require('../models');
 const { find_lesson } = require('./lessons');
 const { add_buyed_lesson } = require('./lessons_buyed');
 
-const credits_user = async user => {
+const credits_user = async (user) => {
     try {
         return await Credit.findOne({
             where: {
@@ -39,6 +39,52 @@ const check_and_remove_credits = async (slug, user) => {
     }
 };
 
+const update = async (user, credits) => {
+    try {
+        const credits_on_database = await credits_user(user);
+
+        const new_credits =
+            credits_on_database['value'] <= 0
+                ? credits
+                : parseFloat(
+                      Number(credits_on_database['value']) + Number(credits)
+                  );
+
+        return await Credit.update(
+            {
+                value: new_credits,
+            },
+            {
+                where: {
+                    userId: user,
+                },
+            }
+        );
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+const store = async (user, credits) => {
+    try {
+        return await Credit.findOrCreate({
+            where: {
+                userId: user,
+            },
+
+            defaults: {
+                userId: user,
+                value: credits,
+            },
+        });
+    } catch (error) {
+        console.log(error);
+    }
+};
+
 module.exports = {
     check_and_remove_credits,
+    credits_user,
+    update,
+    store,
 };

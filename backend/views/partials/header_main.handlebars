@@ -7,7 +7,7 @@
     <li class="d-flex align-items-center"> <img src="{{ avatar }}" alt="" class="rounded-circle mr-1" width="30"
             height="30"> Olá,
         {{ username }} {{ last_name }} |
-        <a href="/buy/credits" style="color:blue;text-decoration:underline;"> R$ {{ credits }}</a> |
+        <a href="/buy/credits" style="color:blue;text-decoration:underline;"> {{ credits }}</a> |
         <a href="/profile">Meus dados</a> | <a href="/logout">Logout</a>
     </li>
     {{else}}
