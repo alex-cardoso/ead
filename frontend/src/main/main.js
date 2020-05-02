@@ -15,6 +15,8 @@ import Signup from './components/Signup';
 import Video from './components/Video';
 import Contact from './components/Contact';
 import BuyCredits from './components/BuyCredits';
+import ButtonAddCart from './components/ButtonAddCart';
+import Cart from './components/Cart';
 
 filters.vueInstance(Vue);
 filters.moeda();
@@ -37,5 +39,7 @@ new Vue({
         signup: Signup,
         contact: Contact,
         'buy-credits': BuyCredits,
+        'button-add-cart': ButtonAddCart,
+        cart: Cart,
     },
 });

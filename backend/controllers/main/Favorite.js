@@ -21,8 +21,15 @@ const data = async (request, response) => {
 
 const store = async (request, response) => {
     const { lessonId } = request.body;
-    const created = await favorites_create(lessonId, request.user['id']);
-    response.status(200).json(created);
+    try {
+        if (!request.user) {
+            throw 'not_logged_in';
+        }
+        const created = await favorites_create(lessonId, request.user['id']);
+        response.status(200).json(created);
+    } catch (error) {
+        response.status(400).json(error);
+    }
 };
 
 const destroy = async (request, response) => {

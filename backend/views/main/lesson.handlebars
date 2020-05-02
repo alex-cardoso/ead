@@ -26,10 +26,29 @@
 <forum-lesson :lesson_id="{{id}}" lesson_slug="{{slug}}"></forum-lesson>
 
 {{else}}
-<p>Você não tem permissão para ver essa aula.</p>
+<div class="d-flex justify-content-between" style="height:500px;">
+
+  <div class="w-75">
+
+    <video-player-lesson :embed="{{embed}}" :category="{{category}}" :lesson_id="{{id}}">
+    </video-player-lesson>
+  </div>
+
+  <div class="w-25 ml-3">
+    <lessons-video-category :category="{{category}}" :lesson_id="{{id}}"></lessons-video-category>
+  </div>
+
+
+</div>
+<hr>
+
+<p>Você não tem permissão para ver o conteúdo desse post.</p>
+
 <button-buy-lesson class="btn btn-outline-info btn-xs" :slug="{{slug}}">
   Adquirir por {{ currency value }}
 </button-buy-lesson>
+
+<button-add-cart :lesson="{{id}}"></button-add-cart>
 {{/if}}
 
 {{/with}}

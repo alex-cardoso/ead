@@ -23,6 +23,7 @@ const Search = require('../controllers/main/Search');
 const Contact = require('../controllers/main/Contact');
 const Credits = require('../controllers/main/Credits');
 const Pagseguro = require('../controllers/main/Pagseguro');
+const Cart = require('../controllers/main/Cart');
 
 // pegar dados se estiver logado, esses dados podem ser usados nos templates
 module.exports = (passport) => {
@@ -67,6 +68,8 @@ module.exports = (passport) => {
         }),
         Pagseguro.webhook
     );
+    router.get('/cart', Cart.index);
+    router.get('/cart/lessons', Cart.lessons);
 
     router.get('*', function (request, response) {
         response.status(400).send('what???');

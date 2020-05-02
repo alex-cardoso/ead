@@ -8,7 +8,9 @@
             height="30"> Olá,
         {{ username }} {{ last_name }} |
         <a href="/buy/credits" style="color:blue;text-decoration:underline;"> {{ credits }}</a> |
-        <a href="/profile">Meus dados</a> | <a href="/logout">Logout</a>
+        <a href="/cart" style="color:blue;text-decoration:underline;">Carrinho</a> |
+        <a href="/profile" style="color:blue;text-decoration:underline;">Meus dados</a> | <a href="/logout"
+            style="color:red;text-decoration:underline;">Logout</a>
     </li>
     {{else}}
     <li>Olá, visitante | <a href="/login">Login</a></li>

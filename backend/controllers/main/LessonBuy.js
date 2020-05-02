@@ -10,8 +10,6 @@ const update = async (request, response) => {
 
         const check = await check_and_remove_credits(slug, request.user['id']);
 
-        // request.user['credits']['value'] = check['value'];
-
         response.status(200).json(check);
     } catch (error) {
         console.log(error);

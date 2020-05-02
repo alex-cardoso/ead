@@ -26,19 +26,30 @@
 
                 <span v-else></span>
 
-                <template v-if="favorited !== undefined && favorited.length">
-                    <button class="btn btn-danger" @click="remove_favorited(favorited[0]['id'])">
-                        ({{ favorites.length }})
+                <template v-if="message_favorited">
+                    <button class="btn btn-warning">
                         <i class="far fa-heart"></i>
-                        Remover dos favoritos
+                        Você precisa estar logado
                     </button>
                 </template>
                 <template v-else>
-                    <button class="btn btn-outline-danger" @click="add_favorited">
-                        ({{ favorites.length }})
-                        <i class="far fa-heart"></i>
-                        Colocar como favorito
-                    </button>
+                    <template v-if="favorited !== undefined && favorited.length">
+                        <button
+                            class="btn btn-danger"
+                            @click="remove_favorited(favorited[0]['id'])"
+                        >
+                            ({{ favorites.length }})
+                            <i class="far fa-heart"></i>
+                            Remover dos favoritos
+                        </button>
+                    </template>
+                    <template v-else>
+                        <button class="btn btn-outline-danger" @click="add_favorited">
+                            ({{ favorites.length }})
+                            <i class="far fa-heart"></i>
+                            Colocar como favorito
+                        </button>
+                    </template>
                 </template>
 
                 <a
@@ -71,6 +82,7 @@ export default {
             lesson_before: null,
             lesson_after: null,
             user: null,
+            message_favorited: false,
         };
     },
 
@@ -150,6 +162,16 @@ export default {
                     this.favorites.push({ ...response.data[0] });
                 }
             } catch (error) {
+                if (
+                    error.response !== undefined &&
+                    error.response.data === 'not_logged_in'
+                ) {
+                    this.message_favorited = true;
+                }
+
+                setTimeout(() => {
+                    this.message_favorited = false;
+                }, 3000);
                 console.log(error);
             }
         },

@@ -33,6 +33,7 @@
                         >
                             <i class="far fa-play-circle"></i> Detalhes
                         </a>
+                        <button-add-cart :lesson="lesson['id']"></button-add-cart>
                     </template>
                 </div>
                 <div>
@@ -50,6 +51,7 @@
 import http from '../../http';
 import truncate from 'truncate';
 import moment from 'moment';
+import ButtonAddCart from './ButtonAddCart';
 
 export default {
     props: {
@@ -58,6 +60,7 @@ export default {
             default: false,
         },
     },
+
     data() {
         return {
             lessons: [],
@@ -65,10 +68,16 @@ export default {
             moment,
         };
     },
+
     mounted() {
         this.latest_lessons();
         moment.locale('pt-br');
     },
+
+    components: {
+        'button-add-cart': ButtonAddCart,
+    },
+
     methods: {
         async latest_lessons() {
             try {
