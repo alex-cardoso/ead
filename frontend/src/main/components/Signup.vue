@@ -1,6 +1,7 @@
 <template>
     <div>
-        <div class="row justify-content-center">
+        <div v-if="attempts >= 4">Atualize a página para tentar novamente</div>
+        <div class="row justify-content-center" v-else>
             <div class="col-md-6">
                 <div class="card">
                     <header class="card-header d-flex justify-content-between">
@@ -95,12 +96,16 @@ export default {
             errors: {},
             message: null,
             loading: false,
+            attempts: 0,
         };
     },
     methods: {
         async create() {
             try {
                 this.loading = true;
+
+                this.attempts++;
+
                 const response = await http.post('/signup', this.user);
 
                 if (response.data['id'] !== undefined) {
@@ -119,7 +124,9 @@ export default {
                 }, 3000);
             } catch (error) {
                 this.errors = {};
+
                 this.loading = false;
+
                 if (error.response !== undefined) {
                     this.errors = error.response.data;
                 }

@@ -2,6 +2,8 @@
     <div v-if="loaded">
         <h2>Cart</h2>
 
+        <div v-html="message"></div>
+
         <table class="table table-striped w-100">
             <thead>
                 <tr>
@@ -33,6 +35,8 @@
                         <button-buy-lessons
                             :lessons="lessons_in_cart"
                             :total="total_lessons_in_cart"
+                            @updated="updated"
+                            @error="error"
                         ></button-buy-lessons>
                     </td>
                 </tr>
@@ -51,6 +55,7 @@ export default {
             lessons: [],
             total: 0,
             loaded: false,
+            message: null,
         };
     },
 
@@ -104,6 +109,26 @@ export default {
                 'lessons',
                 JSON.stringify(this.lessons_in_cart)
             );
+        },
+
+        updated() {
+            localStorage.removeItem('lessons');
+            this.lessons = [];
+            this.lessons_in_cart = [];
+            this.message = `<span class="alert alert-success">Aulas adquiridas com sucesso !</span>`;
+
+            setTimeout(() => {
+                this.message = null;
+            }, 3000);
+        },
+
+        error(error) {
+            if (error === 'not_logged_in') {
+                this.message = `<span class="alert alert-danger">Tem que logar antes de comprar as aulas escolhidas.</span>`;
+            }
+            setTimeout(() => {
+                this.message = null;
+            }, 3000);
         },
     },
 };

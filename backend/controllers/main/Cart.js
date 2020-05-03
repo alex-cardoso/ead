@@ -11,7 +11,11 @@ const lessons = async (request, response) => {
     try {
         const { lessons } = request.query;
 
-        const lessons_in_cart = await cart_lessons(JSON.parse(lessons));
+        let lessons_in_cart = [];
+
+        if (lessons !== undefined) {
+            lessons_in_cart = await cart_lessons(JSON.parse(lessons));
+        }
 
         response.status(200).json(lessons_in_cart);
     } catch (error) {
