@@ -16,4 +16,3 @@ jsconfig.json
 *.ntvs*
 *.njsproj
 *.sln
-/nbproject/private/

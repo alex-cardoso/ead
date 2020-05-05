@@ -19,7 +19,9 @@
         </modal>
 
         <div class="d-flex justify-content-between">
-            <div class="w-25">foto</div>
+            <div class="w-25">
+                <avatar :user="user"></avatar>
+            </div>
             <div class="row w-75">
                 <div class="col-md-12">
                     <div class="card">
@@ -73,7 +75,7 @@
                                     <span v-html="errors['user.email']" class="error_validation"></span>
                                 </div>
                                 <div class="form-group">
-                                    <label>Password</label>
+                                    <label>Senha</label>
                                     <input
                                         type="password"
                                         class="form-control"
@@ -106,6 +108,7 @@
 
 <script>
 import Modal from '../../helpers/Modal';
+import Avatar from './Avatar';
 import http from '../../http';
 
 export default {
@@ -124,6 +127,7 @@ export default {
 
     components: {
         modal: Modal,
+        avatar: Avatar,
     },
 
     methods: {

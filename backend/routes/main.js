@@ -1,6 +1,21 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const multer = require('multer');
 const router = express.Router();
+const path = require('path');
+
+const upload = multer({
+    storage: multer.diskStorage({
+        destination: (req, file, cb) => {
+            cb(null, path.join(__dirname, '../../frontend/dist/', 'uploads/'));
+        },
+        filename: (req, file, cb) => {
+            const customFileName = 'avatar_' + Date.now();
+            const fileExtension = path.extname(file.originalname).split('.')[1];
+            cb(null, customFileName + '.' + fileExtension);
+        },
+    }),
+});
 
 // validations
 const {
@@ -81,6 +96,7 @@ module.exports = (passport) => {
     router.put('/lessons/buy', LessonsBuy.update);
     router.get('/profile', logged_in, Profile.index);
     router.put('/profile/update', user_update_validation, Profile.update);
+    router.post('/profile/avatar', upload.single('file'), Profile.avatar);
 
     router.get('*', function (request, response) {
         response.status(400).send('what???');

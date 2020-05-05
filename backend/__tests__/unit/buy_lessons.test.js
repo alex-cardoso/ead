@@ -6,7 +6,7 @@ it('should buy many lessons at once and update credits', async () => {
 
         const promises = [];
 
-        lessons_in_cart.forEach((lesson) => {
+        lessons_in_cart.forEach(lesson => {
             promises.push(add_buyed_lesson(1, lesson));
         });
 

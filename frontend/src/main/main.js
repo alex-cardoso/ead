@@ -25,6 +25,8 @@ filters.date();
 
 Vue.component('b-pagination', BPagination);
 
+window.EventBus = new Vue();
+
 new Vue({
     el: '#app',
     components: {
