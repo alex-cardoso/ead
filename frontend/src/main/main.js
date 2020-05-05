@@ -17,6 +17,7 @@ import Contact from './components/Contact';
 import BuyCredits from './components/BuyCredits';
 import ButtonAddCart from './components/ButtonAddCart';
 import Cart from './components/Cart';
+import Profile from './components/Profile';
 
 filters.vueInstance(Vue);
 filters.moeda();
@@ -41,5 +42,6 @@ new Vue({
         'buy-credits': BuyCredits,
         'button-add-cart': ButtonAddCart,
         cart: Cart,
+        profile: Profile,
     },
 });

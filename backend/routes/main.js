@@ -3,7 +3,10 @@ const bodyParser = require('body-parser');
 const router = express.Router();
 
 // validations
-const { store: user_store_validation } = require('../validations/user');
+const {
+    store: user_store_validation,
+    update: user_update_validation,
+} = require('../validations/user');
 
 // middlewares
 const logged_in = require('../middlewares/logged_in');
@@ -28,6 +31,7 @@ const Credits = require('../controllers/main/Credits');
 const Pagseguro = require('../controllers/main/Pagseguro');
 const Cart = require('../controllers/main/Cart');
 const LessonsBuy = require('../controllers/main/LessonsBuy');
+const Profile = require('../controllers/main/Profile');
 
 // pegar dados se estiver logado, esses dados podem ser usados nos templates
 module.exports = (passport) => {
@@ -75,6 +79,8 @@ module.exports = (passport) => {
     router.get('/cart', logged_in, Cart.index);
     router.get('/cart/lessons', Cart.lessons);
     router.put('/lessons/buy', LessonsBuy.update);
+    router.get('/profile', logged_in, Profile.index);
+    router.put('/profile/update', user_update_validation, Profile.update);
 
     router.get('*', function (request, response) {
         response.status(400).send('what???');
