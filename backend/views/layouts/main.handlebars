@@ -1,34 +1,61 @@
-<!DOCTYPE html>
+<!doctype HTML>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ title }}</title>
+    <!-- viewport meta -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="DigiPro - Digital Products Marketplace ">
+    <meta name="keywords" content="marketplace, easy digital download, digital product, digital, html5">
+    <title>DigiPro - Digital Products Marketplace</title>
+    <link href="https://fonts.googleapis.com/css?family=Work+Sans:400,500,600" rel="stylesheet">
+    <!-- inject:css-->
     <link rel="stylesheet" href="/bulma.css">
     <link rel="stylesheet" href="/bootstrap.min.css">
     <link rel="stylesheet" href="/styles_main.css">
     <script src="https://kit.fontawesome.com/2623fd239d.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="/vs.css">
-    <link rel="shortcut icon" href="#">
+    <link rel="stylesheet" href="/vendor_assets/css/animate.css">
+    <link rel="stylesheet" href="/vendor_assets/css/magnific-popup.css">
+    <link rel="stylesheet" href="/vendor_assets/css/owl.carousel.css">
+    <link rel="stylesheet" href="/vendor_assets/css/select2.min.css">
+    <link rel="stylesheet" href="/vendor_assets/css/simple-line-icons.css">
+    <link rel="stylesheet" href="/style_theme_main.css">
+    <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-32x32.png">
 </head>
 
-<body>
-    <div id="app" class="container">
-        <section>
-            {{> header_main}}
-        </section>
-        <section>
-            {{{ body }}}
-        </section>
-        <section class="text-center">
-            EAD - Todos direitos reservados {{ date }}
-        </section>
-    </div>
+<body class="preload">
+    <section id="app">
+        {{> header_main}}
+
+        {{{ body }}}
+
+        {{> footer_main}}
+    </section>
 
     <script src="/highlight.js"></script>
     <script src="https://www.google.com/recaptcha/api.js?render=6Le-oOkUAAAAAKQWAbSdpnCS8xNlG5QcLyLqLxQF"></script>
     <script src="/main.js"></script>
+    <script src="/vendor_assets/js/jquery/jquery-1.12.4.min.js"></script>
+    <script src="/vendor_assets/js/jquery/uikit.min.js"></script>
+    <script src="/vendor_assets/js/bootstrap/popper.js"></script>
+    <script src="/vendor_assets/js/bootstrap/bootstrap.min.js"></script>
+    <script src="/vendor_assets/js/chart.bundle.min.js"></script>
+    <script src="/vendor_assets/js/grid.min.js"></script>
+    <script src="/vendor_assets/js/jquery-ui.min.js"></script>
+    <script src="/vendor_assets/js/jquery.barrating.min.js"></script>
+    <script src="/vendor_assets/js/jquery.countdown.min.js"></script>
+    <script src="/vendor_assets/js/jquery.counterup.min.js"></script>
+    <script src="/vendor_assets/js/jquery.easing1.3.js"></script>
+    <script src="/vendor_assets/js/jquery.magnific-popup.min.js"></script>
+    <script src="/vendor_assets/js/owl.carousel.min.js"></script>
+    <script src="/vendor_assets/js/select2.full.min.js"></script>
+    <script src="/vendor_assets/js/slick.min.js"></script>
+    <script src="/vendor_assets/js/tether.min.js"></script>
+    <script src="/vendor_assets/js/waypoints.min.js"></script>
+    <script src="/theme_assets/js/dashboard.js"></script>
+    <script src="/theme_assets/js/main.js"></script>
 </body>
 
 </html>

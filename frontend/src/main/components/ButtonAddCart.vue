@@ -1,10 +1,14 @@
 <template>
     <div>
         <template v-if="!in_cart">
-            <button class="btn btn-outline-success" @click="add">Colocar no carrinho</button>
+            <button class="btn btn--round btn-sm btn-info w-100" @click="add">
+                <span class="icon-basket"></span> Colocar no carrinho
+            </button>
         </template>
         <template v-else>
-            <button class="btn btn-outline-danger" @click="remove">Remover do carrinho</button>
+            <button class="btn btn--round btn-sm btn-secondary w-100" @click="remove">
+                <span class="icon-basket"></span> Remover do carrinho
+            </button>
         </template>
     </div>
 </template>
@@ -39,6 +43,8 @@ export default {
 
             this.lessons.push(this.lesson);
 
+            EventBus.$emit('added_cart', this.lessons);
+
             localStorage.setItem('lessons', JSON.stringify(this.lessons));
         },
 
@@ -50,6 +56,8 @@ export default {
             );
 
             this.lessons.splice(index, 1);
+
+            EventBus.$emit('added_cart', this.lessons);
 
             localStorage.setItem('lessons', JSON.stringify(this.lessons));
         },

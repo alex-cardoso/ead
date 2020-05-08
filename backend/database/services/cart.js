@@ -1,4 +1,4 @@
-const { Lesson } = require('../models');
+const { Lesson, Category } = require('../models');
 
 const lessons = async (lessons) => {
     try {
@@ -7,6 +7,13 @@ const lessons = async (lessons) => {
             where: {
                 id: lessons,
             },
+            include: [
+                {
+                    attributes: ['id', 'name', 'slug'],
+                    model: Category,
+                    as: 'category',
+                },
+            ],
         });
     } catch (error) {
         throw error;

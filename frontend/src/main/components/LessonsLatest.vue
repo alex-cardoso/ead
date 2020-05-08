@@ -1,49 +1,92 @@
 <template>
     <div>
-        <h2>Últimas aulas adicionadas</h2>
-        <ul class="list-lessons">
-            <li v-for="lesson in lessons['rows']" :key="lesson.id">
-                <div class="mb-2">
-                    {{ lesson['title'] }}
-                    <br />Category:
-                    <a
-                        :href="`/category/${lesson['category']['slug']}`"
-                    >{{ lesson['category']['name'] }}</a>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="section-title">
+                        <h1>KEEP CODING</h1>
+                        <p>
+                            Todas nosass aulas são gratuitas, mas caso queira ter acesso ao fórum exclusivo de cada aula e material exclusivo, e claro se quiser nos ajudar a continuar criando
+                            cada vez mais conteúdo gratuito, compre a aula que desejar.
+                        </p>
+                    </div>
                 </div>
-                <div>{{ truncate(lesson['description'], 50) }}</div>
-                <div class="mt-2 mb-2 pt-2 pb-2" style="background-color:#efefef;">
-                    {{ lesson['value'] | moeda }}
-                    <br />
+                <!-- Ends: .col-md-12 -->
+                <div class="col-lg-12">
+                    <div class="product-list">
+                        <div class="tab-content" id="lp-tab-content">
+                            <div
+                                class="tab-pane fade show active"
+                                id="tab1"
+                                role="tabpanel"
+                                aria-labelledby="tab-one"
+                            >
+                                <div class="row">
+                                    <div
+                                        class="col-lg-4 col-md-6"
+                                        v-for="lesson in lessons"
+                                        :key="lesson.id"
+                                    >
+                                        <div class="product-single latest-single">
+                                            <div class="product-excerpt">
+                                                <h5>
+                                                    <a href>{{lesson.title}}</a>
+                                                </h5>
+                                                <ul class="titlebtm">
+                                                    <li class="product_cat">
+                                                        {{ truncate(lesson['description'], 70) }}
+                                                        <a
+                                                            :href="`/category/${lesson['category']['slug']}`"
+                                                        >
+                                                            postado em
+                                                            {{lesson['category']['name']}} - {{ moment(lesson['updatedAt']).fromNow() }}
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                                <ul
+                                                    class="product-facts clearfix justify-content-between"
+                                                >
+                                                    <li class="price">{{ lesson['value'] | moeda }}</li>
+                                                    <li class="sells">
+                                                        <span
+                                                            class="icon-basket"
+                                                            title="Quantas vezes foi adquirida"
+                                                            style="cursor:pointer"
+                                                        ></span>
+                                                        {{ lesson['lessonBuyed'].length }}
+                                                    </li>
+                                                    <li class="product-fav">
+                                                        <span class="icon-heart" title="Curtidas"></span>
+                                                        {{ lesson['favorites'].length }}
+                                                    </li>
+                                                </ul>
+                                                <div class="mt-2">
+                                                    <hr />
 
-                    <template v-if="lesson['lessonBuyed'].length">
-                        <a
-                            :href="`/lesson/${lesson['slug']}`"
-                            class="btn btn-outline-success btn-sm mt-2"
-                        >
-                            <i class="far fa-play-circle"></i> Assistir
-                        </a>
-                    </template>
-                    <template v-else>
-                        <button class="btn btn-outline-info btn-sm mt-2" v-if="is_authenticated">
-                            <i class="fas fa-money-check-alt"></i> Comprar
-                        </button>
-                        <a
-                            :href="`/lesson/${lesson['slug']}`"
-                            class="btn btn-outline-danger btn-sm mt-2"
-                        >
-                            <i class="far fa-play-circle"></i> Detalhes
-                        </a>
-                        <button-add-cart :lesson="lesson['id']"></button-add-cart>
-                    </template>
+                                                    <a
+                                                        :href="`/lesson/${lesson['slug']}`"
+                                                        class="btn btn--round btn-sm btn-outline-success w-100"
+                                                    >
+                                                        <i class="far fa-play-circle"></i> Assistir
+                                                    </a>
+
+                                                    <template v-if="!lesson['userHasLesson']">
+                                                        <button-add-cart
+                                                            :lesson="lesson['id']"
+                                                            class="mt-2"
+                                                        ></button-add-cart>
+                                                    </template>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div>
-                    <span class="font-italic" style="font-size:14px;">
-                        Postado
-                        {{ moment(lesson['updatedAt']).fromNow() }} por {{ lesson['user']['name'] }} {{ lesson['user']['last_name'] }}
-                    </span>
-                </div>
-            </li>
-        </ul>
+            </div>
+        </div>
     </div>
 </template>
 

@@ -8,11 +8,16 @@ module.exports = (request, response, next) => {
     if (user !== undefined) {
         app.locals.username = user['name'];
         app.locals.last_name = user['last_name'];
-        app.locals.avatar = user['avatar'];
+        app.locals.avatar =
+            user['avatar'] === ''
+                ? '/uploads/avatar_resized/default.png'
+                : user['avatar'];
         app.locals.is_admin = !!user['is_admin'];
         app.locals.credits = user['credits']
             ? currency(user['credits']['value'])
             : 0.0;
+    } else {
+        app.locals.avatar = '/uploads/avatar_resized/default.png';
     }
     next();
 };

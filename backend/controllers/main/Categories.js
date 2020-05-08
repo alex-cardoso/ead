@@ -1,5 +1,7 @@
 const { get_all } = require('../../database/services/category');
 
+const Cache = require('../../src/cache');
+
 const index = (request, response) => {
     response.render('../views/main/categories_list', {
         layout: 'main',
@@ -10,7 +12,13 @@ const index = (request, response) => {
 const data = async (request, response) => {
     const { page } = request.query;
 
-    const categories = await get_all(page);
+    let categories;
+
+    if (Cache.has('categories')) {
+        categories = Cache.get('categories');
+    } else {
+        categories = await get_all(page);
+    }
 
     response.status(200).json(categories);
 };

@@ -8,7 +8,7 @@ it('should get id category from slug', async (done) => {
     done();
 });
 
-it('should get all categories and pagination', async (done) => {
+it('should get all categories', async (done) => {
     const categories = await get_all();
 
     expect(categories).toHaveProperty('count');

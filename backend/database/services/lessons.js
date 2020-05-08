@@ -30,9 +30,9 @@ const lessons = async (page = 1) => {
     }
 };
 
-const latest = async (page = 1, user) => {
+const latest = async () => {
     try {
-        const options = {
+        return await Lesson.findAll({
             attributes: [
                 'id',
                 'title',
@@ -42,8 +42,6 @@ const latest = async (page = 1, user) => {
                 'description',
                 'updatedAt',
             ],
-            per_page: 20,
-            page,
             include: [
                 {
                     attributes: ['name', 'last_name', 'avatar'],
@@ -54,21 +52,21 @@ const latest = async (page = 1, user) => {
                     attributes: ['userId', 'lessonId'],
                     model: LessonBuyed,
                     as: 'lessonBuyed',
-                    required: false,
-                    where: {
-                        userId: user,
-                    },
                 },
                 {
                     attributes: ['id', 'name', 'slug'],
                     model: Category,
                     as: 'category',
                 },
+                {
+                    attributes: ['userId', 'lessonId'],
+                    model: LessonsFavorite,
+                    as: 'favorites',
+                },
             ],
+            limit: 15,
             order: [['id', 'DESC']],
-        };
-
-        return paginate(Lesson, options);
+        });
     } catch (error) {
         console.log(error);
     }

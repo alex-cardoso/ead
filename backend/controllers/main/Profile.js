@@ -70,7 +70,9 @@ const avatar = async (request, response) => {
             .toFile(
                 path.resolve(request.file.destination, 'avatar_resized', image)
             );
+
         fs.unlinkSync(request.file.path);
+
         if (user.avatar) {
             fs.unlinkSync(
                 path.join(__dirname, '../../../frontend/dist/', user.avatar)

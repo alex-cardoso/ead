@@ -6,7 +6,24 @@ const {
 const latest = async (request, response) => {
     try {
         const user = request.user ? request.user['id'] : null;
-        const lessons = await latest_lessons(1, user);
+        const lessons = await latest_lessons();
+
+        lessons
+            .map((lesson) => {
+                lesson.setDataValue('userHasLesson', false);
+
+                return lesson;
+            })
+            .map((lesson, index) => {
+                if (lesson['lessonBuyed'][index] !== undefined) {
+                    if (lesson['lessonBuyed'][index]['userId'] === user) {
+                        lesson.setDataValue('userHasLesson', true);
+                    }
+                }
+
+                return lesson;
+            });
+
         response.status(200).json(lessons);
     } catch (error) {
         response.status(400).json(error);

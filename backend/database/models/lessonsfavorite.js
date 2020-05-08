@@ -7,8 +7,16 @@ module.exports = (sequelize, DataTypes) => {
         },
         {}
     );
-    LessonsFavorite.associate = function(models) {
-        // associations can be defined here
+    LessonsFavorite.associate = function (models) {
+        LessonsFavorite.belongsTo(models.User, {
+            foreignKey: 'userId',
+            as: 'user',
+        });
+
+        LessonsFavorite.belongsTo(models.Lesson, {
+            foreignKey: 'lessonId',
+            as: 'lesson',
+        });
     };
     return LessonsFavorite;
 };
