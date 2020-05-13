@@ -1,84 +1,102 @@
 <template>
     <div>
         <div v-if="attempts >= 4">Atualize a página para tentar novamente</div>
-        <div class="row justify-content-center" v-else>
-            <div class="col-md-6">
-                <div class="card">
-                    <header class="card-header d-flex justify-content-between">
-                        <h4 class="card-title mt-2">Sign up</h4>
-                        <a href="/login" class="float-right btn btn-outline-primary mt-1">Log in</a>
-                    </header>
-                    <article class="card-body">
-                        <div v-html="message" style="font-size:14px;"></div>
-                        <div v-if="loading">Aguarde, cadastrando seus dados...</div>
-                        <form @submit.prevent="create">
-                            <div class="form-row">
-                                <div class="col form-group">
-                                    <label>Nome</label>
-                                    <input
-                                        type="text"
-                                        class="form-control"
-                                        placeholder="Seu nome"
-                                        v-model="user.name"
-                                    />
-                                    <span v-html="errors['name']" class="error_validation"></span>
+
+        <section class="signup_area section--padding">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 offset-lg-3">
+                        <form action="#" @submit.prevent="create">
+                            <div class="cardify signup_form">
+                                <div class="login--header">
+                                    <div class="text-center mb-3">
+                                        <div v-html="message" style="font-size:14px;" class="mb-2"></div>
+                                        <div
+                                            v-if="loading"
+                                            class="mb-2"
+                                        >Aguarde, cadastrando seus dados...</div>
+                                    </div>
+                                    <h3>Cadastre-se abaixo</h3>
+                                    <p>Por favor digite seus dados no formulário abaixo para criar uma conta.</p>
                                 </div>
-                                <!-- form-group end.// -->
-                                <div class="col form-group">
-                                    <label>Sobrenome</label>
-                                    <input
-                                        type="text"
-                                        class="form-control"
-                                        placeholder="Seu sobrenome"
-                                        v-model="user.last_name"
-                                    />
-                                    <span v-html="errors['last_name']" class="error_validation"></span>
+                                <div class="login--form">
+                                    <div class="form-group">
+                                        <label for="urname">
+                                            Nome
+                                            <span
+                                                v-html="errors['name']"
+                                                class="error_validation"
+                                            ></span>
+                                        </label>
+                                        <input
+                                            type="text"
+                                            class="text_field"
+                                            v-model="user.name"
+                                            placeholder="Enter your Name"
+                                        />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="email_ad">
+                                            Sobrenome
+                                            <span
+                                                v-html="errors['last_name']"
+                                                class="error_validation"
+                                            ></span>
+                                        </label>
+                                        <input
+                                            type="text"
+                                            class="text_field"
+                                            v-model="user.last_name"
+                                            placeholder="Enter your email address"
+                                        />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="user_name">
+                                            Email
+                                            <span
+                                                v-html="errors['email']"
+                                                class="error_validation"
+                                            ></span>
+                                        </label>
+                                        <input
+                                            type="email"
+                                            class="text_field"
+                                            v-model="user.email"
+                                            placeholder="Enter your username..."
+                                        />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="password">
+                                            Senha
+                                            <span
+                                                v-html="errors['password']"
+                                                class="error_validation"
+                                            ></span>
+                                        </label>
+                                        <input
+                                            type="password"
+                                            class="text_field"
+                                            v-model="user.password"
+                                            placeholder="Enter your password..."
+                                        />
+                                    </div>
+                                    <button
+                                        class="btn btn--md register_btn btn-primary"
+                                        type="submit"
+                                    >Cadastrar</button>
+                                    <div class="login_assist">
+                                        <p>
+                                            Já tem uma conta?
+                                            <a href="/login">Login</a>
+                                        </p>
+                                    </div>
                                 </div>
-                                <!-- form-group end.// -->
                             </div>
-                            <!-- form-row end.// -->
-                            <div class="form-group">
-                                <label>Email</label>
-                                <input
-                                    type="email"
-                                    class="form-control"
-                                    placeholder="Seu email"
-                                    v-model="user.email"
-                                />
-                                <small
-                                    class="form-text text-muted"
-                                >Nós nunca compartilharemos seu email com ninguém.</small>
-                                <span v-html="errors['email']" class="error_validation"></span>
-                            </div>
-                            <!-- form-group end.// -->
-                            <!-- form-row.// -->
-                            <div class="form-group">
-                                <label>Senha</label>
-                                <input
-                                    class="form-control"
-                                    type="password"
-                                    placeholder="Senha"
-                                    v-model="user.password"
-                                />
-                                <span v-html="errors['password']" class="error_validation"></span>
-                            </div>
-                            <!-- form-group end.// -->
-                            <div class="form-group">
-                                <button type="submit" class="btn btn-primary btn-block">Cadastrar</button>
-                            </div>
-                            <!-- form-group// -->
                         </form>
-                    </article>
-                    <!-- card-body end .// -->
-                    <div class="border-top card-body text-center">
-                        Já tem uma conta?
-                        <a href="/login">Log In</a>
                     </div>
                 </div>
-                <!-- card.// -->
             </div>
-            <!-- col.//-->
-        </div>
+        </section>
     </div>
 </template>
 
@@ -110,10 +128,10 @@ export default {
 
                 if (response.data['id'] !== undefined) {
                     this.message =
-                        '<span class="alert alert-success">Ative sua conta clicando no link que enviamos para seu email.</span>';
+                        '<span class="alert alert-success">Verifique sua caixa de entrada</span>';
                 } else {
                     this.message =
-                        '<span class="alert alert-danger">Ocorreu um erro, tente novamente em alguns segundos</span>';
+                        '<span class="alert alert-danger">Ocorreu um erro, tente novamente.</span>';
                 }
 
                 this.errors = {};
@@ -121,7 +139,7 @@ export default {
 
                 setTimeout(() => {
                     this.message = '';
-                }, 3000);
+                }, 10000);
             } catch (error) {
                 this.errors = {};
 

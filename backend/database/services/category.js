@@ -4,7 +4,7 @@ const paginate = require('./paginate');
 const get_category = async (slug) => {
     try {
         return await Category.findOne({
-            attributes: ['id'],
+            attributes: ['id', 'name'],
             where: {
                 slug,
             },

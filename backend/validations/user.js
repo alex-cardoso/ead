@@ -3,7 +3,7 @@ const { User } = require('../database/models');
 
 const store = [
     check('name').custom((value, { request }) => {
-        if (!/^[A-Z][a-z]*$/.test(value)) {
+        if (!/^[A-Z][a-z\u00C0-\u024F\u1E00-\u1EFF]*$/.test(value)) {
             throw new Error('Somente a primeira letra maiúscula');
         }
 
@@ -15,11 +15,7 @@ const store = [
     }),
     check('name').not().isEmpty().trim().withMessage('Nome é obrigatório'),
     check('last_name').custom((value, { request }) => {
-        if (!/^[A-Z][a-z]*$/.test(value)) {
-            throw new Error('Somente a primeira letra maiúscula');
-        }
-
-        if (/([a-zA-Z]).*?\1{2,}/.test(value)) {
+        if (/([a-zA-Z\u00C0-\u024F\u1E00-\u1EFF]).*?\1{2,}/.test(value)) {
             throw new Error('Muitas letras repetidas');
         }
 

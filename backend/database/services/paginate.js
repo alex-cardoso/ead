@@ -4,9 +4,10 @@ const paginate = async (Model, options) => {
             options['page'],
             options['per_page']
         );
+
         const data = await Model.findAndCountAll({
-            ...limit_and_offset,
             ...options,
+            ...limit_and_offset,
         });
 
         const total_pages = pages(data['count'], options['per_page']);

@@ -4,14 +4,13 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="section-title">
-                        <h1>KEEP CODING</h1>
+                        <h1>TheCoding</h1>
                         <p>
-                            Todas nosass aulas são gratuitas, mas caso queira ter acesso ao fórum exclusivo de cada aula e material exclusivo, e claro se quiser nos ajudar a continuar criando
+                            Todas nosass aulas são gratuitas, mas caso queira ter acesso ao fórum exclusivo de cada aula e material exclusivo, e claro, se quiser me ajudar a continuar criando
                             cada vez mais conteúdo gratuito, compre a aula que desejar.
                         </p>
                     </div>
                 </div>
-                <!-- Ends: .col-md-12 -->
                 <div class="col-lg-12">
                     <div class="product-list">
                         <div class="tab-content" id="lp-tab-content">
@@ -70,7 +69,9 @@
                                                         <i class="far fa-play-circle"></i> Assistir
                                                     </a>
 
-                                                    <template v-if="!lesson['userHasLesson']">
+                                                    <template
+                                                        v-if="!lesson['userHasLesson'] && is_authenticated"
+                                                    >
                                                         <button-add-cart
                                                             :lesson="lesson['id']"
                                                             class="mt-2"

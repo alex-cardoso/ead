@@ -14,6 +14,7 @@ module.exports = (passport) => {
                 'last_name',
                 'is_admin',
                 'avatar',
+                'createdAt',
             ],
             where: {
                 id,

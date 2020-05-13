@@ -1,12 +1,41 @@
-const { LessonsFavorite } = require('../models');
+const { LessonsFavorite, Lesson, Category, LessonBuyed } = require('../models');
+const paginate = require('./paginate');
 
-const favorites = async (lessonId) => {
+const favorites_from_user = async (userId, page = 1) => {
     try {
-        return await LessonsFavorite.findAll({
+        const options = {
+            per_page: 20,
+            page,
             where: {
-                lessonId,
+                userId,
             },
-        });
+            distinct: true,
+            include: [
+                {
+                    model: Lesson,
+                    as: 'lesson',
+                    include: [
+                        {
+                            attributes: ['userId', 'lessonId'],
+                            model: LessonBuyed,
+                            as: 'lessonBuyed',
+                        },
+                        {
+                            model: Category,
+                            as: 'category',
+                        },
+                        {
+                            attributes: ['lessonId'],
+                            model: LessonsFavorite,
+                            as: 'favorites',
+                        },
+                    ],
+                },
+            ],
+            order: [['id', 'DESC']],
+        };
+
+        return paginate(LessonsFavorite, options);
     } catch (error) {
         console.log(error);
         throw error;
@@ -47,5 +76,5 @@ const create = async (lessonId, userId) => {
 module.exports = {
     create,
     destroy,
-    favorites,
+    favorites_from_user,
 };

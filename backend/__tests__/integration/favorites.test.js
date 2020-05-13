@@ -30,3 +30,13 @@ it('should remove favorite', async (done) => {
     expect(response.status).toBe(200);
     done();
 });
+
+it('should get favorites from user', async (done) => {
+    const response = await request(app).get('/favorites/user').query({
+        userId: 1,
+    });
+
+    expect(response.status).toBe(200);
+    expect(response.body[0]).toBeDefined();
+    done();
+});

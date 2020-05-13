@@ -14,10 +14,11 @@ const data = async (request, response) => {
 
     let categories;
 
-    if (Cache.has('categories')) {
-        categories = Cache.get('categories');
-    } else {
+    if (!Cache.has('categories_menu')) {
         categories = await get_all(page);
+        Cache.set('categories_menu', categories);
+    } else {
+        categories = Cache.get('categories_menu');
     }
 
     response.status(200).json(categories);

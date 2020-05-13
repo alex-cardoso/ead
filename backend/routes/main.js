@@ -47,6 +47,8 @@ const Pagseguro = require('../controllers/main/Pagseguro');
 const Cart = require('../controllers/main/Cart');
 const LessonsBuy = require('../controllers/main/LessonsBuy');
 const Profile = require('../controllers/main/Profile');
+const LessonsUser = require('../controllers/main/LessonsUser');
+const ResetPassword = require('../controllers/main/ResetPassword');
 
 // pegar dados se estiver logado, esses dados podem ser usados nos templates
 module.exports = (passport) => {
@@ -70,7 +72,9 @@ module.exports = (passport) => {
     router.put('/forum/reply/update', ForumReply.update);
     router.post('/forum/reply', ForumReply.store);
     router.get('/user/:id', User.data);
-    router.get('/favorites', Favorite.data);
+    router.get('/favorites/lesson', Lessons.favorites);
+    router.get('/favorites/user', Favorite.user);
+    router.get('/favorites', logged_in, Favorite.index);
     router.post('/favorites', Favorite.store);
     router.delete('/favorites', Favorite.destroy);
     router.get('/category/lessons', Category.data);
@@ -82,7 +86,7 @@ module.exports = (passport) => {
     router.get('/user/activate/:token', User.activate);
     router.get('/contact', Contact.index);
     router.post('/contact', Contact.store);
-    router.get('/buy/credits', Credits.index);
+    router.get('/buy/credits', logged_in, Credits.index);
     router.get('/pagseguro/checkout', Pagseguro.checkout);
     router.post(
         '/pagseguro/webhook',
@@ -97,6 +101,11 @@ module.exports = (passport) => {
     router.get('/profile', logged_in, Profile.index);
     router.put('/profile/update', user_update_validation, Profile.update);
     router.post('/profile/avatar', upload.single('file'), Profile.avatar);
+    router.get('/my/lessons', logged_in, LessonsUser.index);
+    router.get('/my/lessons/data', Lessons.user);
+    router.post('/reset/password', ResetPassword.sendLink);
+    router.get('/reset/password/:token', ResetPassword.edit);
+    router.put('/reset/password', ResetPassword.update);
 
     router.get('*', function (request, response) {
         response.status(400).send('what???');

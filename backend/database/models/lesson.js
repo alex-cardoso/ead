@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         {}
     );
-    Lesson.associate = function(models) {
+    Lesson.associate = function (models) {
         Lesson.belongsTo(models.User, {
             foreignKey: 'userId',
             as: 'user',

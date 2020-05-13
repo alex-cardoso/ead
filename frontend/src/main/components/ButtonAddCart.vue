@@ -25,6 +25,12 @@ export default {
         };
     },
 
+    mounted() {
+        EventBus.$on('removed_lesson_cart', () => {
+            this.lessons = JSON.parse(localStorage.getItem('lessons'));
+        });
+    },
+
     computed: {
         in_cart() {
             return this.lessons.includes(this.lesson);

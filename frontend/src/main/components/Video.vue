@@ -139,7 +139,7 @@ export default {
 
         async get_favorites() {
             try {
-                const response = await http.get('/favorites', {
+                const response = await http.get('/favorites/lesson', {
                     params: {
                         lessonId: this.lesson_id,
                     },

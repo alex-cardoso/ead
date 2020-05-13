@@ -17,7 +17,7 @@ class Cache {
         return this.cache.has(key);
     }
 
-    set(key, value, period = 160) {
+    set(key, value, period = 1800) {
         this.period = period;
         this.cache.set(key, value);
     }

@@ -31,6 +31,8 @@ const currency = (valor) => {
 
         return formatter.format(valor);
     }
+
+    return 'R$ 0.00';
 };
 
 const scroll = (selector) => {

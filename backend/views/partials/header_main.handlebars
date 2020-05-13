@@ -1,23 +1,3 @@
-{{!-- <ul class="d-flex justify-content-between" id="menu_top">
-    <li><a href="/">Home</a></li>
-    <li><a href="/categories">Categorias</a></li>
-    <li><a href="/contact">Contato</a></li>
-    <li><a href="/signup">Cadastro</a></li>
-    {{#if is_authenticated}}
-    <li class="d-flex align-items-center"> <img src="{{ avatar }}" alt="" class="rounded-circle mr-1" width="30"
-            height="30"> Olá,
-        {{ username }} {{ last_name }} |
-        <a href="/buy/credits" style="color:blue;text-decoration:underline;"> {{ credits }}</a> |
-        <a href="/cart" style="color:blue;text-decoration:underline;">Carrinho</a> |
-        <a href="/profile" style="color:blue;text-decoration:underline;">Meus dados</a> | <a href="/logout"
-            style="color:red;text-decoration:underline;">Logout</a>
-    </li>
-    {{else}}
-    <li>Olá, visitante | <a href="/login">Login</a></li>
-    {{/if}}
-</ul> --}}
-
-
 <div class="menu-area">
     <div class="top-menu-area">
         <div class="container-fluid">
@@ -38,7 +18,7 @@
                                         aria-label="Toggle navigation">
                                         <span class="navbar-toggler-icon icon-menu"></span>
                                     </button>
-                                    <!-- Collect the nav links, forms, and other content for toggling -->
+
                                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                                         <ul class="navbar-nav">
                                             <li>
@@ -56,163 +36,178 @@
                                             </li>
                                         </ul>
                                     </div>
-                                    <!-- /.navbar-collapse -->
+
                                 </nav>
                             </div>
                         </div>
 
                         <div class="author-menu">
-                            <!-- start .author-area -->
+
                             <div class="author-area">
                                 <div class="author__notification_area">
                                     <ul>
                                         <menu-cart></menu-cart>
                                     </ul>
                                 </div>
-                                <!--start .author-author__info-->
-                                <div class="author-author__info has_dropdown">
-                                    <div class="author__avatar online">
-                                        <img src="{{ avatar }}" width="50" height="40" alt="user avatar"
-                                            class="rounded-circle">
-                                    </div>
-                                    <div class="dropdown dropdown--author">
-                                        <div class="author-credits d-flex">
-                                            <div class="author__avatar">
-                                                <img src="{{avatar}}" alt="user avatar" class="rounded-circle">
-                                            </div>
-                                            <div class="autor__info">
-                                                {{#if is_authenticated}}
-                                                <p class="name">
-                                                    {{ username }} {{ last_name }}
-                                                </p>
-                                                {{else}}
-                                                Visitante
-                                                {{/if}}
-                                                <p class="amount">{{credits}}</p>
 
-                                            </div>
-                                        </div>
-                                        <ul>
-                                            {{#if is_authenticated}}
-                                            <li>
-                                                <a href="/profile">
-                                                    <span class="icon-user"></span>Profile</a>
-                                            </li>
-                                            <li>
-                                                <a href="/buy/credits">
-                                                    <span class="icon-credit-card"></span>Add Créditos</a>
-                                            </li>
-                                            <li>
-                                                <a href="/favorites">
-                                                    <span class="icon-heart"></span> Favoritos</a>
-                                            </li>
-                                            <li>
-                                                <a href="/logout">
-                                                    <span class="icon-logout"></span>Logout</a>
-                                            </li>
-                                            {{else}}
-                                            <li>
-                                                <a href="/login">
-                                                    <span class="icon-logout"></span>Login</a>
-                                            </li>
+                                <div class="author-author__info has_dropdown">
+                                    {{#if is_authenticated}}
+                                    <div class="author__avatar online">
+                                        {{else}}
+                                        <div class="author__avatar offline">
                                             {{/if}}
-                                        </ul>
-                                    </div>
-                                </div>
-                                <!--end /.author-author__info-->
-                            </div>
-                            <!-- end .author-area -->
-                            <!-- author area restructured for mobile -->
-                            <div class="mobile_content ">
-                                <span class="icon-user menu_icon"></span>
-                                <!-- offcanvas menu -->
-                                <div class="offcanvas-menu closed">
-                                    <span class="icon-close close_menu"></span>
-                                    <div class="author-author__info">
-                                        <div class="author__avatar v_middle">
-                                            <img src="img/user-avater.png" alt="user avatar">
+                                            <img src="{{ avatar }}" width="50" height="40" alt="user avatar"
+                                                class="rounded-circle">
+                                        </div>
+
+                                        <div class="dropdown dropdown--author">
+                                            <div class="author-credits d-flex">
+                                                <div class="author__avatar">
+                                                    <img src="{{avatar}}" alt="user avatar" class="rounded-circle">
+                                                </div>
+                                                <div class="autor__info">
+                                                    {{#if is_authenticated}}
+                                                    <p class="name">
+                                                        {{ username }} {{ last_name }}
+                                                    </p>
+                                                    {{else}}
+                                                    Visitante
+                                                    {{/if}}
+                                                    <p class="amount"><a href="/buy/credits"
+                                                            style="color:#32C9B7;text-decoration:underline">{{credits}}</a>
+                                                    </p>
+
+                                                </div>
+                                            </div>
+                                            <ul>
+                                                {{#if is_authenticated}}
+                                                <li>
+                                                    <a href="/profile">
+                                                        <span class="icon-user"></span>Profile</a>
+                                                </li>
+                                                <li>
+                                                    <a href="/buy/credits">
+                                                        <span class="icon-credit-card"></span>Add Créditos</a>
+                                                </li>
+                                                <li>
+                                                    <a href="/favorites">
+                                                        <span class="icon-heart"></span> Favoritos</a>
+                                                </li>
+                                                <li>
+                                                    <a href="/my/lessons">
+                                                        <span class="icon-social-youtube"></span> Minhas aulas</a>
+                                                </li>
+                                                <li>
+                                                    <a href="/logout">
+                                                        <span class="icon-logout"></span>Logout</a>
+                                                </li>
+                                                {{else}}
+                                                <li>
+                                                    <a href="/signup">
+                                                        <span class="icon-user"></span>Cadastro</a>
+                                                </li>
+                                                <li>
+                                                    <a href="/login">
+                                                        <span class="icon-logout"></span>Login</a>
+                                                </li>
+                                                {{/if}}
+                                            </ul>
                                         </div>
                                     </div>
                                     <!--end /.author-author__info-->
-                                    <div class="author__notification_area">
-                                        <ul>
-                                            <li>
-                                                <a href="/cart">
-                                                    <div class="icon_wrap">
-                                                        <span class="icon-basket"></span>
-                                                        <span class="notification_count purch">2</span>
-                                                    </div>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <!--start .author__notification_area -->
-                                    <div class="dropdown dropdown--author">
-                                        <ul>
-                                            <li>
-                                                <a href="author.html">
-                                                    <span class="icon-user"></span>Profile</a>
-                                            </li>
-                                            <li>
-                                                <a href="dashboard.html">
-                                                    <span class="icon-home"></span> Dashboard</a>
-                                            </li>
-                                            <li>
-                                                <a href="dashboard-setting.html">
-                                                    <span class="icon-settings"></span> Setting</a>
-                                            </li>
-                                            <li>
-                                                <a href="cart.html">
-                                                    <span class="icon-basket"></span>Purchases</a>
-                                            </li>
-                                            <li>
-                                                <a href="favourites.html">
-                                                    <span class="icon-heart"></span> Favourite</a>
-                                            </li>
-                                            <li>
-                                                <a href="dashboard-add-credit.html">
-                                                    <span class="icon-credit-card"></span>Add Credits</a>
-                                            </li>
-                                            <li>
-                                                <a href="dashboard-statement.html">
-                                                    <span class="icon-chart"></span>Sale Statement</a>
-                                            </li>
-                                            <li>
-                                                <a href="dashboard-upload.html">
-                                                    <span class="icon-cloud-upload"></span>Upload Item</a>
-                                            </li>
-                                            <li>
-                                                <a href="dashboard-manage-item.html">
-                                                    <span class="icon-notebook"></span>Manage Item</a>
-                                            </li>
-                                            <li>
-                                                <a href="dashboard-withdrawal.html">
-                                                    <span class="icon-briefcase"></span>Withdrawals</a>
-                                            </li>
-                                            {{#if is_authenticated}}
-                                            <li>
-                                                <a href="/logout">
-                                                    <span class="icon-logout"></span>Logout</a>
-                                            </li>
-                                            {{else}}
-                                            <li>
-                                                <a href="/login">
-                                                    <span class="icon-logout"></span>Login</a>
-                                            </li>
-                                            {{/if}}
-                                        </ul>
+                                </div>
+                                <!-- end .author-area -->
+                                <!-- author area restructured for mobile -->
+                                <div class="mobile_content ">
+                                    <span class="icon-user menu_icon"></span>
+                                    <!-- offcanvas menu -->
+                                    <div class="offcanvas-menu closed">
+                                        <span class="icon-close close_menu"></span>
+                                        <div class="author-author__info">
+                                            <div class="author__avatar v_middle">
+                                                <img src="/img/user-avater.png" alt="user avatar">
+                                            </div>
+                                        </div>
+                                        <!--end /.author-author__info-->
+                                        <div class="author__notification_area">
+                                            <ul>
+                                                <li>
+                                                    <a href="/cart">
+                                                        <div class="icon_wrap">
+                                                            <span class="icon-basket"></span>
+                                                            <span class="notification_count purch">2</span>
+                                                        </div>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <!--start .author__notification_area -->
+                                        <div class="dropdown dropdown--author">
+                                            <ul>
+                                                <li>
+                                                    <a href="author.html">
+                                                        <span class="icon-user"></span>Profile</a>
+                                                </li>
+                                                <li>
+                                                    <a href="dashboard.html">
+                                                        <span class="icon-home"></span> Dashboard</a>
+                                                </li>
+                                                <li>
+                                                    <a href="dashboard-setting.html">
+                                                        <span class="icon-settings"></span> Setting</a>
+                                                </li>
+                                                <li>
+                                                    <a href="cart.html">
+                                                        <span class="icon-basket"></span>Purchases</a>
+                                                </li>
+                                                <li>
+                                                    <a href="favourites.html">
+                                                        <span class="icon-heart"></span> Favourite</a>
+                                                </li>
+                                                <li>
+                                                    <a href="dashboard-add-credit.html">
+                                                        <span class="icon-credit-card"></span>Add Credits</a>
+                                                </li>
+                                                <li>
+                                                    <a href="dashboard-statement.html">
+                                                        <span class="icon-chart"></span>Sale Statement</a>
+                                                </li>
+                                                <li>
+                                                    <a href="dashboard-upload.html">
+                                                        <span class="icon-cloud-upload"></span>Upload Item</a>
+                                                </li>
+                                                <li>
+                                                    <a href="dashboard-manage-item.html">
+                                                        <span class="icon-notebook"></span>Manage Item</a>
+                                                </li>
+                                                <li>
+                                                    <a href="dashboard-withdrawal.html">
+                                                        <span class="icon-briefcase"></span>Withdrawals</a>
+                                                </li>
+                                                {{#if is_authenticated}}
+                                                <li>
+                                                    <a href="/logout">
+                                                        <span class="icon-logout"></span>Logout</a>
+                                                </li>
+                                                {{else}}
+                                                <li>
+                                                    <a href="/login">
+                                                        <span class="icon-logout"></span>Login</a>
+                                                </li>
+                                                {{/if}}
+                                            </ul>
+                                        </div>
                                     </div>
                                 </div>
+                                <!-- end /.mobile_content -->
                             </div>
-                            <!-- end /.mobile_content -->
-                        </div>
 
+                        </div>
                     </div>
+                    <!-- end /.row -->
                 </div>
-                <!-- end /.row -->
+                <!-- end /.container -->
             </div>
-            <!-- end /.container -->
+            <!-- end  -->
         </div>
-        <!-- end  -->
     </div>
-</div>

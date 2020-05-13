@@ -1,11 +1,13 @@
 <template>
     <div>
-        <template v-if="user_data.avatar !== ''">
+        <template v-if="user_data.avatar !== '' && user_data.avatar !== null">
             <img :src="user_data.avatar" ref="avatar" class="w-100" />
         </template>
-        <template v-else>Você ainda não escolheu uma foto</template>
-        <hr />
-        <form action enctype="multipart/form-data" @submit.prevent="changeAvatar">
+        <template v-else>
+            <img src="/uploads/avatar_resized/default.png" ref="avatar" class="w-100" />
+        </template>
+
+        <form action enctype="multipart/form-data" @submit.prevent="changeAvatar" class="mt-3">
             <input type="file" ref="file_avatar" />
             <button type="sybmit" class="btn btn-outline-success w-100 mt-2">Alterar</button>
         </form>
@@ -34,16 +36,25 @@ export default {
 
                 if (file === undefined) {
                     this.message = `<span class="alert alert-danger mb-2 text-center w-100">Escolha uma foto</span>`;
+                    setTimeout(() => {
+                        this.message = null;
+                    }, 3000);
                     return false;
                 }
 
                 if (!this.acceptedExtensions.includes(file.type)) {
                     this.message = `<span class="alert alert-danger mb-2 text-center w-100">Extensão não aceita</span>`;
+                    setTimeout(() => {
+                        this.message = null;
+                    }, 3000);
                     return false;
                 }
 
-                if (this.acceptedSize < file.size) {
+                if (this.acceptedSize > file.size) {
                     this.message = `<span class="alert alert-danger mb-2 text-center w-100">Tamanho não aceito</span>`;
+                    setTimeout(() => {
+                        this.message = null;
+                    }, 3000);
                     return false;
                 }
 

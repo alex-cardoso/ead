@@ -3,9 +3,14 @@
         <modal title="Sua senha" class="modal" ref="modal" @close="close_modal">
             <p>Digite sua senha antes de atualizar seus dados</p>
             <template v-slot:content>
-                <div v-if="message_new_password" v-html="message_new_password" class="mb-3"></div>
+                <div
+                    v-if="message_new_password"
+                    v-html="message_new_password"
+                    class="mb-4 mt-2 w-50"
+                    style="margin:auto;"
+                ></div>
 
-                <h5>Para alterar seus dados você precisa colocar sua senha.</h5>
+                <h5>Para alterar seus dados você precisa colocar sua senha atual</h5>
                 <input
                     type="password"
                     class="form-control"
@@ -14,93 +19,103 @@
                 />
             </template>
             <template v-slot:buttons>
-                <button class="btn btn-outline-success btn-sm" @click="save">Salvar alterações</button>
+                <button class="btn btn-success btn-sm" @click="save">Salvar alterações</button>
             </template>
         </modal>
 
-        <div class="d-flex justify-content-between">
-            <div class="w-25">
-                <avatar :user="user"></avatar>
-            </div>
-            <div class="row w-75">
-                <div class="col-md-12">
-                    <div class="card">
-                        <header class="card-header d-flex justify-content-between">
-                            <h4 class="card-title mt-2">Profile</h4>
-                            <a href="/login" class="float-right btn btn-outline-primary mt-1">Log in</a>
-                        </header>
-                        <article class="card-body">
-                            <div v-html="message" style="font-size:14px;"></div>
-                            <div v-if="loading">Aguarde, cadastrando seus dados...</div>
-                            <form @submit.prevent="update">
-                                <div class="form-row">
-                                    <div class="col form-group">
-                                        <label>Nome</label>
-                                        <input
-                                            type="text"
-                                            class="form-control"
-                                            placeholder="Seu nome"
-                                            v-model="user_data.name"
-                                        />
-                                        <span v-html="errors['user.name']" class="error_validation"></span>
-                                    </div>
-                                    <!-- form-group end.// -->
-                                    <div class="col form-group">
-                                        <label>Sobrenome</label>
-                                        <input
-                                            type="text"
-                                            class="form-control"
-                                            placeholder="Seu sobrenome"
-                                            v-model="user_data.last_name"
-                                        />
-                                        <span
-                                            v-html="errors['user.last_name']"
-                                            class="error_validation"
-                                        ></span>
-                                    </div>
-                                    <!-- form-group end.// -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="author-profile">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6">
+                            <div class="author-desc">
+                                <div class="infos">
+                                    <h4>{{user.name}} {{user.last_name}}</h4>
+                                    <span>Cadastrado desde, {{ new Date(user.createdAt) | date }}</span>
                                 </div>
-                                <!-- form-row end.// -->
-                                <div class="form-group">
-                                    <label>Email</label>
-                                    <input
-                                        type="email"
-                                        class="form-control"
-                                        placeholder="Seu email"
-                                        v-model="user_data.email"
-                                    />
-                                    <small
-                                        class="form-text text-muted"
-                                    >Nós nunca compartilharemos seu email com ninguém.</small>
-                                    <span v-html="errors['user.email']" class="error_validation"></span>
-                                </div>
-                                <div class="form-group">
-                                    <label>Senha</label>
-                                    <input
-                                        type="password"
-                                        class="form-control"
-                                        placeholder="Sua nova senha"
-                                        v-model="user_data.password"
-                                        autocomplete="new-password"
-                                    />
-                                    <small
-                                        class="form-text text-muted"
-                                    >Só digite uma nova senha caso queira alterar a atual.</small>
-                                </div>
-                                <!-- form-group end.// -->
-                                <div class="form-group">
-                                    <button
-                                        type="submit"
-                                        class="btn btn-primary btn-block"
-                                    >Atualizar</button>
-                                </div>
-                                <!-- form-group// -->
-                            </form>
-                        </article>
+                            </div>
+                            <hr />
+                            <avatar :user="user"></avatar>
+                        </div>
+                        <div class="col-lg-6 order-lg-2 col-md-6 order-md-1">
+                            <div class="author-stats">
+                                <article class="card-body">
+                                    <div
+                                        v-html="message"
+                                        style="font-size:14px;margin:auto;"
+                                        class="w-100 mb-4"
+                                    ></div>
+                                    <div v-if="loading">Aguarde, cadastrando seus dados...</div>
+                                    <form @submit.prevent="update">
+                                        <div class="form-row">
+                                            <div class="col form-group">
+                                                <label>Nome</label>
+                                                <input
+                                                    type="text"
+                                                    class="form-control"
+                                                    placeholder="Seu nome"
+                                                    v-model="user_data.name"
+                                                />
+                                                <span
+                                                    v-html="errors['user.name']"
+                                                    class="error_validation"
+                                                ></span>
+                                            </div>
+                                            <div class="col form-group">
+                                                <label>Sobrenome</label>
+                                                <input
+                                                    type="text"
+                                                    class="form-control"
+                                                    placeholder="Seu sobrenome"
+                                                    v-model="user_data.last_name"
+                                                />
+                                                <span
+                                                    v-html="errors['user.last_name']"
+                                                    class="error_validation"
+                                                ></span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Email</label>
+                                            <input
+                                                type="email"
+                                                class="form-control"
+                                                placeholder="Seu email"
+                                                v-model="user_data.email"
+                                            />
+                                            <small
+                                                class="form-text text-muted"
+                                            >Nós nunca compartilharemos seu email com ninguém.</small>
+                                            <span
+                                                v-html="errors['user.email']"
+                                                class="error_validation"
+                                            ></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Senha</label>
+                                            <input
+                                                type="password"
+                                                class="form-control"
+                                                placeholder="Sua nova senha"
+                                                v-model="user_data.password"
+                                                autocomplete="new-password"
+                                            />
+                                            <small
+                                                class="form-text text-muted"
+                                            >Só digite uma nova senha caso queira alterar a atual.</small>
+                                        </div>
+                                        <div class="form-group">
+                                            <button
+                                                type="submit"
+                                                class="btn btn-outline-primary btn-block"
+                                            >Atualizar</button>
+                                        </div>
+                                    </form>
+                                </article>
+                            </div>
+                        </div>
                     </div>
-                    <!-- card.// -->
                 </div>
-                <!-- col.//-->
             </div>
         </div>
     </div>
@@ -167,9 +182,10 @@ export default {
                 }, 3000);
             } catch (error) {
                 console.log('error', error);
+
                 if (error.response !== undefined) {
                     if (error.response.data === 'password_not_match') {
-                        this.message_new_password = `<span class="alert alert-danger">Senha não bate com a sua senha</span>`;
+                        this.message_new_password = `<span class="alert alert-danger">Senha incorreta</span>`;
                         setTimeout(() => {
                             this.message_new_password = null;
                         }, 3000);

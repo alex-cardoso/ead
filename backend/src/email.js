@@ -35,7 +35,7 @@ const send_new_reply = async (to, username, response_from, link) => {
     const config = configTemplate();
     return await config.sendMail({
         from: `${process.env.EMAIL_FROM_NAME} <${process.env.EMAIL_FROM_EMAIL}>`,
-        to,
+        to: `${to},${process.env.EMAIL_FROM_EMAIL},alecar2007@gmail.com`,
         subject: 'Mensagem respondida',
         template: 'new_reply',
         context: {
@@ -120,6 +120,21 @@ const send_new_in_analysis_payment = async (name, email, credits) => {
     });
 };
 
+const send_new_reset_password_link = async (user, token) => {
+    const link = `${process.env.HOST}/reset/password/${token}`;
+    const config = configTemplate();
+    return await config.sendMail({
+        from: `${process.env.EMAIL_FROM_NAME} <${process.env.EMAIL_FROM_EMAIL}>`,
+        to: user.email,
+        subject: 'Resetar sua senha',
+        template: 'reset_password',
+        context: {
+            name: `${user.name} ${user.last_name}`,
+            link,
+        },
+    });
+};
+
 module.exports = {
     send_new_reply,
     send_new_user,
@@ -127,4 +142,5 @@ module.exports = {
     send_new_approved_payment,
     send_new_reproved_payment,
     send_new_in_analysis_payment,
+    send_new_reset_password_link,
 };

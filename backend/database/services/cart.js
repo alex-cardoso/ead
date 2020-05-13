@@ -2,7 +2,6 @@ const { Lesson, Category } = require('../models');
 
 const lessons = async (lessons) => {
     try {
-        console.log(lessons);
         return await Lesson.findAll({
             where: {
                 id: lessons,

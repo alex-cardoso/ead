@@ -1,15 +1,17 @@
 <template>
-    <b-pagination
-        v-model="currentPage"
-        :total-rows="count"
-        :per-page="per_page"
-        limit="7"
-        first-text="Prim"
-        prev-text="Ant"
-        next-text="Próx"
-        last-text="Últ"
-        @input="change_page"
-    />
+    <div class="mb-5">
+        <b-pagination
+            v-model="currentPage"
+            :total-rows="count"
+            :per-page="per_page"
+            limit="7"
+            first-text="Prim"
+            prev-text="Ant"
+            next-text="Próx"
+            last-text="Últ"
+            @input="change_page"
+        />
+    </div>
 </template>
 
 <script>
