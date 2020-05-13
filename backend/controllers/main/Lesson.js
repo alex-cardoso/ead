@@ -9,19 +9,11 @@ const show = async (request, response) => {
 
     response.render('../views/main/lesson', {
         layout: 'main',
-        is_authenticated: !!request.user,
         title: process.env.PAGE_TITLE,
         lesson: {
-            id: JSON.stringify(lesson['id']),
             title: lesson.title,
-            value: lesson.value,
-            slug: JSON.stringify(lesson.slug),
-            description: lesson.description,
-            embed: JSON.stringify(lesson.embed),
-            category: lesson['category']
-                ? JSON.stringify(lesson['category'])
-                : null,
-            buyed_lesson: lesson['lessonBuyed'].length,
+            is_authenticated: !!request.user,
+            lesson_data: JSON.stringify(lesson),
         },
     });
 };

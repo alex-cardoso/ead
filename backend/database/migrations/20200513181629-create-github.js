@@ -1,25 +1,22 @@
 module.exports = {
     up: (queryInterface, Sequelize) => {
-        return queryInterface.createTable('checkouts', {
+        return queryInterface.createTable('githubs', {
             id: {
                 allowNull: false,
                 autoIncrement: true,
                 primaryKey: true,
                 type: Sequelize.INTEGER,
             },
-            userId: {
+            lessonId: {
                 type: Sequelize.INTEGER,
                 references: {
-                    model: 'users',
+                    model: 'lessons',
                     key: 'id',
                 },
                 onDelete: 'CASCADE',
             },
-            token: {
+            link: {
                 type: Sequelize.STRING,
-            },
-            value: {
-                type: Sequelize.DECIMAL(10, 2),
             },
             createdAt: {
                 allowNull: false,
@@ -36,6 +33,6 @@ module.exports = {
         });
     },
     down: (queryInterface, Sequelize) => {
-        return queryInterface.dropTable('checkouts');
+        return queryInterface.dropTable('githubs');
     },
 };

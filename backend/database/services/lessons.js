@@ -4,6 +4,7 @@ const {
     LessonBuyed,
     Category,
     LessonsFavorite,
+    Github,
 } = require('../models');
 const paginate = require('./paginate');
 
@@ -185,6 +186,11 @@ const find_lesson = async (slug, user) => {
                     },
                 },
                 {
+                    attributes: ['userId', 'lessonId'],
+                    model: LessonBuyed,
+                    as: 'lessonBuyedFromUsers',
+                },
+                {
                     attributes: ['id', 'name', 'slug'],
                     model: Category,
                     as: 'category',
@@ -193,6 +199,11 @@ const find_lesson = async (slug, user) => {
                     attributes: ['id', 'userId'],
                     model: LessonsFavorite,
                     as: 'favorites',
+                },
+                {
+                    attributes: ['lessonId', 'link'],
+                    model: Github,
+                    as: 'github',
                 },
             ],
         });

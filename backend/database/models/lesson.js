@@ -29,10 +29,21 @@ module.exports = (sequelize, DataTypes) => {
             onDelete: 'CASCADE',
         });
 
+        Lesson.hasMany(models.LessonBuyed, {
+            foreignKey: 'lessonId',
+            as: 'lessonBuyedFromUsers',
+            onDelete: 'CASCADE',
+        });
+
         Lesson.hasMany(models.LessonsFavorite, {
             foreignKey: 'lessonId',
             as: 'favorites',
             onDelete: 'CASCADE',
+        });
+
+        Lesson.hasOne(models.Github, {
+            foreignKey: 'lessonId',
+            as: 'github',
         });
     };
     return Lesson;

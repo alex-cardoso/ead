@@ -11,7 +11,6 @@ Vue.component('b-pagination', BPagination);
 Vue.component('b-spinner', BSpinner);
 
 // Components
-import ButtonBuyLesson from './components/ButtonBuyLesson';
 import CategoriesList from './components/CategoriesList';
 import ForumLesson from './components/ForumLesson';
 import LessonsCategory from './components/LessonsCategory';
@@ -31,6 +30,7 @@ import MenuCart from './components/MenuCart';
 import Favorites from './components/Favorites';
 import LessonsUser from './components/LessonsUser';
 import ChangePassword from './components/ChangePassword';
+import SidebarLesson from './components/SidebarLesson';
 
 // Vuex
 import Vuex from 'vuex';
@@ -60,7 +60,6 @@ new Vue({
         'lessons-video-category': LessonsVideoCategory,
         'lessons-category': LessonsCategory,
         'forum-lesson': ForumLesson,
-        'button-buy-lesson': ButtonBuyLesson,
         'categories-list': CategoriesList,
         search: Search,
         signup: Signup,
@@ -74,5 +73,6 @@ new Vue({
         profile: Profile,
         'lessons-user': LessonsUser,
         'change-password': ChangePassword,
+        'sidebar-lesson': SidebarLesson,
     },
 });

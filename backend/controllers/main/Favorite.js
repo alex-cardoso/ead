@@ -36,7 +36,6 @@ const user = async (request, response) => {
         const favorites = await favorites_from_user(user, page);
 
         favorites['rows'].map((lesson_data) => {
-            lesson_data['lesson'].setDataValue('userHasLesson', false);
             lesson_data['lesson']['lessonBuyed'].map((lesson) => {
                 if (lesson['userId'] === user) {
                     lesson_data['lesson'].setDataValue('userHasLesson', true);

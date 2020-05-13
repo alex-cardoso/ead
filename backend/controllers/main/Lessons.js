@@ -2,11 +2,8 @@ const {
     latest: latest_lessons,
     category_for_list_in_video: category_lessons,
     my: user_lessons,
-} = require('../../database/services/lessons');
-
-const {
     favorites: favorites_data,
-} = require('../../database/services/favorites');
+} = require('../../database/services/lessons');
 
 const latest = async (request, response) => {
     try {
@@ -15,8 +12,8 @@ const latest = async (request, response) => {
 
         lessons.map((lesson_data) => {
             lesson_data['lessonBuyed'].map((lesson) => {
-                lesson_data.setDataValue('userHasLesson', false);
                 if (lesson['userId'] === user) {
+                    // console.log(lesson['userId'], user, lesson['lessonId']);
                     lesson_data.setDataValue('userHasLesson', true);
                 }
                 return lesson;

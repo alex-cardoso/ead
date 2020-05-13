@@ -74,6 +74,7 @@ export default {
                 if (response.data.includes(1)) {
                     this.message =
                         '<span class="alert alert-success" role="success">Senha atualizada com sucesso.</span>';
+
                     setTimeout(() => {
                         this.message = null;
                         this.updated = true;
