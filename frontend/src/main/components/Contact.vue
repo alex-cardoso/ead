@@ -1,17 +1,33 @@
 <template>
     <div>
-        <span v-html="message_validate"></span>
-        <div v-if="sending">Aguarde, mensagem está sendo enviada.</div>
-        <form @submit.prevent="send">
-            <textarea
-                type="text"
-                class="form-control"
-                v-model="message"
-                rows="10"
-                placeholder="Qual sua dúvida?..."
-            ></textarea>
-            <button type="submit" class="btn btn-outline-success float-right mt-2">Enviar</button>
-        </form>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="section-title mt-4">
+                        <h1>Entre em contato</h1>
+                        <p>Digite no campo abaixo sua mensagem, que responderei o mais breve possível.</p>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12 mb-4">
+                    <form @submit.prevent="send">
+                        <textarea
+                            type="text"
+                            class="form-control w-100"
+                            v-model="message"
+                            rows="10"
+                            placeholder="Qual sua dúvida?..."
+                        ></textarea>
+                        <div v-if="sending">Aguarde, mensagem está sendo enviada.</div>
+                        <template v-if="message_validate">
+                            <span v-html="message_validate" class="mt-4 float-right"></span>
+                        </template>
+                        <template v-else>
+                            <button type="submit" class="btn btn-primary float-right mt-2">Enviar</button>
+                        </template>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 

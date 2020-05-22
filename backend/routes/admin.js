@@ -2,16 +2,16 @@ const express = require('express');
 const router = express.Router();
 
 // controllers
-const Admin = require('../controllers/admin/Admin');
+const Category = require('../controllers/admin/Category');
 
 // pegar dados se estiver logado, esses dados podem ser usados nos templates
-module.exports = (passport) => {
-    router.get('/', Admin.index);
-    router.post('/login', passport.authenticate('admin'), Admin.login);
 
-    router.get('*', function (req, res) {
-        res.send('what???', 404);
-    });
+router.get('/category', Category.index);
+router.post('/category/store', Category.store);
+router.delete('/category/destroy', Category.destroy);
 
-    return router;
-};
+router.get('*', function (req, res) {
+    res.send('what???', 404);
+});
+
+module.exports = router;

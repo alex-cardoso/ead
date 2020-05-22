@@ -1,5 +1,6 @@
 const {
     check_password_and_update_user,
+    update_receive_email_reply_forum,
 } = require('../../database/services/profile');
 
 const {
@@ -54,6 +55,24 @@ const update = async (request, response) => {
     }
 };
 
+const update_receive_email_reply = async (request, response) => {
+    try {
+        const { receive_email_reply_forum } = request.body;
+
+        const id = request['user']['id'];
+
+        const updated = await update_receive_email_reply_forum(
+            id,
+            receive_email_reply_forum
+        );
+
+        response.status(200).json(updated);
+    } catch (error) {
+        console.log(error);
+        response.status(400).json(error);
+    }
+};
+
 const avatar = async (request, response) => {
     try {
         const { filename: image } = request.file;
@@ -88,4 +107,4 @@ const avatar = async (request, response) => {
     }
 };
 
-module.exports = { index, update, avatar };
+module.exports = { index, update, avatar, update_receive_email_reply };

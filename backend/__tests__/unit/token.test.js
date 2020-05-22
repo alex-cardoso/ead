@@ -16,7 +16,7 @@ it('should store token', async () => {
     expect(created).toHaveProperty('id');
 });
 
-it('should get error on validate reset password token', async () => {
+it('should get error of token_invalid', async () => {
     try {
         const token = await verify_token(
             '1300442142404412232030331589303877932'

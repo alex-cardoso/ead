@@ -77,7 +77,7 @@ export default {
 
                 if (this.price <= 0) {
                     this.paying = false;
-                    this.message = `<span class="alert alert-warning">O valor tem que ser maior que ${this.price}</span>`;
+                    this.message = `<div class="alert alert-warning w-100" role="alert">O valor tem que ser maior que ${this.price}</div>`;
                     setTimeout(() => {
                         this.message = null;
                     }, 3000);
@@ -94,7 +94,7 @@ export default {
                 const redirect = response.data['link'];
 
                 this.message =
-                    '<span class="alert alert-success">Em 3 segundos você será redirecionado para o pagseguro para finalizar sua compra dos créditos.</span>';
+                    '<div class="alert alert-success w-100" role="alert">Em 3 segundos você será redirecionado para o pagseguro para finalizar sua compra dos créditos.</div>';
 
                 setTimeout(() => {
                     window.open(redirect + code, '_blank');
@@ -102,15 +102,12 @@ export default {
                     this.paying = false;
                 }, 3000);
             } catch (error) {
-                if (
-                    error.response !== undefined &&
-                    error.response.data === 'not_logged'
-                ) {
+                if (error.response !== undefined && error.response.data === 'not_logged') {
                     this.message =
-                        '<span class="alert alert-danger">Você precisa estar logado.</span>';
+                        '<div class="alert alert-danger w-100" role="alert">Você precisa estar logado.</div>';
                 } else {
                     this.message =
-                        '<span class="alert alert-danger">Ocorreu um erro ao realizar o checkout, tente novamente em alguns segundos</span>';
+                        '<div class="alert alert-danger w-100" role="alert">Ocorreu um erro ao realizar o checkout, tente novamente em alguns segundos</div>';
                 }
 
                 setTimeout(() => {

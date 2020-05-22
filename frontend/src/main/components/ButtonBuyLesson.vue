@@ -1,5 +1,5 @@
 <template>
-    <button @click="buy_lesson" ref="button_buy_lesson" :class="{'btn btn-outline-danger':error}">
+    <button @click="buy_lesson" ref="button_buy_lesson" :class="{'btn btn-danger':error}">
         <template v-if="message">{{message}}</template>
         <template v-else>
             <slot></slot>

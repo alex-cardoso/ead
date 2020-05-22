@@ -12,4 +12,5 @@ module.exports = {
         semi: ['error', 'always'],
         quotes: ['error', 'single'],
     },
+    // extends: ['prettier', 'prettier/react', 'airbnb'],
 };

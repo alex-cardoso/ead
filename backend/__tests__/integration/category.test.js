@@ -39,3 +39,32 @@ it('should get categories', async (done) => {
 
     done();
 });
+
+it('should create category', async (done) => {
+    const random_category = Math.ceil(Math.random() * 100);
+
+    const response = await request(app)
+        .post('/admin/category/store')
+        .send({
+            category: {
+                name: 'Category Teste ' + random_category,
+                slug: 'category-teste-' + random_category,
+            },
+        });
+
+    expect(response.status).toBe(200);
+    expect(response.body['id']).toBeDefined();
+
+    done();
+});
+
+it('should delete category', async (done) => {
+    const response = await request(app).delete('/admin/category/destroy').query({
+        id: 19,
+    });
+
+    expect(response.status).toBe(200);
+    expect(response.body).toBe(1);
+
+    done();
+});

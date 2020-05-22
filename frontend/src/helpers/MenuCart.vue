@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import http from '../../http';
+import http from '../http';
 
 export default {
     data() {
@@ -67,9 +67,7 @@ export default {
     },
 
     mounted() {
-        this.lessons_in_cart = localStorage.getItem('lessons')
-            ? JSON.parse(localStorage.getItem('lessons'))
-            : [];
+        this.lessons_in_cart = localStorage.getItem('lessons') ? JSON.parse(localStorage.getItem('lessons')) : [];
         this.get_lessons_in_cart();
 
         EventBus.$on('added_cart', lessons => {
@@ -106,19 +104,14 @@ export default {
         remove(lesson, index_from_list_lessons) {
             this.lessons_in_cart = JSON.parse(localStorage.getItem('lessons'));
 
-            const index_from_lessons_in_cart = this.lessons_in_cart.findIndex(
-                lesson_from_cart => {
-                    return lesson_from_cart === lesson['id'];
-                }
-            );
+            const index_from_lessons_in_cart = this.lessons_in_cart.findIndex(lesson_from_cart => {
+                return lesson_from_cart === lesson['id'];
+            });
 
             this.lessons.splice(index_from_list_lessons, 1);
             this.lessons_in_cart.splice(index_from_lessons_in_cart, 1);
 
-            localStorage.setItem(
-                'lessons',
-                JSON.stringify(this.lessons_in_cart)
-            );
+            localStorage.setItem('lessons', JSON.stringify(this.lessons_in_cart));
 
             EventBus.$emit('removed_lesson_cart', index_from_list_lessons);
         },

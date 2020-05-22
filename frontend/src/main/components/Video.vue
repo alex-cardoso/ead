@@ -3,7 +3,7 @@
         <div>
             <iframe
                 width="100%"
-                height="450"
+                :height="!show_sidebar_from_sidebar ? 450 : 600"
                 :src="`http://www.youtube.com/embed/${lesson.embed}`"
                 frameborder="0"
                 allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
@@ -36,7 +36,7 @@
                     <template v-if="is_authenticated">
                         <template v-if="favorited !== undefined && favorited.length">
                             <button
-                                class="btn btn-danger btn-sm"
+                                class="btn btn-primary btn-sm"
                                 @click="remove_favorited(favorited[0]['id'])"
                             >
                                 <i class="far fa-heart"></i>
@@ -44,7 +44,7 @@
                             </button>
                         </template>
                         <template v-else>
-                            <button class="btn btn-danger btn-sm" @click="add_favorited">
+                            <button class="btn btn-primary btn-sm" @click="add_favorited">
                                 <i class="far fa-heart"></i>
                                 Colocar como favorito
                             </button>
@@ -94,6 +94,7 @@
                             role="tab"
                             data-toggle="tab"
                             aria-selected="true"
+                            @click="tab_active('details')"
                         >
                             <span class="icon icon-docs"></span> Detalhes da aula
                         </a>
@@ -105,8 +106,9 @@
                             aria-controls="product-comment"
                             role="tab"
                             data-toggle="tab"
+                            @click="tab_active('forum')"
                         >
-                            <span class="icon icon-bubbles"></span> Comments
+                            <span class="icon icon-bubbles"></span> Fórum
                         </a>
                     </li>
                 </ul>
@@ -120,8 +122,17 @@
                     aria-labelledby="tab1"
                 >
                     <div class="tab-content-wrapper">
-                        <h3>Detalhes da aula</h3>
-                        <p class="p-bottom-30" v-html="lesson['description']"></p>
+                        <template v-if="lesson['lessonBuyed'].length">
+                            <h3>Detalhes da aula</h3>
+                            <p class="p-bottom-30" v-html="lesson['description']"></p>
+                        </template>
+                        <template v-else>
+                            <div class="tab-content-wrapper">
+                                <div class="alert alert-info" role="alert">
+                                    <strong>Atenção!</strong> Você precisa ter adquirido essa aula para ver o conteúdo da descrição.
+                                </div>
+                            </div>
+                        </template>
                     </div>
                 </div>
                 <!-- ends: .tab-content -->
@@ -131,343 +142,16 @@
                     role="tabpanel"
                     aria-labelledby="tab2"
                 >
-                    <div class="thread">
-                        <ul class="media-list thread-list">
-                            <li class="single-thread">
-                                <div class="media">
-                                    <div class="media-left">
-                                        <a href="#">
-                                            <img
-                                                class="media-object"
-                                                src="/img/m1.png"
-                                                alt="Commentator Avatar"
-                                            />
-                                        </a>
-                                    </div>
-                                    <div class="media-body">
-                                        <div>
-                                            <div class="media-heading">
-                                                <a href="author.html">
-                                                    <h4>Themexylum</h4>
-                                                </a>
-                                                <span>9 Hours Ago</span>
-                                            </div>
-                                            <a href="#" class="reply-link">Reply</a>
-                                        </div>
-                                        <p>
-                                            Nunc placerat mi id nisi interdum mollis. Praesent pharetra, justo ut
-                                            sceleris que the mattis, leo quam aliquet congue placerat mi id nisi
-                                            interdum mollis.
-                                        </p>
-                                    </div>
-                                </div>
-                                <!-- ends: .media -->
-                                <!-- nested comment markup / replies -->
-                                <ul class="children">
-                                    <li class="single-thread depth-2">
-                                        <div class="media">
-                                            <div class="media-left">
-                                                <a href="#">
-                                                    <img
-                                                        class="media-object"
-                                                        src="/img/m2.png"
-                                                        alt="Commentator Avatar"
-                                                    />
-                                                </a>
-                                            </div>
-                                            <div class="media-body">
-                                                <div class="media-heading">
-                                                    <h4>AazzTech</h4>
-                                                    <span>6 Hours Ago</span>
-                                                </div>
-                                                <span class="comment-tag author">Author</span>
-                                                <p>
-                                                    Nunc placerat mi id nisi interdum mollis. Praesent pharetra,
-                                                    justo ut sceleris que the mattis, leo quam aliquet congue
-                                                    placerat mi id nisi interdum mollis.
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="single-thread depth-2">
-                                        <div class="media">
-                                            <div class="media-left">
-                                                <a href="#">
-                                                    <img
-                                                        class="media-object"
-                                                        src="/img/m1.png"
-                                                        alt="Commentator Avatar"
-                                                    />
-                                                </a>
-                                            </div>
-                                            <div class="media-body">
-                                                <div class="media-heading">
-                                                    <h4>Themexylum</h4>
-                                                    <span>9 Hours Ago</span>
-                                                </div>
-                                                <p>
-                                                    Nunc placerat mi id nisi interdum mollis. Praesent pharetra,
-                                                    justo ut sceleris que the mattis, leo quam aliquet congue
-                                                    placerat mi id nisi interdum mollis.
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                                <!-- ends: .children -->
-                                <!-- comment reply -->
-                                <div class="media depth-2 reply-comment">
-                                    <div class="media-left">
-                                        <a href="#">
-                                            <img
-                                                class="media-object"
-                                                src="/img/m2.png"
-                                                alt="Commentator Avatar"
-                                            />
-                                        </a>
-                                    </div>
-                                    <div class="media-body">
-                                        <form action="#" class="comment-reply-form">
-                                            <textarea
-                                                class="bla"
-                                                name="reply-comment"
-                                                placeholder="Write your comment..."
-                                            ></textarea>
-                                            <button class="btn btn--md btn-primary">Post Comment</button>
-                                        </form>
-                                    </div>
-                                </div>
-                                <!-- comment reply -->
-                            </li>
-                            <!-- ends: .single-thread-->
-                            <li class="single-thread">
-                                <div class="media">
-                                    <div class="media-left">
-                                        <a href="#">
-                                            <img
-                                                class="media-object"
-                                                src="/img/m2.png"
-                                                alt="Commentator Avatar"
-                                            />
-                                        </a>
-                                    </div>
-                                    <div class="media-body">
-                                        <div>
-                                            <div class="media-heading">
-                                                <a href="author.html">
-                                                    <h4>EchoTheme</h4>
-                                                </a>
-                                                <span>9 Hours Ago</span>
-                                            </div>
-                                            <a href="#" class="reply-link">Reply</a>
-                                        </div>
-                                        <p>
-                                            Nunc placerat mi id nisi interdum mollis. Praesent pharetra, justo ut
-                                            sceleris que the mattis, leo quam aliquet congue placerat mi id nisi
-                                            interdum mollis.
-                                        </p>
-                                    </div>
-                                </div>
-                                <!-- ends: .media -->
-                                <!-- nested comment markup / replies -->
-                                <!-- comment reply -->
-                                <div class="media depth-2 reply-comment">
-                                    <div class="media-left">
-                                        <a href="#">
-                                            <img
-                                                class="media-object"
-                                                src="/img/m2.png"
-                                                alt="Commentator Avatar"
-                                            />
-                                        </a>
-                                    </div>
-                                    <div class="media-body">
-                                        <form action="#" class="comment-reply-form">
-                                            <textarea
-                                                class="bla"
-                                                name="reply-comment"
-                                                placeholder="Write your comment..."
-                                            ></textarea>
-                                            <button class="btn btn--md btn-primary">Post Comment</button>
-                                        </form>
-                                    </div>
-                                </div>
-                                <!-- comment reply -->
-                            </li>
-                            <!-- ends: .single-thread-->
-                            <li class="single-thread">
-                                <div class="media">
-                                    <div class="media-left">
-                                        <a href="#">
-                                            <img
-                                                class="media-object"
-                                                src="/img/m3.png"
-                                                alt="Commentator Avatar"
-                                            />
-                                        </a>
-                                    </div>
-                                    <div class="media-body">
-                                        <div>
-                                            <div class="media-heading">
-                                                <a href="author.html">
-                                                    <h4>SnazzyTheme</h4>
-                                                </a>
-                                                <span>9 Hours Ago</span>
-                                            </div>
-                                            <a href="#" class="reply-link">Reply</a>
-                                        </div>
-                                        <p>
-                                            Nunc placerat mi id nisi interdum mollis. Praesent pharetra, justo ut
-                                            sceleris que the mattis, leo quam aliquet congue placerat mi id nisi
-                                            interdum mollis.
-                                        </p>
-                                    </div>
-                                </div>
-                                <!-- ends: .media -->
-                                <!-- nested comment markup / replies -->
-                                <!-- comment reply -->
-                                <div class="media depth-2 reply-comment">
-                                    <div class="media-left">
-                                        <a href="#">
-                                            <img
-                                                class="media-object"
-                                                src="/img/m2.png"
-                                                alt="Commentator Avatar"
-                                            />
-                                        </a>
-                                    </div>
-                                    <div class="media-body">
-                                        <form action="#" class="comment-reply-form">
-                                            <textarea
-                                                class="bla"
-                                                name="reply-comment"
-                                                placeholder="Write your comment..."
-                                            ></textarea>
-                                            <button class="btn btn--md btn-primary">Post Comment</button>
-                                        </form>
-                                    </div>
-                                </div>
-                                <!-- comment reply -->
-                            </li>
-                            <!-- ends: .single-thread-->
-                            <li class="single-thread">
-                                <div class="media">
-                                    <div class="media-left">
-                                        <a href="#">
-                                            <img
-                                                class="media-object"
-                                                src="/img/m4.png"
-                                                alt="Commentator Avatar"
-                                            />
-                                        </a>
-                                    </div>
-                                    <div class="media-body">
-                                        <div>
-                                            <div class="media-heading">
-                                                <a href="author.html">
-                                                    <h4>ThemeValley</h4>
-                                                </a>
-                                                <span>9 Hours Ago</span>
-                                            </div>
-                                            <a href="#" class="reply-link">Reply</a>
-                                        </div>
-                                        <p>
-                                            Nunc placerat mi id nisi interdum mollis. Praesent pharetra, justo ut
-                                            sceleris que the mattis, leo quam aliquet congue placerat mi id nisi
-                                            interdum mollis.
-                                        </p>
-                                    </div>
-                                </div>
-                                <!-- ends: .media -->
-                                <!-- nested comment markup / replies -->
-                                <!-- comment reply -->
-                                <div class="media depth-2 reply-comment">
-                                    <div class="media-left">
-                                        <a href="#">
-                                            <img
-                                                class="media-object"
-                                                src="/img/m2.png"
-                                                alt="Commentator Avatar"
-                                            />
-                                        </a>
-                                    </div>
-                                    <div class="media-body">
-                                        <form action="#" class="comment-reply-form">
-                                            <textarea
-                                                class="bla"
-                                                name="reply-comment"
-                                                placeholder="Write your comment..."
-                                            ></textarea>
-                                            <button class="btn btn--md btn-primary">Post Comment</button>
-                                        </form>
-                                    </div>
-                                </div>
-                                <!-- comment reply -->
-                            </li>
-                            <!-- ends: .single-thread-->
-                        </ul>
-                        <!-- ends: .media-list -->
-                        <!-- Start Pagination -->
-                        <nav class="pagination-default">
-                            <ul class="pagination">
-                                <li class="page-item">
-                                    <a class="page-link" href="#" aria-label="Previous">
-                                        <span aria-hidden="true">
-                                            <i class="fa fa-long-arrow-left"></i>
-                                        </span>
-                                        <span class="sr-only">Previous</span>
-                                    </a>
-                                </li>
-                                <li class="page-item active">
-                                    <a class="page-link" href="#">1</a>
-                                </li>
-                                <li class="page-item">
-                                    <a class="page-link" href="#">2</a>
-                                </li>
-                                <li class="page-item">
-                                    <a class="page-link" href="#">3</a>
-                                </li>
-                                <li class="page-item disabled">
-                                    <a class="page-link" href="#">...</a>
-                                </li>
-                                <li class="page-item">
-                                    <a class="page-link" href="#">10</a>
-                                </li>
-                                <li class="page-item">
-                                    <a class="page-link" href="#" aria-label="Next">
-                                        <span aria-hidden="true">
-                                            <i class="fa fa-long-arrow-right"></i>
-                                        </span>
-                                        <span class="sr-only">Next</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </nav>
-                        <!-- Ends: .pagination-default -->
-                        <div class="comment-form-area">
-                            <h4>Leave a comment</h4>
-                            <div class="media comment-form">
-                                <div class="media-left">
-                                    <a href="#">
-                                        <img
-                                            class="media-object"
-                                            src="/img/m7.png"
-                                            alt="Commentator Avatar"
-                                        />
-                                    </a>
-                                </div>
-                                <div class="media-body">
-                                    <form action="#" class="comment-reply-form">
-                                        <textarea
-                                            name="reply-comment"
-                                            placeholder="Write your comment..."
-                                        ></textarea>
-                                        <button class="btn btn--sm btn-primary">Post Comment</button>
-                                    </form>
-                                </div>
+                    <template v-if="lesson['lessonBuyed'].length">
+                        <forum-lesson :lesson_id="lesson['id']" :lesson_slug="lesson['slug']"></forum-lesson>
+                    </template>
+                    <template v-else>
+                        <div class="tab-content-wrapper">
+                            <div class="alert alert-info" role="alert">
+                                <strong>Atenção!</strong> Você precisa ter adquirido essa aula para ver e interagir no fórum.
                             </div>
                         </div>
-                    </div>
+                    </template>
                 </div>
             </div>
         </div>
@@ -476,9 +160,10 @@
 
 <script>
 import http from '../../http';
+import ForumLesson from './ForumLesson';
 
 export default {
-    props: ['lesson', 'is_authenticated'],
+    props: ['lesson', 'is_authenticated', 'show_sidebar_from_sidebar'],
 
     data() {
         return {
@@ -488,7 +173,12 @@ export default {
             lesson_after: null,
             user: null,
             message_favorited: false,
+            forum_tab_active: false,
         };
+    },
+
+    components: {
+        'forum-lesson': ForumLesson,
     },
 
     mounted() {
@@ -500,7 +190,7 @@ export default {
         lessons_after_and_before() {
             if (this.lessons !== undefined) {
                 const index = this.lessons.findIndex(lesson => {
-                    return this.lesson_id === lesson.id;
+                    return this.lesson.id === lesson.id;
                 });
 
                 this.lesson_before = index > 0 ? this.lessons[index - 1] : null;
@@ -525,6 +215,13 @@ export default {
             }
 
             return favorited;
+        },
+
+        see_also() {
+            if (this.lessons.length) {
+                const index = Math.round(Math.random() * this.lessons.length);
+                return this.lessons.slice(index, this.lessons.length);
+            }
         },
     },
 
@@ -595,6 +292,14 @@ export default {
                     }
                 });
             }
+        },
+
+        tab_active(tab) {
+            this.forum_tab_active = tab === 'forum' ? true : false;
+
+            this.forum_tab_active
+                ? EventBus.$emit('forum_tab_active', true)
+                : EventBus.$emit('forum_tab_active', false);
         },
     },
 };

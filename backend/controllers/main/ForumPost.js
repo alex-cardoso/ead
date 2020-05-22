@@ -4,10 +4,15 @@ const {
     update: update_post,
     destroy: destroy_post,
 } = require('../../database/services/forum_post');
+const { getUser } = require('../../src/user');
+
+const { send_new_thread } = require('../../src/email');
 
 const store = async (request, response) => {
     try {
-        const { token, post, forumId, lessonId } = request.body;
+        const { token, post, forumId, lessonId, lessonSlug } = request.body;
+
+        const user = getUser(request);
 
         const response_recaptcha = await axios.post(
             `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_SECRET}&response=${token}`
@@ -25,12 +30,10 @@ const store = async (request, response) => {
             throw 'error_recaptcha';
         }
 
-        const created = await create(
-            request.user['id'],
-            lessonId,
-            forumId,
-            post
-        );
+        const created = await create(user['id'], lessonId, forumId, post);
+
+        const user_name = user['name'] + ' ' + user['last_name'];
+        await send_new_thread(lessonSlug, user_name);
 
         response.status(200).json(created);
     } catch (error) {

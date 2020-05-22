@@ -7,7 +7,7 @@ const {
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 
-const posts = async forumId => {
+const posts = async (forumId) => {
     try {
         const posts = await ForumLesson.findOne({
             where: {
@@ -52,7 +52,7 @@ const posts = async forumId => {
                             as: 'user',
                         },
                     ],
-                    limit: 50,
+                    limit: 20,
                     order: [['id', 'ASC']],
                 },
             ],
@@ -153,7 +153,7 @@ const create = async (userId, lessonId, forumId, message) => {
     }
 };
 
-const destroy = async id => {
+const destroy = async (id) => {
     try {
         const deleted = await ForumPost.destroy({
             where: {

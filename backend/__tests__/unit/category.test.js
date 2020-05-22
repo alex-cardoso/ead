@@ -1,4 +1,4 @@
-const { get_category, get_all } = require('../../database/services/category');
+const { get_category, get_all, store, destroy } = require('../../database/services/category');
 
 it('should get id category from slug', async (done) => {
     const category = await get_category('outdoors');
@@ -13,6 +13,22 @@ it('should get all categories', async (done) => {
 
     expect(categories).toHaveProperty('count');
     expect(categories).toHaveProperty('rows');
+    expect(categories['rows'][0]['lessons']).toBeDefined();
 
     done();
+});
+
+it('should remove category', async () => {
+    const deleted = await destroy(18);
+
+    expect(deleted).toBe(1);
+});
+
+it('should create category', async () => {
+    const created = await store({
+        name: 'Category test',
+        slug: 'category-test',
+    });
+
+    expect(created['id']).toBeDefined();
 });

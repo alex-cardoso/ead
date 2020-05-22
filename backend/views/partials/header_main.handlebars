@@ -91,16 +91,29 @@
                                                 </li>
                                                 <li>
                                                     <a href="/favorites">
-                                                        <span class="icon-heart"></span> Favoritos</a>
+                                                        <span class="icon-heart"></span>Favoritos</a>
                                                 </li>
                                                 <li>
                                                     <a href="/my/lessons">
-                                                        <span class="icon-social-youtube"></span> Minhas aulas</a>
+                                                        <span class="icon-social-youtube"></span>Minhas aulas</a>
                                                 </li>
                                                 <li>
                                                     <a href="/logout">
                                                         <span class="icon-logout"></span>Logout</a>
                                                 </li>
+                                                {{#if is_admin}}
+                                                <li>
+                                                    <a href="/admin/category"><span class="icon-tag"></span>Categorias
+                                                        (Admin)</a>
+                                                </li>
+                                                <li>
+                                                    <a href=""><span class="icon-social-youtube"></span>Aulas
+                                                        (Admin)</a>
+                                                </li>
+                                                <li>
+                                                    <a href=""><span class="icon-people"></span>Alunos (Admin)</a>
+                                                </li>
+                                                {{/if}}
                                                 {{else}}
                                                 <li>
                                                     <a href="/signup">

@@ -1,6 +1,7 @@
 const {
     send_new_reply,
     send_new_reset_password_link,
+    send_new_thread,
 } = require('../../src/email');
 
 it('should send email new reply', async () => {
@@ -21,6 +22,15 @@ it('should send email with link reset password', async () => {
             name: 'Alexandre',
         },
         'kfdkjfhdfjd787'
+    );
+
+    expect(email_send.messageId).toBeDefined();
+});
+
+it('should send email when create thread', async () => {
+    const email_send = await send_new_thread(
+        'chief-operations-executive',
+        'Alexandre Cardoso'
     );
 
     expect(email_send.messageId).toBeDefined();

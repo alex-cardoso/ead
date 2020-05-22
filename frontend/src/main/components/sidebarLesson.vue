@@ -6,15 +6,19 @@
                     <span>{{lesson.value | moeda}}</span>
                 </h1>
             </div>
+
             <template v-if="!lesson['lessonBuyed'].length">
                 <button-buy-lesson
-                    class="btn btn-primary w-100 btn-xs"
+                    class="btn btn-primary w-100 btn-sm"
                     :slug="lesson.slug"
                 >Comprar aula</button-buy-lesson>
             </template>
             <template v-else>
-                <button class="btn btn-success btn-xs w-100">Aula já adquirida</button>
+                <button class="btn btn-success btn-sm w-100">Aula já adquirida</button>
             </template>
+            <button class="btn btn-warning w-100 btn-sm mt-1" @click="$emit('show-sidebar', false)">
+                <i class="fas fa-angle-double-left"></i> Somente o Vídeo
+            </button>
         </div>
         <!-- ends: .sidebar--card -->
         <div class="sidebar-card card--product-infos">
@@ -24,23 +28,28 @@
             <ul class="infos">
                 <li>
                     <p class="data-label">Criada</p>
-                    <p class="info">{{lesson.createdAt | date}}</p>
+                    <p class="info text-right">{{lesson.createdAt | date}}</p>
                 </li>
                 <li>
                     <p class="data-label">Atualizada</p>
-                    <p class="info">{{lesson.updatedAt | date}}</p>
+                    <p class="info text-right">{{lesson.updatedAt | date}}</p>
                 </li>
                 <li>
                     <p class="data-label">Categoria</p>
-                    <p class="info">
+                    <p class="info text-right">
                         <a
                             :href="`/category/${lesson.category['slug']}`"
+                            style="text-decoration:underline"
                         >{{ lesson.category['name'] }}</a>
                     </p>
                 </li>
+                <li>
+                    <p class="data-label">Tempo de Aula</p>
+                    <p class="info text-right">{{ lesson['duration'] }}</p>
+                </li>
                 <li v-if="lesson['lessonBuyed'].length && lesson['github']">
                     <p class="data-label">Repositório</p>
-                    <p class="info">
+                    <p class="info text-right">
                         <a
                             :href="`${lesson['github']['link']}`"
                             target="__blank"

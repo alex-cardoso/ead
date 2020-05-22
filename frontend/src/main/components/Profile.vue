@@ -2,13 +2,10 @@
     <div>
         <modal title="Sua senha" class="modal" ref="modal" @close="close_modal">
             <p>Digite sua senha antes de atualizar seus dados</p>
+
             <template v-slot:content>
-                <div
-                    v-if="message_new_password"
-                    v-html="message_new_password"
-                    class="mb-4 mt-2 w-50"
-                    style="margin:auto;"
-                ></div>
+                <div v-if="loading_update_profile" class="mb-2">Aguarde, atualizando...</div>
+                <div v-if="message_new_password" v-html="message_new_password" style="margin:auto;"></div>
 
                 <h5>Para alterar seus dados você precisa colocar sua senha atual</h5>
                 <input
@@ -46,7 +43,7 @@
                                         class="w-100 mb-4"
                                     ></div>
                                     <div v-if="loading">Aguarde, cadastrando seus dados...</div>
-                                    <form @submit.prevent="update">
+                                    <form @submit.prevent="close_modal">
                                         <div class="form-row">
                                             <div class="col form-group">
                                                 <label>Nome</label>
@@ -107,11 +104,24 @@
                                         <div class="form-group">
                                             <button
                                                 type="submit"
-                                                class="btn btn-outline-primary btn-block"
+                                                class="btn btn-primary btn-block"
                                             >Atualizar</button>
                                         </div>
                                     </form>
                                 </article>
+
+                                <article class="card-body">
+                                    <input
+                                        type="checkbox"
+                                        v-model="checked_receive_email_reply_forum"
+                                        @change="update_receive_email_reply_forum"
+                                    />
+                                    Caso não queira mais receber emails quando alguém responder a uma pergunta nos fóruns, desabilite o campo ao lado.
+                                </article>
+
+                                <template v-if="message_update_reply">
+                                    <div v-html="message_update_reply"></div>
+                                </template>
                             </div>
                         </div>
                     </div>
@@ -134,9 +144,13 @@ export default {
             errors: {},
             message: null,
             new_password: '',
+            message_update_reply: null,
             user_data: this.user,
             loading: false,
+            loading_update_profile: false,
             message_new_password: null,
+            checked_receive_email_reply_forum:
+                this.user.receive_email_reply_forum === 1 ? true : false,
         };
     },
 
@@ -146,18 +160,16 @@ export default {
     },
 
     methods: {
-        update() {
-            this.$refs['modal'].$el.classList.toggle('is-active');
-        },
-
         close_modal() {
             this.$refs['modal'].$el.classList.toggle('is-active');
         },
 
         async save() {
             try {
+                this.loading_update_profile = true;
                 if (this.new_password === '') {
-                    this.message_new_password = `<span class="alert alert-danger">Digite sua senha</span>`;
+                    this.message_new_password = `<div class="alert alert-danger mb-2 w-100" role="alert">Digite sua senha</div>`;
+                    this.loading_update_profile = false;
 
                     setTimeout(() => {
                         this.message_new_password = null;
@@ -172,20 +184,21 @@ export default {
 
                 if (response.data === 'updated') {
                     this.$refs['modal'].$el.classList.toggle('is-active');
-                    this.message = `<span class="alert alert-success">Dados atualizados</span>`;
+                    this.message = `<div class="alert alert-success w-100 mb-2" role="alert">Dados atualizados</div>`;
                 } else {
-                    this.message = `<span class="alert alert-success">Ocorreu um erro ao atualizar seus dados, tente novamente</span>`;
+                    this.message = `<div class="alert alert-success w-100 mb-2" role="alert">Ocorreu um erro ao atualizar seus dados, tente novamente</div>`;
                 }
+                this.loading_update_profile = false;
 
                 setTimeout(() => {
                     this.message = null;
                 }, 3000);
             } catch (error) {
-                console.log('error', error);
-
                 if (error.response !== undefined) {
                     if (error.response.data === 'password_not_match') {
                         this.message_new_password = `<span class="alert alert-danger">Senha incorreta</span>`;
+                        this.loading_update_profile = false;
+
                         setTimeout(() => {
                             this.message_new_password = null;
                         }, 3000);
@@ -197,6 +210,7 @@ export default {
                         this.errors = {
                             'user.email': 'Email já está sendo usado',
                         };
+                        this.loading_update_profile = false;
 
                         setTimeout(() => {
                             this.errors = {};
@@ -206,6 +220,7 @@ export default {
 
                     this.errors = error.response.data;
                     this.$refs['modal'].$el.classList.toggle('is-active');
+                    this.loading_update_profile = false;
 
                     setTimeout(() => {
                         this.errors = {};
@@ -217,6 +232,42 @@ export default {
                 }, 3000);
                 console.log(error);
             }
+        },
+
+        async update_receive_email_reply_forum() {
+            try {
+                console.log(this.checked_receive_email_reply_forum);
+                const response = await http.put(
+                    '/profile/update/receive-email-reply',
+                    {
+                        receive_email_reply_forum: this
+                            .checked_receive_email_reply_forum
+                            ? 1
+                            : 2,
+                    }
+                );
+
+                if (response.data.includes(1)) {
+                    this.message_update_reply = `<div class="alert alert-success w-100 mt-2" role="alert">Atualizado</div>`;
+                } else {
+                    this.message_update_reply = `<div class="alert alert-danger" role="alert">Ocorreu ume rro, tente novamente.</div>`;
+                }
+
+                setTimeout(() => {
+                    this.message_update_reply = null;
+                }, 3000);
+
+                console.log(response.data);
+            } catch (error) {
+                this.message_update_reply = `<div class="alert alert-danger" role="alert">Ocorreu ume rro, tente novamente.</div>`;
+
+                setTimeout(() => {
+                    this.message_update_reply = null;
+                }, 3000);
+
+                console.log(error);
+            }
+            console.log();
         },
     },
 };

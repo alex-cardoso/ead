@@ -10,7 +10,7 @@ const data = async (request, response) => {
 
         const forum_data = await forum(lesson);
 
-        const loggedIn = request.user['id'] || null;
+        const loggedIn = request.user ? request.user['id'] : null;
 
         response.status(200).json({ forum: forum_data, loggedIn });
     } catch (error) {

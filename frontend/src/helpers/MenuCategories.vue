@@ -7,7 +7,9 @@
                     <div class="menu_column">
                         <ul class="list-categories">
                             <li v-for="category in categories_data['rows']" :key="category['id']">
-                                <a :href="`/category/${category['slug']}`">{{ category['name'] }}</a>
+                                <a
+                                    :href="`/category/${category['slug']}`"
+                                >{{ category['name'] }} ({{ category['lessons'].length }})</a>
                             </li>
                         </ul>
                     </div>
@@ -18,7 +20,7 @@
 </template>
 
 <script>
-import http from '../../http';
+import http from '../http';
 
 export default {
     data() {
@@ -52,22 +54,25 @@ ul.list-categories {
     flex-wrap: wrap;
     width: 100%;
     padding-left: 0;
-    justify-content: center;
 }
 
 ul.list-categories li {
     cursor: pointer;
-    padding: 5px;
     list-style: none;
     border: solid 1px#efefef;
-    width: 22%;
+    width: 30%;
     margin-right: 5px;
     text-align: center;
     margin-bottom: 5px;
     border-radius: 5px;
 }
 
-ul.list-categories li:hover {
-    background-color: #ececec;
+ul.list-categories li a:hover {
+    background-color: #6e4ff7;
+    color: white !important;
+}
+
+.has_megamenu .dropdown_megamenu.contained {
+    width: 700px !important;
 }
 </style>

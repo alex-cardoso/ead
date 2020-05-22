@@ -49,6 +49,7 @@ const LessonsBuy = require('../controllers/main/LessonsBuy');
 const Profile = require('../controllers/main/Profile');
 const LessonsUser = require('../controllers/main/LessonsUser');
 const ResetPassword = require('../controllers/main/ResetPassword');
+const Faq = require('../controllers/main/Faq');
 
 // pegar dados se estiver logado, esses dados podem ser usados nos templates
 module.exports = (passport) => {
@@ -100,12 +101,17 @@ module.exports = (passport) => {
     router.put('/lessons/buy', LessonsBuy.update);
     router.get('/profile', logged_in, Profile.index);
     router.put('/profile/update', user_update_validation, Profile.update);
+    router.put(
+        '/profile/update/receive-email-reply',
+        Profile.update_receive_email_reply
+    );
     router.post('/profile/avatar', upload.single('file'), Profile.avatar);
     router.get('/my/lessons', logged_in, LessonsUser.index);
     router.get('/my/lessons/data', Lessons.user);
     router.post('/reset/password', ResetPassword.sendLink);
     router.get('/reset/password/:token', ResetPassword.edit);
     router.put('/reset/password', ResetPassword.update);
+    router.get('/faq', Faq.index);
 
     router.get('*', function (request, response) {
         response.status(400).send('what???');

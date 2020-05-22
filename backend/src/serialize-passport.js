@@ -12,6 +12,7 @@ module.exports = (passport) => {
                 'name',
                 'email',
                 'last_name',
+                'receive_email_reply_forum',
                 'is_admin',
                 'avatar',
                 'createdAt',

@@ -3,10 +3,7 @@ const scroll = selector => {
 };
 
 const strip_tags_except_markdown = string => {
-    return string.replace(
-        /(<([^>].*)>)(?=([^```\\]*(\\.|```([^```\\]*\\.)*[^```\\]*```))*[^```]*$)/gi,
-        ''
-    );
+    return string.replace(/(<([^>].*)>)(?=([^```\\]*(\\.|```([^```\\]*\\.)*[^```\\]*```))*[^```]*$)/gi, '');
 };
 
 export { scroll, strip_tags_except_markdown };

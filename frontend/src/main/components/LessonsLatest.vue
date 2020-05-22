@@ -13,72 +13,61 @@
                 </div>
                 <div class="col-lg-12">
                     <div class="product-list">
-                        <div class="tab-content" id="lp-tab-content">
+                        <div class="row">
                             <div
-                                class="tab-pane fade show active"
-                                id="tab1"
-                                role="tabpanel"
-                                aria-labelledby="tab-one"
+                                class="col-lg-4 col-md-6"
+                                v-for="lesson in lessons"
+                                :key="lesson.id"
                             >
-                                <div class="row">
-                                    <div
-                                        class="col-lg-4 col-md-6"
-                                        v-for="lesson in lessons"
-                                        :key="lesson.id"
-                                    >
-                                        <div class="product-single latest-single">
-                                            <div class="product-excerpt">
-                                                <h5>
-                                                    <a href>{{lesson.title}}</a>
-                                                </h5>
-                                                <ul class="titlebtm">
-                                                    <li class="product_cat">
-                                                        {{ truncate(lesson['description'], 70) }}
-                                                        <a
-                                                            :href="`/category/${lesson['category']['slug']}`"
-                                                        >
-                                                            postado em
-                                                            {{lesson['category']['name']}} - {{ moment(lesson['updatedAt']).fromNow() }}
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                                <ul
-                                                    class="product-facts clearfix justify-content-between"
+                                <div class="product-single latest-single">
+                                    <div class="product-excerpt">
+                                        <h5>
+                                            <a :href="`/lesson/${lesson['slug']}`">{{lesson.title}}</a>
+                                        </h5>
+                                        <ul class="titlebtm">
+                                            <li class="product_cat">
+                                                {{ truncate(lesson['description'], 70) }}
+                                                <a
+                                                    :href="`/category/${lesson['category']['slug']}`"
                                                 >
-                                                    <li class="price">{{ lesson['value'] | moeda }}</li>
-                                                    <li class="sells">
-                                                        <span
-                                                            class="icon-basket"
-                                                            title="Quantas vezes foi adquirida"
-                                                            style="cursor:pointer"
-                                                        ></span>
-                                                        {{ lesson['lessonBuyed'].length }}
-                                                    </li>
-                                                    <li class="product-fav">
-                                                        <span class="icon-heart" title="Curtidas"></span>
-                                                        {{ lesson['favorites'].length }}
-                                                    </li>
-                                                </ul>
-                                                <div class="mt-2">
-                                                    <hr />
+                                                    postado em
+                                                    {{lesson['category']['name']}} - {{ moment(lesson['updatedAt']).fromNow() }}
+                                                </a>
+                                            </li>
+                                        </ul>
+                                        <ul class="product-facts clearfix justify-content-between">
+                                            <li class="price">{{ lesson['value'] | moeda }}</li>
+                                            <li class="sells">
+                                                <span
+                                                    class="icon-basket"
+                                                    title="Quantas vezes foi adquirida"
+                                                    style="cursor:pointer"
+                                                ></span>
+                                                {{ lesson['lessonBuyed'].length }}
+                                            </li>
+                                            <li class="product-fav">
+                                                <span class="icon-heart" title="Curtidas"></span>
+                                                {{ lesson['favorites'].length }}
+                                            </li>
+                                        </ul>
+                                        <div class="mt-2">
+                                            <hr />
 
-                                                    <a
-                                                        :href="`/lesson/${lesson['slug']}`"
-                                                        class="btn btn--round btn-sm btn-outline-success w-100"
-                                                    >
-                                                        <i class="far fa-play-circle"></i> Assistir
-                                                    </a>
+                                            <a
+                                                :href="`/lesson/${lesson['slug']}`"
+                                                class="btn btn--round btn-sm btn-outline-success w-100"
+                                            >
+                                                <i class="far fa-play-circle"></i> Assistir
+                                            </a>
 
-                                                    <template
-                                                        v-if="!lesson['userHasLesson'] && is_authenticated"
-                                                    >
-                                                        <button-add-cart
-                                                            :lesson="lesson['id']"
-                                                            class="mt-2"
-                                                        ></button-add-cart>
-                                                    </template>
-                                                </div>
-                                            </div>
+                                            <template
+                                                v-if="!lesson['userHasLesson'] && is_authenticated"
+                                            >
+                                                <button-add-cart
+                                                    :lesson="lesson['id']"
+                                                    class="mt-2"
+                                                ></button-add-cart>
+                                            </template>
                                         </div>
                                     </div>
                                 </div>

@@ -86,6 +86,25 @@ const check_email_exist_another_users = async (id, email) => {
     }
 };
 
+const update_receive_email_reply_forum = async (
+    id,
+    receive_email_reply_forum
+) => {
+    try {
+        return await User.update(
+            { receive_email_reply_forum },
+            {
+                where: {
+                    id,
+                },
+            }
+        );
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+};
+
 module.exports = {
     findUser,
     store,
@@ -93,4 +112,5 @@ module.exports = {
     findUserByEmail,
     update,
     check_email_exist_another_users,
+    update_receive_email_reply_forum,
 };

@@ -1,4 +1,8 @@
-const { findUserByEmail, update: update_user } = require('./user');
+const {
+    findUserByEmail,
+    update: update_user,
+    update_receive_email_reply_forum: update_recevive_email,
+} = require('./user');
 const bcrypt = require('bcrypt');
 
 const check_password_and_update_user = async (email, password, user) => {
@@ -22,6 +26,24 @@ const check_password_and_update_user = async (email, password, user) => {
     }
 };
 
+const update_receive_email_reply_forum = async (
+    id,
+    receive_email_reply_forum
+) => {
+    try {
+        const updated = await update_recevive_email(
+            id,
+            receive_email_reply_forum
+        );
+
+        return updated;
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+};
+
 module.exports = {
     check_password_and_update_user,
+    update_receive_email_reply_forum,
 };

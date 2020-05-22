@@ -2,12 +2,8 @@ const axios = require('axios');
 const qs = require('qs');
 const convert = require('xml-js');
 const { create_token } = require('./helpers');
-const {
-    store: create_checkout,
-    find: find_checkout,
-} = require('../database/services/checkout');
-
-const { update: update_credits } = require('../database/services/credits');
+const { store: create_checkout, find: find_checkout } = require('../database/services/checkout');
+const { update: update_credits, store: store_credits } = require('../database/services/credits');
 
 const token =
     process.env.NODE_ENV !== 'production'
@@ -32,12 +28,12 @@ const authotization_code = async (user, value) => {
                 shippingAddressRequired: false,
             }),
             headers: {
-                'content-type':
-                    'application/x-www-form-urlencoded;charset=utf-8',
+                'content-type': 'application/x-www-form-urlencoded;charset=utf-8',
             },
         });
 
         await create_checkout(user['id'], reference, value);
+        await store_credits(user['id'], 0);
 
         return convert.xml2js(authenticationCode.data, {
             compact: true,
@@ -51,9 +47,7 @@ const authotization_code = async (user, value) => {
 const notification_code = async (notification_code) => {
     const authenticationCode = await axios({
         method: 'get',
-        url:
-            process.env.PAGSEGURO_RESPONSEURL +
-            `${notification_code}?email=xandecar@hotmail.com&token=${token}`,
+        url: process.env.PAGSEGURO_RESPONSEURL + `${notification_code}?email=xandecar@hotmail.com&token=${token}`,
     });
 
     return convert.xml2js(authenticationCode.data, {
