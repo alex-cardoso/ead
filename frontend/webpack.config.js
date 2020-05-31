@@ -7,7 +7,6 @@ module.exports = {
     entry: {
         main: './src/main/main.js',
         admin: './src/admin/admin.js',
-        dashboard: './src/dashboard/dashboard.js',
     },
     output: {
         path: path.resolve(__dirname, './dist'),
@@ -45,10 +44,7 @@ module.exports = {
     optimization: {
         minimize: process.env.NODE_ENV === 'development' ? false : true,
     },
-    plugins: [
-        new VueLoaderPlugin(),
-        new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /pt-br/),
-    ],
+    plugins: [new VueLoaderPlugin(), new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /pt-br/)],
     resolve: {
         alias: {
             vue$: 'vue/dist/vue.esm.js',

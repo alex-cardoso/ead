@@ -3,15 +3,21 @@ const router = express.Router();
 
 // controllers
 const Category = require('../controllers/admin/Category');
+const Lessons = require('../controllers/admin/Lessons');
 
-// pegar dados se estiver logado, esses dados podem ser usados nos templates
+const is_admin = require('../middlewares/is_admin');
 
-router.get('/category', Category.index);
+router.get('/category', is_admin, Category.index);
 router.post('/category/store', Category.store);
 router.delete('/category/destroy', Category.destroy);
+router.put('/category/update', Category.update);
+router.get('/lessons', Lessons.index);
+router.put('/lesson/update', Lessons.update);
+router.delete('/lesson', Lessons.destroy);
+router.post('/lesson', Lessons.store);
 
-router.get('*', function (req, res) {
-    res.send('what???', 404);
+router.get('*', function (request, response) {
+    response.status(200).send('what???');
 });
 
 module.exports = router;

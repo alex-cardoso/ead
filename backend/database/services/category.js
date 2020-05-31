@@ -1,13 +1,24 @@
 const { Category, Lesson } = require('../models');
 const paginate = require('./paginate');
 
-const get_category = async (slug) => {
+const get_category = async slug => {
     try {
         return await Category.findOne({
             attributes: ['id', 'name'],
             where: {
                 slug,
             },
+        });
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+const get_all_no_agination = async () => {
+    try {
+        return await Category.findAll({
+            attributes: ['id', 'name', 'slug'],
+            order: [['id', 'DESC']],
         });
     } catch (error) {
         console.log(error);
@@ -37,7 +48,7 @@ const get_all = async (page = 1) => {
     }
 };
 
-const store = async (category) => {
+const store = async category => {
     try {
         return await Category.create({
             ...category,
@@ -48,7 +59,7 @@ const store = async (category) => {
     }
 };
 
-const destroy = async (id) => {
+const destroy = async id => {
     try {
         return await Category.destroy({
             where: {
@@ -61,9 +72,29 @@ const destroy = async (id) => {
     }
 };
 
+const update = async (id, data) => {
+    try {
+        return await Category.update(
+            {
+                ...data,
+            },
+            {
+                where: {
+                    id,
+                },
+            }
+        );
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+};
+
 module.exports = {
     get_category,
     get_all,
     store,
+    update,
     destroy,
+    get_all_no_agination,
 };

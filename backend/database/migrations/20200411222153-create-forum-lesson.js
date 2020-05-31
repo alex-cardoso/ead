@@ -1,4 +1,3 @@
-'use strict';
 module.exports = {
     up: (queryInterface, Sequelize) => {
         return queryInterface.createTable('forumLessons', {
@@ -23,9 +22,7 @@ module.exports = {
             },
             updatedAt: {
                 allowNull: false,
-                defaultValue: Sequelize.literal(
-                    'CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'
-                ),
+                defaultValue: Sequelize.literal('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'),
                 type: 'TIMESTAMP',
             },
         });

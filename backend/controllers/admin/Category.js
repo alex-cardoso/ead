@@ -1,4 +1,8 @@
-const { store: create_category, destroy: delete_category } = require('../../database/services/category');
+const {
+    store: create_category,
+    destroy: delete_category,
+    update: update_category,
+} = require('../../database/services/category');
 
 const index = (request, response) => {
     response.render('../views/admin/category', {
@@ -31,4 +35,16 @@ const destroy = async (request, response) => {
     }
 };
 
-module.exports = { index, store, destroy };
+const update = async (request, response) => {
+    try {
+        const { id, name, slug } = request.body;
+
+        const updated = await update_category(id, { name, slug });
+
+        response.status(200).json(updated);
+    } catch (error) {
+        response.status(400).json(error);
+    }
+};
+
+module.exports = { index, store, destroy, update };

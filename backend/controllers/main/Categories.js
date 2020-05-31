@@ -1,4 +1,4 @@
-const { get_all } = require('../../database/services/category');
+const { get_all, get_all_no_agination } = require('../../database/services/category');
 
 const index = (request, response) => {
     response.render('../views/main/categories_list', {
@@ -15,7 +15,14 @@ const data = async (request, response) => {
     response.status(200).json(categories);
 };
 
+const noPagination = async (request, response) => {
+    const categories = await get_all_no_agination();
+
+    response.status(200).json(categories);
+};
+
 module.exports = {
     index,
     data,
+    noPagination,
 };

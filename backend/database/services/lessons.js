@@ -1,26 +1,18 @@
-const {
-    Lesson,
-    User,
-    LessonBuyed,
-    Category,
-    LessonsFavorite,
-    Github,
-} = require('../models');
+const { Lesson, User, LessonBuyed, Category, LessonsFavorite, Github } = require('../models');
 const paginate = require('./paginate');
 
 const lessons = async (page = 1) => {
     try {
         const options = {
-            attributes: [
-                'id',
-                'title',
-                'slug',
-                'duration',
-                'value',
-                'description',
-                'updatedAt',
-            ],
+            attributes: ['id', 'title', 'slug', 'duration', 'embed', 'value', 'description', 'updatedAt'],
             per_page: 20,
+            distinct: true,
+            include: [
+                {
+                    model: Category,
+                    as: 'category',
+                },
+            ],
             page,
             order: [['id', 'DESC']],
         };
@@ -34,15 +26,7 @@ const lessons = async (page = 1) => {
 const latest = async () => {
     try {
         return await Lesson.findAll({
-            attributes: [
-                'id',
-                'title',
-                'slug',
-                'duration',
-                'value',
-                'description',
-                'updatedAt',
-            ],
+            attributes: ['id', 'title', 'slug', 'duration', 'value', 'description', 'updatedAt'],
             include: [
                 {
                     attributes: ['name', 'last_name', 'avatar'],
@@ -76,15 +60,7 @@ const latest = async () => {
 const category_for_list_in_video = async (user, categoryId) => {
     try {
         return await Lesson.findAll({
-            attributes: [
-                'id',
-                'title',
-                'slug',
-                'duration',
-                'value',
-                'description',
-                'updatedAt',
-            ],
+            attributes: ['id', 'title', 'slug', 'duration', 'value', 'description', 'updatedAt'],
             where: {
                 categoryId,
             },
@@ -114,15 +90,7 @@ const category_for_list_in_video = async (user, categoryId) => {
 const category = async (page = 1, categoryId) => {
     try {
         const options = {
-            attributes: [
-                'id',
-                'title',
-                'slug',
-                'duration',
-                'value',
-                'description',
-                'updatedAt',
-            ],
+            attributes: ['id', 'title', 'slug', 'duration', 'value', 'description', 'updatedAt'],
             per_page: 20,
             page,
             where: {
@@ -163,15 +131,7 @@ const category = async (page = 1, categoryId) => {
 const find_lesson = async (slug, user) => {
     try {
         return await Lesson.findOne({
-            attributes: [
-                'id',
-                'title',
-                'slug',
-                'duration',
-                'embed',
-                'value',
-                'description',
-            ],
+            attributes: ['id', 'title', 'slug', 'duration', 'embed', 'value', 'description'],
             where: {
                 slug,
             },
@@ -252,7 +212,7 @@ const my = async (page = 1, userId) => {
     }
 };
 
-const favorites = async (lessonId) => {
+const favorites = async lessonId => {
     try {
         return await LessonsFavorite.findAll({
             where: {
@@ -265,6 +225,47 @@ const favorites = async (lessonId) => {
     }
 };
 
+const update = async (id, data) => {
+    try {
+        return await Lesson.update(
+            {
+                ...data,
+            },
+            {
+                where: {
+                    id,
+                },
+            }
+        );
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+};
+
+const destroy = async id => {
+    try {
+        return await Lesson.destroy({
+            where: {
+                id,
+            },
+        });
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+};
+
+const store = async data => {
+    try {
+        return await Lesson.create({
+            ...data,
+        });
+    } catch (error) {
+        throw error;
+    }
+};
+
 module.exports = {
     lessons,
     latest,
@@ -273,4 +274,7 @@ module.exports = {
     category,
     my,
     favorites,
+    update,
+    destroy,
+    store,
 };

@@ -12,8 +12,8 @@ module.exports = {
                 references: {
                     model: 'forumLessons',
                     key: 'id',
-                    onDelete: 'CASCADE',
                 },
+                onDelete: 'CASCADE',
             },
             lessonId: {
                 type: Sequelize.INTEGER,
@@ -41,9 +41,7 @@ module.exports = {
             },
             updatedAt: {
                 allowNull: false,
-                defaultValue: Sequelize.literal(
-                    'CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'
-                ),
+                defaultValue: Sequelize.literal('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'),
                 type: 'TIMESTAMP',
             },
         });

@@ -3,6 +3,7 @@ const {
     category_for_list_in_video: category_lessons,
     my: user_lessons,
     favorites: favorites_data,
+    lessons,
 } = require('../../database/services/lessons');
 
 const latest = async (request, response) => {
@@ -10,8 +11,8 @@ const latest = async (request, response) => {
         const user = request.user ? request.user['id'] : null;
         const lessons = await latest_lessons();
 
-        lessons.map((lesson_data) => {
-            lesson_data['lessonBuyed'].map((lesson) => {
+        lessons.map(lesson_data => {
+            lesson_data['lessonBuyed'].map(lesson => {
                 if (lesson['userId'] === user) {
                     // console.log(lesson['userId'], user, lesson['lessonId']);
                     lesson_data.setDataValue('userHasLesson', true);
@@ -67,9 +68,23 @@ const favorites = async (request, response) => {
     }
 };
 
+const data = async (request, response) => {
+    try {
+        const { page = 1 } = request.query;
+
+        const lessons_data = await lessons(page);
+
+        return response.status(200).json(lessons_data);
+    } catch (error) {
+        console.log(error);
+        response.status(400).json(error);
+    }
+};
+
 module.exports = {
     latest,
     category,
     user,
     favorites,
+    data,
 };

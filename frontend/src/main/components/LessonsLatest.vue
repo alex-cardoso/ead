@@ -26,7 +26,7 @@
                                         </h5>
                                         <ul class="titlebtm">
                                             <li class="product_cat">
-                                                {{ truncate(lesson['description'], 70) }}
+                                                {{ truncate(lesson['description'], 70, {ellipsis:"..."}) }}
                                                 <a
                                                     :href="`/category/${lesson['category']['slug']}`"
                                                 >

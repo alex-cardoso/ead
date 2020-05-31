@@ -15,7 +15,9 @@
                     >Nova</a>
                     <p
                         class="ml-3"
-                    >Para cadastrar uma nova categoria, clique no botão ao lado, e ao finalizar o cadastro atualize a página para a categoria ser mostrada na listagem.</p>
+                    >Para cadastrar uma nova categoria, clique no botão ao lado, e ao finalizar o cadastro atualize a
+                        página para
+                        a categoria ser mostrada na listagem.</p>
                 </div>
 
                 <template v-if="message">
@@ -46,12 +48,12 @@
                                 />
                             </div>
                             <button class="btn btn-success btn-sm">Cadastrar</button>
-                            <button class="btn btn-danger btn-sm" @click="create = false">Remover</button>
+                            <button class="btn btn-danger btn-sm" @click="create = false">Fechar</button>
                         </form>
                     </div>
                 </template>
 
-                <hr />
+                <hr/>
                 <div class="product_archive">
                     <div class="title_area">
                         <div class="row">
@@ -81,16 +83,28 @@
                                     <div class="product__description">
                                         <div class="short_desc">
                                             <template v-if="edit.includes(category['id'])">
-                                                <input
-                                                    type="text"
-                                                    class="form-control"
-                                                    v-model="category['name']"
-                                                />
-                                                <button class="btn btn-success btn-sm mt-2">Salvar</button>
+                                                <div v-if="message_update_line" v-html="message_update_line"></div>
+                                                <div class="d-flex justify-content-between">
+
+                                                    <input
+                                                        type="text"
+                                                        class="form-control"
+                                                        v-model="category['name']"
+                                                    />
+                                                    <input
+                                                        type="text"
+                                                        class="form-control ml-1"
+                                                        v-model="category['slug']"
+                                                    />
+                                                </div>
+                                                <button class="btn btn-success btn-sm mt-2"
+                                                        @click="update_category(category)">Salvar
+                                                </button>
                                                 <button
                                                     class="btn btn-danger btn-sm mt-2"
                                                     @click="edit = []"
-                                                >Cancelar</button>
+                                                >Cancelar
+                                                </button>
                                             </template>
                                             <template v-else>
                                                 <h5 style="text-decoration:underline">
@@ -106,7 +120,8 @@
                                 <div class="col-lg-3 col-sm-6">
                                     <div
                                         class="product__additional_info"
-                                    >{{category['lessons'].length}}</div>
+                                    >{{category['lessons'].length}}
+                                    </div>
                                 </div>
 
                                 <div class="col-lg-4 col-sm-6">
@@ -115,13 +130,15 @@
                                             <button
                                                 class="btn btn-warning btn-sm"
                                                 @click="edit_category(category['id'])"
-                                            >Editar</button>
+                                            >Editar
+                                            </button>
                                         </div>
                                         <div class="item_action v_middle">
                                             <button
                                                 class="btn btn-danger btn-sm"
                                                 @click="delete_category(category['id'],index)"
-                                            >Deletar</button>
+                                            >Deletar
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -146,82 +163,100 @@
 </template>
 
 <script>
-import Pagination from '../../helpers/Pagination';
-import http from '../../http';
+    import Pagination from '../../helpers/Pagination';
+    import http from '../../http';
 
-export default {
-    data() {
-        return {
-            categories_data: [],
-            edit: [],
-            create: false,
-            new_category: {
-                name: '',
-                slug: '',
-            },
-            message: null,
-        };
-    },
-
-    components: {
-        pagination: Pagination,
-    },
-
-    mounted() {
-        this.categories();
-    },
-
-    methods: {
-        async categories(page) {
-            try {
-                const response = await http.get('/categories/data', {
-                    params: {
-                        page,
-                    },
-                });
-                this.categories_data = response.data;
-            } catch (error) {
-                console.log(error);
-            }
+    export default {
+        data() {
+            return {
+                categories_data: [],
+                edit: [],
+                create: false,
+                new_category: {
+                    name: '',
+                    slug: '',
+                },
+                message: null,
+                message_update_line: null,
+            };
         },
 
-        edit_category(category) {
-            this.edit = [];
-
-            this.edit.push(category);
+        components: {
+            pagination: Pagination,
         },
 
-        async delete_category(category, index) {
-            try {
-                const response = await http.delete('/admin/category/destroy', {
-                    params: {
-                        id: category,
-                    },
-                });
+        mounted() {
+            this.categories();
+        },
 
-                if (response.data === 1) {
-                    this.message = `<div class="alert alert-success w-100" role="alert">Deletado com sucesso.</div>`;
-                    this.categories_data['rows'].splice(index, 1);
-                } else {
-                    this.message = `<div class="alert alert-danger w-100" role="alert">Ocorreu um erro ao deletar, tente novamente.</div>`;
+        methods: {
+            async categories(page) {
+                try {
+                    const response = await http.get('/categories/data', {
+                        params: {
+                            page,
+                        },
+                    });
+                    this.categories_data = response.data;
+                } catch (error) {
+                    console.log(error);
                 }
+            },
 
-                setTimeout(() => {
-                    this.message = null;
-                }, 3000);
-            } catch (error) {
-                console.log(error);
-            }
-        },
+            edit_category(category) {
+                this.edit = [];
 
-        show_form() {
-            this.create = !this.create;
-        },
+                this.edit.push(category);
+            },
 
-        async create_category() {
-            try {
-                if (this.new_category['name'] === '' || this.new_category['slug'] === '') {
-                    this.message = `<div class="alert alert-danger w-100" role="alert">Digite todos os campos corretamente.</div>`;
+            show_form() {
+                this.create = !this.create;
+            },
+
+            async delete_category(category, index) {
+                try {
+                    const response = await http.delete('/admin/category/destroy', {
+                        params: {
+                            id: category,
+                        },
+                    });
+
+                    if (response.data === 1) {
+                        this.message = `<div class="alert alert-success w-100" role="alert">Deletado com sucesso.</div>`;
+                        this.categories_data['rows'].splice(index, 1);
+                    } else {
+                        this.message = `<div class="alert alert-danger w-100" role="alert">Ocorreu um erro ao deletar, tente novamente.</div>`;
+                    }
+
+                    setTimeout(() => {
+                        this.message = null;
+                    }, 3000);
+                } catch (error) {
+                    console.log(error);
+                }
+            },
+
+            async create_category() {
+                try {
+                    if (this.new_category['name'] === '' || this.new_category['slug'] === '') {
+                        this.message = `<div class="alert alert-danger w-100" role="alert">Digite todos os campos corretamente.</div>`;
+
+                        setTimeout(() => {
+                            this.create = false;
+                            this.message = null;
+                            this.new_category = {};
+                        }, 3000);
+
+                        return false;
+                    }
+
+                    const response = await http.post('/admin/category/store', {
+                        category: this.new_category,
+                    });
+
+                    this.message = (response.data['id'] !== undefined) ?
+                        `<div class="alert alert-success w-100" role="alert">Cadastrado com sucesso.</div>` :
+                        `<div class="alert alert-danger w-100" role="alert">Ocorreu um erro ao cadastrar, tente novamente.</div>`;
 
                     setTimeout(() => {
                         this.create = false;
@@ -229,32 +264,39 @@ export default {
                         this.new_category = {};
                     }, 3000);
 
-                    return false;
-                }
-
-                const response = await http.post('/admin/category/store', {
-                    category: this.new_category,
-                });
-
-                if (response.data['id'] !== undefined) {
-                    this.message = `<div class="alert alert-success w-100" role="alert">Cadastrado com sucesso.</div>`;
-                } else {
+                } catch (error) {
                     this.message = `<div class="alert alert-danger w-100" role="alert">Ocorreu um erro ao cadastrar, tente novamente.</div>`;
+                    setTimeout(() => {
+                        this.message = null;
+                    }, 3000);
                 }
+            },
 
-                setTimeout(() => {
-                    this.create = false;
-                    this.message = null;
-                    this.new_category = {};
-                }, 3000);
-            } catch (error) {
-                console.log(error);
-                this.message = `<div class="alert alert-danger w-100" role="alert">Ocorreu um erro ao cadastrar, tente novamente.</div>`;
-                setTimeout(() => {
-                    this.message = null;
-                }, 3000);
-            }
+            async update_category(category) {
+                try {
+                    const response = await http.put('/admin/category/update', {
+                        id: category['id'],
+                        name: category['name'],
+                        slug: category['slug'],
+                    });
+
+                    this.message_update_line = (response.data.includes(1)) ?
+                        this.message_update_line = `<div class="alert alert-success w-100" role="alert">Atualizado com sucesso</div>`:
+                        this.message_update_line = `<div class="alert alert-danger w-100" role="alert">Ocorreu um erro ao atualizar, tente novamente</div>`;
+
+                    setTimeout(() => {
+                        this.message_update_line = null;
+                        this.edit = [];
+                    }, 3000);
+
+                } catch (error) {
+                    this.message_update_line = `<div class="alert alert-danger w-100" role="alert">Ocorreu um erro ao atualizar, tente novamente</div>`;
+                    setTimeout(() => {
+                        this.message_update_line = null;
+                    }, 3000);
+                }
+            },
+
         },
-    },
-};
+    };
 </script>

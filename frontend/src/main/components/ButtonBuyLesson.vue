@@ -41,7 +41,7 @@ export default {
 
                 if (error.response.data === 'no_credits') {
                     this.message =
-                        'Você não tem créditos para adquirir essa aula';
+                        'Créditos insuficientes';
                 }
 
                 setTimeout(() => {

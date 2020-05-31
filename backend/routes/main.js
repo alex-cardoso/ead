@@ -18,10 +18,7 @@ const upload = multer({
 });
 
 // validations
-const {
-    store: user_store_validation,
-    update: user_update_validation,
-} = require('../validations/user');
+const { store: user_store_validation, update: user_update_validation } = require('../validations/user');
 
 // middlewares
 const logged_in = require('../middlewares/logged_in');
@@ -51,13 +48,13 @@ const LessonsUser = require('../controllers/main/LessonsUser');
 const ResetPassword = require('../controllers/main/ResetPassword');
 const Faq = require('../controllers/main/Faq');
 
-// pegar dados se estiver logado, esses dados podem ser usados nos templates
-module.exports = (passport) => {
+module.exports = passport => {
     router.get('/', Home.index);
     router.get('/login', Login.index);
     router.post('/login', passport.authenticate('main'), Login.store);
     router.get('/logout', Login.logout);
     router.get('/categories', Categories.index);
+    router.get('/lessons', Lessons.data);
     router.get('/lesson/data', Lesson.data);
     router.get('/lesson/:slug', Lesson.show);
     router.get('/lessons/latest', Lessons.latest);
@@ -81,6 +78,7 @@ module.exports = (passport) => {
     router.get('/category/lessons', Category.data);
     router.get('/category/:slug', Category.index);
     router.get('/categories/data', Categories.data);
+    router.get('/categories/data/no/pagination', Categories.noPagination);
     router.get('/lessons/search', Search.data);
     router.get('/signup', User.create);
     router.post('/signup', user_store_validation, User.store);
@@ -101,10 +99,7 @@ module.exports = (passport) => {
     router.put('/lessons/buy', LessonsBuy.update);
     router.get('/profile', logged_in, Profile.index);
     router.put('/profile/update', user_update_validation, Profile.update);
-    router.put(
-        '/profile/update/receive-email-reply',
-        Profile.update_receive_email_reply
-    );
+    router.put('/profile/update/receive-email-reply', Profile.update_receive_email_reply);
     router.post('/profile/avatar', upload.single('file'), Profile.avatar);
     router.get('/my/lessons', logged_in, LessonsUser.index);
     router.get('/my/lessons/data', Lessons.user);
@@ -113,7 +108,7 @@ module.exports = (passport) => {
     router.put('/reset/password', ResetPassword.update);
     router.get('/faq', Faq.index);
 
-    router.get('*', function (request, response) {
+    router.get('*', function(request, response) {
         response.status(400).send('what???');
     });
 
