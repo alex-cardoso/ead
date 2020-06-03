@@ -9,9 +9,19 @@ module.exports = {
             },
             userId: {
                 type: Sequelize.INTEGER,
+                references: {
+                    model: 'users',
+                    key: 'id',
+                },
+                onDelete: 'CASCADE',
             },
             lessonId: {
                 type: Sequelize.INTEGER,
+                references: {
+                    model: 'lessons',
+                    key: 'id',
+                },
+                onDelete: 'CASCADE',
             },
             createdAt: {
                 allowNull: false,
@@ -20,9 +30,7 @@ module.exports = {
             },
             updatedAt: {
                 allowNull: false,
-                defaultValue: Sequelize.literal(
-                    'CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'
-                ),
+                defaultValue: Sequelize.literal('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'),
                 type: 'TIMESTAMP',
             },
         });

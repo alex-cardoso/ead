@@ -2,6 +2,16 @@
     <div>
         <div class="dashboard_contents section--padding">
             <div class="container">
+                <div style="background-color:#efefef;" class="p-3 d-flex">
+                    <input
+                        type="text"
+                        class="form-control"
+                        placeholder="Buscar..."
+                        v-model="lesson_to_search"
+                    />
+                    <button class="btn btn-primary btn-sm ml-1" @click="search_lesson()">Buscar</button>
+                </div>
+
                 <div
                     style="background-color:#efefef;"
                     class="d-flex align-items-center p-3"
@@ -261,6 +271,7 @@ export default {
             message_update_line: null,
             categories_data: [],
             category_selected: [],
+            lesson_to_search: '',
         };
     },
 
@@ -410,6 +421,22 @@ export default {
                 setTimeout(function() {
                     this.message = null;
                 }, 3000);
+            }
+        },
+
+        async search_lesson() {
+            try {
+                const response = await http.get('/admin/lessons/search', {
+                    params: {
+                        searched: this.lesson_to_search,
+                    },
+                });
+
+                this.lessons_data = response.data;
+
+                console.log(response.data);
+            } catch (error) {
+                console.log(error);
             }
         },
     },

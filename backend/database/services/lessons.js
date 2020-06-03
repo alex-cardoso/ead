@@ -1,5 +1,7 @@
 const { Lesson, User, LessonBuyed, Category, LessonsFavorite, Github } = require('../models');
 const paginate = require('./paginate');
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 
 const lessons = async (page = 1) => {
     try {
@@ -266,6 +268,36 @@ const store = async data => {
     }
 };
 
+
+const search = async (searched, page) => {
+    try {
+
+        const options = {
+            attributes: ['id', 'title', 'slug', 'duration', 'embed', 'value', 'description', 'updatedAt'],
+            per_page: 20,
+            distinct: true,
+            where: {
+                [Op.or]: [
+                    { title: { [Op.like]: `%${searched}%` } },
+                    { description: { [Op.like]: `%${searched}%` } }
+                ],
+            },
+            include: [
+                {
+                    model: Category,
+                    as: 'category',
+                },
+            ],
+            page,
+            order: [['id', 'DESC']],
+        };
+
+        return paginate(Lesson, options);
+    } catch (error) {
+        console.log(error);
+    }
+};
+
 module.exports = {
     lessons,
     latest,
@@ -277,4 +309,5 @@ module.exports = {
     update,
     destroy,
     store,
+    search
 };

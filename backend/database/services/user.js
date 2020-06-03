@@ -1,7 +1,8 @@
-const { User } = require('../../database/models');
+const { User, LessonBuyed } = require('../../database/models');
 const bcrypt = require('bcrypt');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
+const paginate = require('./paginate');
 
 const findUser = async (id) => {
     try {
@@ -86,10 +87,7 @@ const check_email_exist_another_users = async (id, email) => {
     }
 };
 
-const update_receive_email_reply_forum = async (
-    id,
-    receive_email_reply_forum
-) => {
+const update_receive_email_reply_forum = async (id, receive_email_reply_forum) => {
     try {
         return await User.update(
             { receive_email_reply_forum },
@@ -105,6 +103,60 @@ const update_receive_email_reply_forum = async (
     }
 };
 
+const get_all = (page) => {
+    try {
+        const options = {
+            attributes: ['id', 'name', 'last_name', 'email'],
+            per_page: 50,
+            page,
+            distinct: true,
+            include: [
+                {
+                    attributes: ['id'],
+                    model: LessonBuyed,
+                    as: 'buyed',
+                },
+            ],
+            order: [['id', 'DESC']],
+        };
+
+        return paginate(User, options);
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+};
+
+const search = async (searched, page) => {
+    try {
+        const options = {
+            attributes: ['id', 'name', 'last_name', 'email'],
+            per_page: 50,
+            page,
+            distinct: true,
+            where: {
+                [Op.or]: [
+                    { name: { [Op.like]: `%${searched}%` } },
+                    { last_name: { [Op.like]: `%${searched}%` } },
+                    { email: { [Op.like]: `%${searched}%` } },
+                ],
+            },
+            include: [
+                {
+                    attributes: ['id'],
+                    model: LessonBuyed,
+                    as: 'buyed',
+                },
+            ],
+            order: [['id', 'DESC']],
+        };
+
+        return paginate(User, options);
+    } catch (error) {
+        console.log(error);
+    }
+};
+
 module.exports = {
     findUser,
     store,
@@ -113,4 +165,6 @@ module.exports = {
     update,
     check_email_exist_another_users,
     update_receive_email_reply_forum,
+    get_all,
+    search,
 };
