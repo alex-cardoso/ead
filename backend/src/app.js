@@ -8,7 +8,6 @@ const express_handlebars = require('express-handlebars');
 const session = require('express-session');
 const passport = require('passport');
 const passport_main = require('./passport_main.js');
-const passport_admin = require('./passport_admin');
 const serialize_passport = require('./serialize-passport');
 const path = require('path');
 const variables_to_template = require('../middlewares/variables_to_template');

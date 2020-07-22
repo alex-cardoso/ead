@@ -76,15 +76,15 @@ const send_new_user = async (user, token) => {
     });
 };
 
-const send_new_contact = async (user, message) => {
+const send_new_contact = async (message, name, email) => {
     const config = configTemplate();
     return await config.sendMail({
-        from: `${user.name} <${user.email}>`,
+        from: `${name} <${email}>`,
         to: `${process.env.EMAIL_FROM_NAME} <${process.env.EMAIL_FROM_EMAIL}>`,
         subject: `Contato pelo site[${process.env.EMAIL_FROM_NAME}]`,
         template: 'contact',
         context: {
-            name: `${user.name} ${user.last_name}`,
+            name,
             message,
         },
     });

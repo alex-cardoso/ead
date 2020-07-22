@@ -18,9 +18,7 @@ it('should store token', async () => {
 
 it('should get error of token_invalid', async () => {
     try {
-        const token = await verify_token(
-            '1300442142404412232030331589303877932'
-        );
+        const token = await verify_token('1300442142404412232030331589303877932');
 
         console.log('token===>', token);
     } catch (error) {
@@ -30,9 +28,7 @@ it('should get error of token_invalid', async () => {
 
 it('should validate reset password token', async () => {
     try {
-        const token = await verify_token(
-            '1300442142404412232030331589303877932'
-        );
+        const token = await verify_token('1300442142404412232030331589303877932');
 
         console.log('token===>', token);
         expect(token['userId']).toBeDefined();

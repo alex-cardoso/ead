@@ -2,7 +2,7 @@ const {
     update: update_lesson,
     destroy: delete_lesson,
     store: create_lesson,
-    search: search_lesson
+    search: search_lesson,
 } = require('../../database/services/lessons');
 
 const { getUser } = require('../../src/user');
@@ -59,21 +59,20 @@ const store = async (request, response) => {
 
 const search = async (request, response) => {
     try {
-
         const { searched, page } = request.query;
 
-        const searched = search_lesson(searched, page);
+        const searched_lesson = search_lesson(searched, page);
 
-        response.status(200).json(searched);
+        response.status(200).json(searched_lesson);
     } catch (error) {
         console.log(error);
     }
-}
+};
 
 module.exports = {
     index,
     update,
     destroy,
     store,
-    search
+    search,
 };
